@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "452976003220-teeqg6auc09ucjlag282scr33jucev1k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vitabu",
+            "certificate_hash": "4820099878006b7dc9f521e1bb2158de1616ca60"
+          }
+        },
+        {
           "client_id": "452976003220-q505v0ailfdf1b7fbd6p6ul1p1pjt3br.apps.googleusercontent.com",
           "client_type": 3
         }
