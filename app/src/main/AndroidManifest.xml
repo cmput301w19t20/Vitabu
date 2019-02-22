@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".userProfileActivity" />
-        <activity android:name=".pendingRequestsActivity"></activity>
+        <activity android:name=".bookStatusActivity" />
+        <activity android:name=".bookRequestsActivity"></activity>
     </application>
 
 </manifest>

@@ -10,5 +10,14 @@
     <string name="borrower_rating">Borrower Rating:</string>
     <string name="owner_rating">Owner Rating:</string>
     <string name="joined_on">Joined On:</string>
-    <string name="pending_title" >Pending requests for: <book name></string>
+    <string name="pending_title">Pending requests for: BOOK NAME HERE</string>
+    <string name="filter_by">Filter by:</string>
+    <string name="requestsTitle">Requests</string>
+
+    <string-array name="status_array">
+        <item>available</item>
+        <item>requested</item>
+        <item>accepted</item>
+        <item>borrowed</item>
+    </string-array>
 </resources>
