@@ -5,4 +5,10 @@
     <string name="login_register_button_text">Register</string>
     <string name="login_email_hint">email</string>
     <string name="login_password_hint">password</string>
+    <string name="gen_location">general location</string>
+    <string name="username">username</string>
+    <string name="borrower_rating">Borrower Rating:</string>
+    <string name="owner_rating">Owner Rating:</string>
+    <string name="joined_on">Joined On:</string>
+    <string name="pending_title" >Pending requests for: <book name></string>
 </resources>
