@@ -5,13 +5,14 @@ import java.util.Date;
 
 public class User {
     private String userid;
-    private String location;
+    private Location location;
     private int borrowerRating;
     private int ownerRating;
     private Date joinDate;
     private String email;
-    ArrayList<Book> ownedBooks;
-    ArrayList<Book> borrowedBooks;
+    private ArrayList<Book> ownedBooks;
+    private ArrayList<BorrowRecord> borrowedBooks;
+    private ArrayList<BorrowRecord> lentBooks;
 
     public User(String userid, Date joinDate, String email) {
         this.userid = userid;
@@ -19,13 +20,45 @@ public class User {
         this.email = email;
     }
 
-    public User(String userid, String location, int borrowerRating, int ownerRating, Date joinDate, String email) {
+    public User(String userid, Location location, int borrowerRating, int ownerRating, Date joinDate, String email) {
         this.userid = userid;
         this.location = location;
         this.borrowerRating = borrowerRating;
         this.ownerRating = ownerRating;
         this.joinDate = joinDate;
         this.email = email;
+    }
+
+    public ArrayList<BorrowRecord> getBorrowedBooks() {
+        return borrowedBooks;
+    }
+
+    public void setBorrowedBooks(ArrayList<BorrowRecord> borrowedBooks) {
+        this.borrowedBooks = borrowedBooks;
+    }
+
+    public void addBorrowedBook(BorrowRecord b){
+        borrowedBooks.add(b);
+    }
+
+    public void removeBorrowedBook(BorrowRecord b){
+        borrowedBooks.remove(b);
+    }
+
+    public ArrayList<BorrowRecord> getLentBooks() {
+        return lentBooks;
+    }
+
+    public void setLentBooks(ArrayList<BorrowRecord> lentBooks) {
+        this.lentBooks = lentBooks;
+    }
+
+    public void addLentBook(BorrowRecord b){
+        lentBooks.add(b);
+    }
+
+    public void removeLentBook(BorrowRecord b){
+        lentBooks.remove(b);
     }
 
     public ArrayList<Book> getOwnedBooks(){
@@ -40,27 +73,19 @@ public class User {
         ownedBooks.remove(b);
     }
 
-    public ArrayList<Book> getBorrowedBooks(){
-        return borrowedBooks;
-    }
-
-    public void addBorrowedBook(Book b){
-        borrowedBooks.add(b);
-    }
-
-    public void removeBorrowedBook(Book b){
-        borrowedBooks.remove(b);
+    public void setOwnedBooks(ArrayList<Book> ownedBooks) {
+        this.ownedBooks = ownedBooks;
     }
 
     public String getUserid() {
         return userid;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
