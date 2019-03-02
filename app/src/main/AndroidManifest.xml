@@ -21,6 +21,10 @@
         </activity>
         <activity android:name=".userProfileActivity" />
         <activity android:name=".bookStatusActivity" />
+        <activity android:name=".bookInfoActivity" />
+        <activity android:name=".browseBooksActivity" />
+        <activity android:name=".searchBooksActivity" />
+        <activity android:name=".setMeetingActivity" />
         <activity android:name=".bookRequestsActivity"></activity>
     </application>
 

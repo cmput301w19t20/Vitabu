@@ -1,5 +1,6 @@
 package com.example.vitabu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void onPressLogin(View view) {
         // TODO: Validate login details. If valid email/password combo, proceed, otherwise alert user to incorrect login.
+        Intent intent = new Intent(this, bookInfoActivity.class);
+        startActivity(intent);
     }
 
     public void onPressRegister(View view) {

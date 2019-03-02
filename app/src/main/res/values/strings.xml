@@ -9,8 +9,14 @@
     <string name="login_password_hint">password</string>
 
     <!--Book Info Strings-->
+    <string name="book_info_title">Book Info</string>
     <string name="book_info_view_owner_button_text">View Owner</string>
     <string name="book_info_request_book_button_text">Request Book</string>
+
+    <!--Set Meeting Strings-->
+    <string name="set_meeting_set_time_button_text">Set Time</string>
+    <string name="set_meeting_set_date_button_text">Set Date</string>
+    <string name="set_meeting_email_hint">Email</string>
 
     <string name="gen_location">general location</string>
     <string name="username">username</string>
