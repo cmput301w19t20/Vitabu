@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:label="@string/set_meeting_title"
     tools:context=".setMeetingActivity">
 
     <Button
-        android:id="@+id/setmeeting_set_time_button"
+        android:id="@+id/set_meeting_set_time_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -17,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/setmeeting_set_date_button"
+        android:id="@+id/set_meeting_set_date_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -27,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/set_meeting_google_maps_place_holder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
@@ -37,24 +38,80 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/setmeeting_email_textview"
+        android:id="@+id/set_meeting_email_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="200dp"
         android:text="@string/set_meeting_email_hint"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/set_meeting_google_maps_place_holder" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/set_meeting_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/set_meeting_phone_hint"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_meeting_email_textview" />
+
+    <TextView
+        android:id="@+id/set_meeting_notes_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/set_meeting_notes_hint"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_meeting_phone" />
+
+    <EditText
+        android:id="@+id/set_meeting_phone_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setmeeting_email_textview" />
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/set_meeting_phone"
+        app:layout_constraintTop_toBottomOf="@+id/set_meeting_email_edittext" />
+
+    <EditText
+        android:id="@+id/set_meeting_email_edittext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/set_meeting_phone_edittext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/set_meeting_email_textview"
+        app:layout_constraintTop_toBottomOf="@+id/set_meeting_google_maps_place_holder" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/set_meeting_notes_textview"
+        app:layout_constraintTop_toBottomOf="@+id/set_meeting_phone_edittext" />
 
 </android.support.constraint.ConstraintLayout>

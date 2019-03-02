@@ -14,9 +14,12 @@
     <string name="book_info_request_book_button_text">Request Book</string>
 
     <!--Set Meeting Strings-->
+    <string name="set_meeting_title">Set Meeting</string>
     <string name="set_meeting_set_time_button_text">Set Time</string>
     <string name="set_meeting_set_date_button_text">Set Date</string>
     <string name="set_meeting_email_hint">Email</string>
+    <string name="set_meeting_phone_hint">Phone Number</string>
+    <string name="set_meeting_notes_hint">Notes</string>
 
     <string name="gen_location">general location</string>
     <string name="username">username</string>
