@@ -21,7 +21,7 @@ public class userProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         final RatingBar borrowerRating = (RatingBar) findViewById(R.id.user_profile_borrower_rating_bar);
-        final RatingBar ownerRatingBar = (RatingBar) findViewById(R.id.owner_rating_bar);
+        final RatingBar ownerRatingBar = (RatingBar) findViewById(R.id.user_profile_owner_rating_bar);
 
         // setting temporary default rating for borrower and owner bars
         // also set in .xml file for each rating bar for viewing purposes
