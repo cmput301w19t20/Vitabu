@@ -1,6 +1,5 @@
 package com.example.vitabu;
 
-import android.media.Rating;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.RatingBar;
@@ -21,7 +20,7 @@ public class userProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-        final RatingBar borrowerRating = (RatingBar) findViewById(R.id.borrower_rating_bar);
+        final RatingBar borrowerRating = (RatingBar) findViewById(R.id.user_profile_borrower_rating_bar);
         final RatingBar ownerRatingBar = (RatingBar) findViewById(R.id.owner_rating_bar);
 
         // setting temporary default rating for borrower and owner bars

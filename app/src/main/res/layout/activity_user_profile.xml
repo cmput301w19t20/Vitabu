@@ -7,13 +7,13 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/user_profile_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/username"
+        android:text="@string/user_profile_username"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,29 +21,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/gen_location"
+        android:id="@+id/user_profile_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/gen_location"
+        android:text="@string/user_profile_location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_username" />
 
     <TextView
-        android:id="@+id/borrower_rating"
+        android:id="@+id/user_profile_borrower_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
-        android:text="@string/borrower_rating"
+        android:text="@string/user_profile_borrower_rating"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gen_location" />
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_location" />
 
     <RatingBar
-        android:id="@+id/borrower_rating_bar"
+        android:id="@+id/user_profile_borrower_rating_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numStars="5"
@@ -53,40 +53,40 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/borrower_rating"
-        app:layout_constraintTop_toBottomOf="@+id/gen_location" />
+        app:layout_constraintStart_toEndOf="@+id/user_profile_borrower_rating"
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_location" />
 
     <TextView
-        android:id="@+id/owner_rating"
+        android:id="@+id/user_profile_owner_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="64dp"
-        android:text="@string/owner_rating"
+        android:text="@string/user_profile_owner_rating"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/borrower_rating" />
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_borrower_rating" />
 
     <RatingBar
-        android:id="@+id/owner_rating_bar"
+        android:id="@+id/user_profile_owner_rating_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numStars="5"
-        android:stepSize=".5"
-        android:rating="5"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
+        android:numStars="5"
+        android:rating="5"
+        android:stepSize=".5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/owner_rating"
-        app:layout_constraintTop_toBottomOf="@+id/borrower_rating_bar" />
+        app:layout_constraintStart_toEndOf="@+id/user_profile_owner_rating"
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_borrower_rating_bar" />
 
     <TextView
-        android:id="@+id/joined_on"
+        android:id="@+id/user_profile_joined_on"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="32dp"
-        android:text="@string/joined_on"
+        android:text="@string/user_profile_joined_on"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -21,11 +21,11 @@
     <string name="set_meeting_phone_hint">Phone Number</string>
     <string name="set_meeting_notes_hint">Notes</string>
 
-    <string name="gen_location">general location</string>
-    <string name="username">username</string>
-    <string name="borrower_rating">Borrower Rating:</string>
-    <string name="owner_rating">Owner Rating:</string>
-    <string name="joined_on">Joined On:</string>
+    <string name="user_profile_location">general location</string>
+    <string name="user_profile_username">username</string>
+    <string name="user_profile_borrower_rating">Borrower Rating:</string>
+    <string name="user_profile_owner_rating">Owner Rating:</string>
+    <string name="user_profile_joined_on">Joined On:</string>
     <string name="pending_title">Pending requests for: BOOK NAME HERE</string>
     <string name="filter_by">Filter by:</string>
     <string name="requestsTitle">Requests</string>
