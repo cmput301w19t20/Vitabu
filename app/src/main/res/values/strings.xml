@@ -29,6 +29,8 @@
     <string name="pending_title">Pending requests for: BOOK NAME HERE</string>
     <string name="filter_by">Filter by:</string>
     <string name="requestsTitle">Requests</string>
+    <string name="user_profile_books_borrowed">Books borrowed: #</string>
+    <string name="user_profile_books_owned">Books owned: #</string>
 
     <string-array name="status_array">
         <item>available</item>
