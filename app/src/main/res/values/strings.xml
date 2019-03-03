@@ -27,8 +27,8 @@
     <string name="user_profile_owner_rating">Owner Rating:</string>
     <string name="user_profile_joined_on">Joined On:</string>
     <string name="pending_title">Pending requests for: BOOK NAME HERE</string>
-    <string name="filter_by">Filter by:</string>
-    <string name="requestsTitle">Requests</string>
+    <string name="book_status_filter_title">Filter by:</string>
+    <string name="book_status_requests_title">Requests</string>
     <string name="user_profile_books_borrowed">Books borrowed: #</string>
     <string name="user_profile_books_owned">Books owned: #</string>
 

@@ -21,7 +21,7 @@ public class bookStatusActivity extends AppCompatActivity implements AdapterView
 
         // Since we have predetermined the items for the drop down status menu,
         // will use a string array containing the status items -- located in the resource file
-        Spinner spinner = (Spinner) findViewById(R.id.status_spinner);
+        Spinner spinner = (Spinner) findViewById(R.id.book_status_status_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.status_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

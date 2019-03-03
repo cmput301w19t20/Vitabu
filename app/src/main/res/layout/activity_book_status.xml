@@ -7,40 +7,42 @@
     tools:context=".bookStatusActivity">
 
     <TextView
-        android:id="@+id/requestsTitle"
+        android:id="@+id/book_status_requests_title"
         android:layout_width="105dp"
         android:layout_height="32dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center"
-        android:text="@string/requestsTitle"
+        android:text="@string/book_status_requests_title"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/filterPrompt"
+        android:id="@+id/book_status_filter_title"
         android:layout_width="73dp"
         android:layout_height="34dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="4dp"
         android:gravity="center"
-        android:text="@string/filter_by"
-        app:layout_constraintEnd_toStartOf="@+id/status_spinner"
-        app:layout_constraintStart_toEndOf="@+id/requestsTitle"
+        android:text="@string/book_status_filter_title"
+        app:layout_constraintEnd_toStartOf="@+id/book_status_status_spinner"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/status_spinner"
+        android:id="@+id/book_status_status_spinner"
         android:layout_width="105dp"
         android:layout_height="34dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/book_status_list"
         android:layout_width="match_parent"
         android:layout_height="399dp"
         android:layout_marginStart="8dp"
@@ -50,5 +52,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filterPrompt" />
+        app:layout_constraintTop_toBottomOf="@+id/book_status_filter_title" />
 </android.support.constraint.ConstraintLayout>
