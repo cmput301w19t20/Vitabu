@@ -34,7 +34,7 @@
 
     <Spinner
         android:id="@+id/book_status_status_spinner"
-        android:layout_width="105dp"
+        android:layout_width="137dp"
         android:layout_height="34dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="16dp"
