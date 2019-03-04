@@ -14,7 +14,7 @@
     <string name="filter_by">Filter by:</string>
     <string name="requestsTitle">Requests</string>
     <string name="isbn_take_picture">Capture ISBN</string>
-    <string name="isbn_barcode_fail">Could not set up the detector!</string>
+    <string name="isbn_barcode_fail">Could not set up the detector</string>
     <string name="isbn_barcode_success">Detector Setup</string>
     <string name="isbn_no_ISBN_fail">No ISBN detected</string>
 
