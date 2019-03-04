@@ -11,6 +11,7 @@ Inducesmile. "Android Camera2 API Example." Inducesmile, https://inducesmile.com
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -242,6 +243,10 @@ public class ISBNActivity extends AppCompatActivity{
                                 Barcode thisCode = barcodes.valueAt(0);
                                 textView.setText(thisCode.rawValue);
                                 Toast.makeText(ISBNActivity.this, "ISBN Captured", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent();
+                                intent.putExtra("ISBN_number", thisCode.rawValue);
+                                setResult(RESULT_OK, intent);
+                                finish();
                             }
                         });
                     }
@@ -250,7 +255,7 @@ public class ISBNActivity extends AppCompatActivity{
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                textView.setText(R.string.isbn_no_ISBN_fail); 
+                                textView.setText(R.string.isbn_no_ISBN_fail);
                             }
                         });
                     }
