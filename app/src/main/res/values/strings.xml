@@ -37,5 +37,6 @@
         <item>requested</item>
         <item>accepted</item>
         <item>borrowed</item>
+        <item>borrowing</item>
     </string-array>
 </resources>
