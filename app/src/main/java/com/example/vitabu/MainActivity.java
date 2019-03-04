@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onPressLogin(View view) {
         // TODO: Validate login details. If valid email/password combo, proceed, otherwise alert user to incorrect login.
-        Intent intent = new Intent(this, bookInfoActivity.class);
+        Intent intent = new Intent(this, browseBooksActivity.class);
         startActivity(intent);
     }
 

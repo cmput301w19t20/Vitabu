@@ -21,6 +21,18 @@
     <string name="set_meeting_phone_hint">Phone Number</string>
     <string name="set_meeting_notes_hint">Notes</string>
 
+    <!--Search Books Strings-->
+    <string name="search_books_title">Search</string>
+    <string name="search_books_author_text">Author: </string>
+    <string name="search_books_author_hint">Author</string>
+    <string name="search_books_title_text">Title: </string>
+    <string name="search_books_title_hint">Title</string>
+    <string name="search_books_isbn_text">ISBN: </string>
+    <string name="search_books_isbn_hint">ISBN</string>
+    <string name="search_books_keywords_text">Keywords: </string>
+    <string name="search_books_keywords_hint">Keywords</string>
+    <string name="search_books_search_button_text">Search</string>
+    
     <string name="user_profile_location">general location</string>
     <string name="user_profile_username">username</string>
     <string name="user_profile_borrower_rating">Borrower Rating:</string>
