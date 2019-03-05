@@ -157,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onPressLogin(View view) {
+
+        // TODO: Validate login details. If valid email/password combo, proceed, otherwise alert user to incorrect login.
         signIn();
         // TODO Launch UI B activity.
     }
@@ -173,5 +175,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         // TODO Update ui here with newly signed in users info.
+        Intent intent = new Intent(this, browseBooksActivity.class);
+        startActivity(intent);
     }
 }
