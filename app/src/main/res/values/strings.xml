@@ -8,6 +8,8 @@
     <string name="login_email_hint">email</string>
     <string name="login_password_hint">password</string>
 
+  
+
     <!--Book Info Strings-->
     <string name="book_info_title">Book Info</string>
     <string name="book_info_view_owner_button_text">View Owner</string>
@@ -43,6 +45,23 @@
     <string name="book_status_requests_title">Requests</string>
     <string name="user_profile_books_borrowed">Books borrowed: #</string>
     <string name="user_profile_books_owned">Books owned: #</string>
+  
+    <!--
+      As a heads up, these strings were creating significant merge conflicts. Resolve with UI
+      people.
+    <string name="gen_location">general location</string>
+    <string name="username">username</string>
+    <string name="borrower_rating">Borrower Rating:</string>
+    <string name="owner_rating">Owner Rating:</string>
+    <string name="joined_on">Joined On:</string>
+    <string name="pending_title">Pending requests for: BOOK NAME HERE</string>
+    <string name="filter_by">Filter by:</string>
+    <string name="requestsTitle">Requests</string> -->
+    <string name="isbn_take_picture">Capture ISBN</string>
+    <string name="isbn_barcode_fail">Could not set up the detector</string>
+    <string name="isbn_barcode_success">Detector Setup</string>
+    <string name="isbn_no_ISBN_fail">No ISBN detected</string>
+
 
     <string-array name="status_array">
         <item>available</item>
