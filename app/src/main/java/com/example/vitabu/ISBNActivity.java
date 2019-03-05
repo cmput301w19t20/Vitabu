@@ -372,6 +372,7 @@ public class ISBNActivity extends AppCompatActivity{
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 // end activity
                 Toast.makeText(ISBNActivity.this, "Need Camera permission to scan ISBN", Toast.LENGTH_LONG).show();
+                setResult(RESULT_CANCELED, new Intent());
                 finish();
             }
         }
