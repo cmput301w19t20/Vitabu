@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "452976003220",
+    "firebase_url": "https://vitabu-41ec3.firebaseio.com",
+    "project_id": "vitabu-41ec3",
+    "storage_bucket": "vitabu-41ec3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452976003220:android:efe8b130b59c9934",
+        "android_client_info": {
+          "package_name": "com.example.vitabu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452976003220-4mhfcdp0pcsc71cljjvuvuv6pm3qcah9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vitabu",
+            "certificate_hash": "f3e55d710cb53296e21adf8b486b4e01bc3b6a37"
+          }
+        },
+        {
+          "client_id": "452976003220-teeqg6auc09ucjlag282scr33jucev1k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vitabu",
+            "certificate_hash": "4820099878006b7dc9f521e1bb2158de1616ca60"
+          }
+        },
+        {
+          "client_id": "452976003220-q505v0ailfdf1b7fbd6p6ul1p1pjt3br.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtw4T1AEFC13Tz5ae6HH0XKB4tahD7Cgg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452976003220-q505v0ailfdf1b7fbd6p6ul1p1pjt3br.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
