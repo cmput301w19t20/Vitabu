@@ -44,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        FirebaseUser user = auth.getCurrentUser();
+        //FirebaseUser user = auth.getCurrentUser();
         // Check if already signed in.
-        if (user != null) {
-            Log.i(logTag, "Signed in as: " + user.toString());
-            updateUI(user);
-        }
+//        if (user != null) {
+//            Log.i(logTag, "Signed in as: " + user.toString());
+//            updateUI(user);
+//        }
     }
 
     @Override
@@ -165,7 +165,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onPressRegister(View view) {
-        signUp();
+        //signUp();
+        Intent intent = new Intent(this, registerActivity.class);
+        startActivity(intent);
         // Firebase user now created.
         // TODO start activity to finish creating profile. ie. username, picture, default location etc.
     }
