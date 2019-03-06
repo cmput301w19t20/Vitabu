@@ -44,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        FirebaseUser user = auth.getCurrentUser();
+        //FirebaseUser user = auth.getCurrentUser();
         // Check if already signed in.
-        if (user != null) {
-            Log.i(logTag, "Signed in as: " + user.toString());
-            updateUI(user);
-        }
+//        if (user != null) {
+//            Log.i(logTag, "Signed in as: " + user.toString());
+//            updateUI(user);
+//        }
     }
 
     @Override

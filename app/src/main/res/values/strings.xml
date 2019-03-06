@@ -17,6 +17,7 @@
     <string name="register_city">City</string>
     <string name="register_register_button">Register</string>
     <string name="register_password">Password</string>
+    <string name="register_information">Please fill in every field before submitting.</string>
 
 
     <!--Book Info Strings-->
