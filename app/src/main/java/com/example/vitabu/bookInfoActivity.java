@@ -31,12 +31,18 @@ public class bookInfoActivity extends AppCompatActivity {
 
     public void onClickRequestBook(View view){
 //        TODO: Implement book request
+        Intent intent = new Intent(this, bookRequestsActivity.class);
+        Gson gson = new Gson();
+        String message = gson.toJson(book);
+        intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 
     public void onClickViewOwner(View view){
-        Intent intent = new Intent();
+        Intent intent = new Intent(this, userProfileActivity.class);
         Gson gson = new Gson();
-        //String message = gson.toJson();
-        //intent.putExtra();
+        String message = gson.toJson(book.getOwner());
+        intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 }
