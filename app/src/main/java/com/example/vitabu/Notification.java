@@ -8,9 +8,18 @@ public class Notification {
     private String message;
     private String type;
     private boolean seen;
+    private User user;
 
     public Notification(){
 
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getDate() {
