@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class User {
     private String userid;
+    private String userName;
     private Location location;
     private int borrowerRating;
     private int ownerRating;
@@ -13,7 +14,6 @@ public class User {
     private ArrayList<Book> ownedBooks;
     private ArrayList<BorrowRecord> borrowedBooks;
     private ArrayList<BorrowRecord> lentBooks;
-
     private ArrayList<Notification> notifications;
 
     public User(String userid, Date joinDate, String email) {
@@ -33,6 +33,14 @@ public class User {
 
     public User(){
 
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public ArrayList<Notification> getNotifications() {
