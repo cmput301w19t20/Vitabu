@@ -164,7 +164,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onPressRegister(View view) {
-        signUp();
+        //signUp();
+        Intent intent = new Intent(this, registerActivity.class);
+        startActivity(intent);
         // Firebase user now created.
         // TODO start activity to finish creating profile. ie. username, picture, default location etc.
     }

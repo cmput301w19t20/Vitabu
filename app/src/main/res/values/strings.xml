@@ -8,7 +8,16 @@
     <string name="login_email_hint">email</string>
     <string name="login_password_hint">password</string>
 
-  
+    <!--Register Strings-->
+    <string name="register_header">Register</string>
+    <string name="register_username">User Name</string>
+    <string name="register_email">Email</string>
+    <string name="register_country">Country</string>
+    <string name="register_province">Province</string>
+    <string name="register_city">City</string>
+    <string name="register_register_button">Register</string>
+    <string name="register_password">Password</string>
+
 
     <!--Book Info Strings-->
     <string name="book_info_title">Book Info</string>
@@ -34,7 +43,7 @@
     <string name="search_books_keywords_text">Keywords: </string>
     <string name="search_books_keywords_hint">Keywords</string>
     <string name="search_books_search_button_text">Search</string>
-    
+
     <string name="user_profile_location">general location</string>
     <string name="user_profile_username">username</string>
     <string name="user_profile_borrower_rating">Borrower Rating:</string>
@@ -45,7 +54,7 @@
     <string name="book_status_requests_title">Requests</string>
     <string name="user_profile_books_borrowed">Books borrowed: #</string>
     <string name="user_profile_books_owned">Books owned: #</string>
-  
+
     <!--
       As a heads up, these strings were creating significant merge conflicts. Resolve with UI
       people.

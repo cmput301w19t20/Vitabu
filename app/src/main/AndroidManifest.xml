@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.vitabu">
 
-    <uses-permission android:name="android.permission.CAMERA"
-        />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera2.full" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -26,17 +27,18 @@
         </activity>
         <activity android:name=".userProfileActivity" />
         <activity android:name=".bookStatusActivity" />
-        <activity android:name=".bookInfoActivity"
-            android:label="@string/book_info_title"
-            />
+        <activity
+            android:name=".bookInfoActivity"
+            android:label="@string/book_info_title" />
         <activity android:name=".browseBooksActivity" />
-        <activity android:name=".searchBooksActivity"
-            android:label="@string/search_books_title"
-            />
-        <activity android:name=".setMeetingActivity"
-            android:label="@string/set_meeting_title"
-            />
+        <activity
+            android:name=".searchBooksActivity"
+            android:label="@string/search_books_title" />
+        <activity
+            android:name=".setMeetingActivity"
+            android:label="@string/set_meeting_title" />
         <activity android:name=".bookRequestsActivity" />
+        <activity android:name=".registerActivity"></activity>
     </application>
 
 </manifest>
