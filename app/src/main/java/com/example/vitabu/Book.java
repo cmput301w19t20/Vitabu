@@ -13,6 +13,10 @@ public class Book {
         setStatus(status);
     }
 
+    public Book(){
+
+    }
+
     public String getTitle() {
         return title;
     }

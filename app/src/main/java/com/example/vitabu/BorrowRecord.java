@@ -16,6 +16,10 @@ public class BorrowRecord {
         dateBorrowed = new Date();
     }
 
+    public BorrowRecord(){
+
+    }
+
     public User getOwner() {
         return owner;
     }

@@ -14,6 +14,8 @@ public class User {
     private ArrayList<BorrowRecord> borrowedBooks;
     private ArrayList<BorrowRecord> lentBooks;
 
+    private ArrayList<Notification> notifications;
+
     public User(String userid, Date joinDate, String email) {
         this.userid = userid;
         this.joinDate = joinDate;
@@ -27,6 +29,26 @@ public class User {
         this.ownerRating = ownerRating;
         this.joinDate = joinDate;
         this.email = email;
+    }
+
+    public User(){
+
+    }
+
+    public ArrayList<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(ArrayList<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public void addNotiication(Notification notification){
+        notifications.add(notification);
+    }
+
+    public void removeNotification(Notification notification){
+        notifications.remove(notification);
     }
 
     public ArrayList<BorrowRecord> getBorrowedBooks() {
