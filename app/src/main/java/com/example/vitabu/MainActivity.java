@@ -29,6 +29,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     private String logTag = "MainActivity";
+    public static final String EXTRA_MESSAGE = "com.example.vitabu.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

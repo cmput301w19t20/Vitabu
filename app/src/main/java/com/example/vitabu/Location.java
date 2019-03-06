@@ -6,6 +6,10 @@ public class Location {
     private String city;
     private String address;
 
+    public Location(){
+
+    }
+
     public String getCountry() {
         return Country;
     }
