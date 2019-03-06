@@ -5,16 +5,26 @@ public class Book {
     private String author;
     private int ISBN;
     private String status;
+    private User owner;
 
-    public Book(String title, String author, int ISBN, String status) {
+    public Book(String title, String author, int ISBN, String status, User owner) {
         this.title = title;
         this.author = author;
         this.ISBN = ISBN;
         setStatus(status);
+        this.owner = owner;
     }
 
     public Book(){
 
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public String getTitle() {
