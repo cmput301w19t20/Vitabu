@@ -2,6 +2,11 @@ package com.example.vitabu;
 
 import java.util.Date;
 
+/**
+ * @author davidowe
+ * @version 1.0
+ * Object used to keep track of borrow/lending transactions between users. Both lender and borrower should receive a copy of this record.
+ */
 public class BorrowRecord {
     private User owner;
     private User borrower;

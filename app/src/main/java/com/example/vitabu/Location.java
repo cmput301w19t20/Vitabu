@@ -1,7 +1,12 @@
 package com.example.vitabu;
 
+/**
+ * @author davidowe
+ * @version 1.0
+ * A Location object to keep track of country, province, city, and (optionally) address.
+ */
 public class Location {
-    private String Country;
+    private String country;
     private String provinceOrState;
     private String city;
     private String address;
@@ -11,11 +16,11 @@ public class Location {
     }
 
     public String getCountry() {
-        return Country;
+        return country;
     }
 
     public void setCountry(String country) {
-        Country = country;
+        this.country = country;
     }
 
     public String getProvinceOrState() {
