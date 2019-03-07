@@ -2,6 +2,11 @@ package com.example.vitabu;
 
 import java.util.Date;
 
+/**
+ * @author davidowe
+ * @version 1.0
+ * A Notification object specific to a user that should show up in their notifications
+ */
 public class Notification {
     private Date date;
     private String title;

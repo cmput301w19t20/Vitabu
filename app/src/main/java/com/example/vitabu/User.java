@@ -3,6 +3,11 @@ package com.example.vitabu;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * @author davidowe
+ * @version 1.0
+ * An object encapsulating all the attributes and information pertaining to a user.
+ */
 public class User {
     private String userid;
     private String userName;

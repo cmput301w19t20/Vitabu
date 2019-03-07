@@ -1,5 +1,11 @@
 package com.example.vitabu;
 
+
+/**
+ * @author davidowe
+ * @version 1.0
+ * The Book object for Vitabu that encapsulates all the possible attributes of a book
+ */
 public class Book {
     private String title;
     private String author;
@@ -55,6 +61,11 @@ public class Book {
         return status;
     }
 
+    /**
+     * Can only set the status to one of the following: requested, accepted, borrowed, or available. Any other value throws an error.
+     * @param status
+     * @throws IllegalArgumentException
+     */
     public void setStatus(String status) throws IllegalArgumentException{
         if(status != "available" && status != "requested" && status != "accepted" && status != "borrowed") {
             throw new IllegalArgumentException("Status must be one of the following: available, requested, accepted, borrowed.");
