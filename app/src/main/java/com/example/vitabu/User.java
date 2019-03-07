@@ -21,8 +21,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Date;
 
+
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
+/**
+ * @author davidowe
+ * @version 1.0
+ * An object encapsulating all the attributes and information pertaining to a user.
+ */
 public class User {
     private Location location;
     private int borrowerRating;

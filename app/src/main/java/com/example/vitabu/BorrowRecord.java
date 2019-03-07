@@ -2,12 +2,19 @@ package com.example.vitabu;
 
 import java.util.Date;
 
+/**
+ * @author davidowe
+ * @version 1.0
+ * Object used to keep track of borrow/lending transactions between users. Both lender and borrower should receive a copy of this record.
+ * Doubles as a book request, if approved is false.
+ */
 public class BorrowRecord {
     private User owner;
     private User borrower;
     private Book book;
     private Date dateBorrowed;
     private Location pickUpLocation;
+    private boolean approved;
 
     public BorrowRecord(User owner, User borrower, Book book) {
         this.owner = owner;
@@ -18,6 +25,14 @@ public class BorrowRecord {
 
     public BorrowRecord(){
 
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 
     public User getOwner() {
