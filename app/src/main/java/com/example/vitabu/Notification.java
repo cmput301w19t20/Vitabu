@@ -11,6 +11,16 @@ public class Notification {
     private Date date;
     private String title;
     private String message;
+
+    public Notification(String title, String message, String type, User user) {
+        this.date = new Date();
+        this.title = title;
+        this.message = message;
+        this.type = type;
+        this.seen = false;
+        this.user = user;
+    }
+
     private String type;
     private boolean seen;
     private User user;
