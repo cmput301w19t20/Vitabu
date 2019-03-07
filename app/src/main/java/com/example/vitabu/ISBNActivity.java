@@ -208,7 +208,7 @@ public class ISBNActivity extends AppCompatActivity{
                     Bitmap myBitMap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
                     // set up barcode detector
-                    final TextView textView = (TextView) findViewById(R.id.textView);
+                    final TextView textView = (TextView) findViewById(R.id.isbn_textView);
                     BarcodeDetector detector =
                             new BarcodeDetector.Builder(getApplicationContext())
                                     .setBarcodeFormats(Barcode.EAN_8 | Barcode.EAN_13 | Barcode.UPC_A | Barcode.EAN_13)
