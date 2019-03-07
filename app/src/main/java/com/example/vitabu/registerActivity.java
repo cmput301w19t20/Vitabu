@@ -1,3 +1,15 @@
+/*
+ * This file deals with the functionality of registering a new user. It grabs all the input from
+ * the user to fill out the model classes. It then checks if the username is taken, if the email
+ * is already linked to some user and does not let a person register in that case.
+ *
+ * Author: Arseniy Kouzmenkov
+ *
+ * Version 1.1
+ *
+ * Outstanding issues: Migrating old users to fit the database requirements.
+ *
+ */
 package com.example.vitabu;
 
 import android.content.Intent;
@@ -25,25 +37,45 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
 
+/**
+ * This class deals with everything pertaining to new user registration to Vitabu.
+ *
+ * @author Arseniy Kouzmenkov
+ * @version 1.1
+ * @see MainActivity
+ */
 public class registerActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;  //The firebase authorization handle.
     private User usr;  //The user object handle.
     private Location location = new Location(); //Handle on the location object.
     private String logTag = "registerActivity";
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference myRef = database.getReference();
+    private FirebaseDatabase database = FirebaseDatabase.getInstance(); //The realtime database handle
+    private DatabaseReference myRef = database.getReference(); //The reference to the database handle
 
+    /**
+     * This function deals with creating the registerActivity when it is called.
+     *
+     * @author Arseniy Kouzmenkov
+     * @param savedInstanceState : This keeps the state of the screen when the app is reopened.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        auth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance(); //Connects to the Firebase Authentication service.
     }
 
-
+    /**
+     * This method is executed when the user clicks on the REGISTER button on the screen. It checks
+     * that all the fields have been filled in with the minimum necessary information. In addition,
+     * it deals with checking if a username is in use already or not.
+     *
+     * @author Arseniy Kouzmenkov
+     * @param view : the handle on the view of this screen.
+     */
     public void onRegisterClick(View view){
-
+        //Gets the handle on all the user input fields.
         final EditText username = (EditText) findViewById(R.id.register_username);
         final EditText email = (EditText) findViewById(R.id.register_email);
         final EditText password = (EditText) findViewById(R.id.register_password);
@@ -51,47 +83,57 @@ public class registerActivity extends AppCompatActivity {
         final EditText province = (EditText) findViewById(R.id.register_province);
         final EditText city = (EditText) findViewById(R.id.register_city);
 
+        //Checks that the user has provided any username at all.
         if(username.getText().toString().length() < 1){
             Toast.makeText(getApplicationContext(), "Please, provide a full username.", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        //Checks that the email field is filled with anything at all.
         if(email.getText().toString().length() < 1){
             Toast.makeText(getApplicationContext(), "Please, provide a valid email.", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        //Checks that the password is at least 8 characters in length.
         if(password.getText().toString().length() < 8){
             Toast.makeText(getApplicationContext(), "Please, provide a password that is more than 8 characters long.", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        //Checks that the country field was filled with anything at all.
         if(country.getText().toString().length() < 1){
             Toast.makeText(getApplicationContext(), "Please, provide a country.", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        //Checks that the province field is filled with anything at all.
         if(province.getText().toString().length() < 1){
             Toast.makeText(getApplicationContext(), "Please, provide a province..", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        //Checks that the city field is filled with anything at all.
         if(city.getText().toString().length() < 1){
             Toast.makeText(getApplicationContext(), "Please, provide a city.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-
+        //Fills in the location object that is required to create a user object later on.
         location.setCountry(country.getText().toString());
         location.setProvinceOrState(province.getText().toString());
         location.setCity(city.getText().toString());
+
+        //Grabs the string representation of the username provided so far.
         String strUsername = username.getText().toString();
+
         // Check if username alredy exists.
         myRef.child("usernames").child(strUsername).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Log.d(logTag, "got data");
                 if (snapshot.exists()){
+                    //Notifies the user that the username is already taken.
                     Log.d(logTag, "uname taken");
                     Toast.makeText(getApplicationContext(), "Username Is taken.", Toast.LENGTH_LONG).show();
 
@@ -111,8 +153,16 @@ public class registerActivity extends AppCompatActivity {
 
     }
 
-
-
+    /**
+     * This class attempts to register a user with the provided information. It will close this
+     * activity upon success or let the user know that it did not work upon failed registration.
+     *
+     * @author Tristan Carlson
+     * @param location : the general location of the new user.
+     * @param userName : the username that the new user wants to use.
+     * @param email : the email with which the user is attempting to register
+     * @param password : the password with which the user is attempting to register.
+     */
     public void signUp(final Location location, final String userName, final String email, final String password){
         // Attempt to create user.
         Log.d(logTag, "In signup");
@@ -156,6 +206,4 @@ public class registerActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
 }
