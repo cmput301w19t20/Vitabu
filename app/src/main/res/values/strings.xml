@@ -53,8 +53,8 @@
     <string name="book_requests_book_name">Pending requests for: BOOK NAME HERE</string>
     <string name="book_status_filter_title">Filter by:</string>
     <string name="book_status_requests_title">Requests</string>
-    <string name="user_profile_books_borrowed">Books borrowed: #</string>
-    <string name="user_profile_books_owned">Books owned: #</string>
+    <string name="user_profile_books_borrowed">Number of Books Borrowed: </string>
+    <string name="user_profile_books_owned">Number of Books Owned: </string>
 
     <!--
       As a heads up, these strings were creating significant merge conflicts. Resolve with UI
