@@ -1,13 +1,20 @@
 <resources>
+    <!--App Strings-->
     <string name="app_name">Vitabu</string>
     <string name="action_settings">Settings</string>
 
-    <!--Login Strings-->
+    <!--Login Activity Strings-->
     <string name="login_login_button_text">Login</string>
     <string name="login_register_button_text">Register</string>
     <string name="login_email_hint">email</string>
     <string name="login_password_hint">password</string>
 
+    <!--Browse Book Activity Strings-->
+    <string name="browse_books_bottom_nav_menu_requests">Requests</string>
+    <string name="browse_books_bottom_nav_menu_browse">Browse</string>
+    <string name="browse_books_bottom_nav_menu_add_book">Add Book</string>
+    <string name="browse_books_bottom_nav_menu_notifications">Notifications</string>
+    
     <!--Register Strings-->
     <string name="register_header">Register</string>
     <string name="register_username">User Name</string>
@@ -20,12 +27,12 @@
     <string name="register_information">Please fill in every field before submitting.</string>
 
 
-    <!--Book Info Strings-->
+    <!--Book Info Activity Strings-->
     <string name="book_info_title">Book Info</string>
     <string name="book_info_view_owner_button_text">View Owner</string>
     <string name="book_info_request_book_button_text">Request Book</string>
 
-    <!--Set Meeting Strings-->
+    <!--Set Meeting Activity Strings-->
     <string name="set_meeting_title">Set Meeting</string>
     <string name="set_meeting_set_time_button_text">Set Time</string>
     <string name="set_meeting_set_date_button_text">Set Date</string>
@@ -33,7 +40,7 @@
     <string name="set_meeting_phone_hint">Phone Number</string>
     <string name="set_meeting_notes_hint">Notes</string>
 
-    <!--Search Books Strings-->
+    <!--Search Books Activity Strings-->
     <string name="search_books_title">Search</string>
     <string name="search_books_author_text">Author: </string>
     <string name="search_books_author_hint">Author</string>
@@ -45,8 +52,10 @@
     <string name="search_books_keywords_hint">Keywords</string>
     <string name="search_books_search_button_text">Search</string>
 
+    <!--User Profile Activity Strings-->
     <string name="user_profile_location">general location</string>
     <string name="user_profile_username">username</string>
+    <string name="user_profile_email">email</string>
     <string name="user_profile_borrower_rating">Borrower Rating:</string>
     <string name="user_profile_owner_rating">Owner Rating:</string>
     <string name="user_profile_joined_on">Joined On:</string>
@@ -67,6 +76,8 @@
     <string name="pending_title">Pending requests for: BOOK NAME HERE</string>
     <string name="filter_by">Filter by:</string>
     <string name="requestsTitle">Requests</string> -->
+
+    <!--ISBN Activity Strings-->
     <string name="isbn_take_picture">Capture ISBN</string>
     <string name="isbn_barcode_fail">Could not set up the detector</string>
     <string name="isbn_barcode_success">Detector Setup</string>

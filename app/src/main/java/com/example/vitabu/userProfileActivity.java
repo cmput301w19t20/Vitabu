@@ -29,9 +29,10 @@ public class userProfileActivity extends AppCompatActivity {
 
         // get user object from intent
         Intent intent = getIntent();
+        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         Gson gson = new Gson();
-        String message = intent.getStringExtra("Vitabu.user");
-        User user = gson.fromJson(message,User.class);
+        IntentJson passed = gson.fromJson(message, IntentJson.class);
+        User user = passed.getUser();
 
         // setting temporary default rating for borrower and owner bars
         // also set in .xml file for each rating bar for viewing purposes
@@ -42,6 +43,8 @@ public class userProfileActivity extends AppCompatActivity {
         // get hold of textviews and populate information
         TextView nameHolder = (TextView) findViewById(R.id.user_profile_username);
         nameHolder.setText(user.getUserid());
+        TextView emailHolder = (TextView) findViewById(R.id.user_profile_email);
+        nameHolder.setText(user.getEmail());
         TextView locationHolder = (TextView) findViewById(R.id.user_profile_location);
         locationHolder.setText(user.getLocation().getCity());
         TextView booksBorrowedHolder = (TextView) findViewById(R.id.user_profile_books_borrowed);
