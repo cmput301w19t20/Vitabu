@@ -21,9 +21,6 @@ public class bookRequestsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_requests);
-        /*Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        Gson gson = new Gson();
-        book = gson.fromJson(message, Book.class);*/
+
     }
 }
