@@ -1,5 +1,6 @@
 package com.example.vitabu;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.RatingBar;
@@ -16,6 +17,8 @@ import android.widget.RatingBar;
 
 public class userProfileActivity extends AppCompatActivity {
 
+    User owner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +31,7 @@ public class userProfileActivity extends AppCompatActivity {
         // so actually I'm not sure why I've put this here ...
 //        borrowerRating.setRating(3.5f);
 //        ownerRatingBar.setRating(5.0f);
+
 
     }
 }

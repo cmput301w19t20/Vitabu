@@ -14,7 +14,7 @@
     <string name="browse_books_bottom_nav_menu_browse">Browse</string>
     <string name="browse_books_bottom_nav_menu_add_book">Add Book</string>
     <string name="browse_books_bottom_nav_menu_notifications">Notifications</string>
-    
+
     <!--Register Strings-->
     <string name="register_header">Register</string>
     <string name="register_username">User Name</string>
@@ -90,4 +90,11 @@
         <item>borrowed</item>
         <item>borrowing</item>
     </string-array>
+    <string name="title_activity_book_status_owner">bookStatusOwnerActivity</string>
+    <string name="book_status_borrower_book_title" >title</string>
+    <string name="book_status_borrower_book_author" >author</string>
+    <string name="book_status_borrower_book_comment" >comment</string>
+    <string name="book_status_borrower_book_owner" >owner</string>
+    <string name="book_status_to_owner_switch">"borrow "</string>
+    <string name="book_status_borrower_filter_by">Filter by:</string>
 </resources>
