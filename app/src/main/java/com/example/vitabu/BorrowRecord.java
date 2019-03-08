@@ -3,7 +3,6 @@ package com.example.vitabu;
 import java.util.Date;
 
 /**
- * @author davidowe
  * @version 1.0
  * Object used to keep track of borrow/lending transactions between users. Both lender and borrower should receive a copy of this record.
  * Doubles as a book request, if approved is false.
@@ -15,6 +14,7 @@ public class BorrowRecord {
     private Date dateBorrowed;
     private Location pickUpLocation;
     private boolean approved;
+    private String recordid;
 
     public BorrowRecord(String ownerid, String borrowerid, String bookid) {
         this.ownerid = ownerid;
@@ -25,6 +25,14 @@ public class BorrowRecord {
 
     public BorrowRecord(){
 
+    }
+
+    public String getRecordid() {
+        return recordid;
+    }
+
+    public void setRecordid(String recordid) {
+        this.recordid = recordid;
     }
 
     public boolean isApproved() {
@@ -39,7 +47,7 @@ public class BorrowRecord {
         return ownerid;
     }
 
-    public void setOwner(String ownerid) {
+    public void setOwnerid(String ownerid) {
         this.ownerid = ownerid;
     }
 
@@ -47,7 +55,7 @@ public class BorrowRecord {
         return borrowerid;
     }
 
-    public void setBorrower(String borrowerid) {
+    public void setBorrowerid(String borrowerid) {
         this.borrowerid = borrowerid;
     }
 
