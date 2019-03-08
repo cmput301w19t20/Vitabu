@@ -20,6 +20,7 @@ public class browseBooksActivity extends AppCompatActivity {
     private Fragment browseBooks;
     private Fragment addBook;
     private Fragment notifications;
+    private Fragment ownedBooks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +30,11 @@ public class browseBooksActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         // Initialize fragments
-        requests = new Fragment();//RequestsFragment();
+        requests = new bookRequestsFragment();
         browseBooks = new BrowseBooksFragment();
         addBook = new AddBookFragment();
         notifications = new Fragment();//NotificationFragment();
+        ownedBooks = new Fragment();//OwnedBooksFragment();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.browse_books_bottom_nav);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -57,6 +59,9 @@ public class browseBooksActivity extends AppCompatActivity {
                     break;
                 case R.id.browse_books_bottom_nav_menu_notifications:
                     fragment = notifications;
+                    break;
+                case R.id.browse_books_bottom_nav_menu_owned_books:
+                    fragment = ownedBooks;
                     break;
                 default:
                     fragment = browseBooks;
