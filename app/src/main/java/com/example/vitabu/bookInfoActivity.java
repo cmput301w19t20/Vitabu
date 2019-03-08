@@ -43,15 +43,31 @@ public class bookInfoActivity extends AppCompatActivity {
     }
 
     public void onClickRequestBook(View view){
+        //TODO: Untested, I suspect very strongly that I'm pushing the wrong things to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();;
+        final String logTag = "bookInfoActivity";
+
         Notification request = new Notification("Book Request for '" + book.getTitle() + "'",
                                                 "A user has requested your book. Click here to view.",
                                                 "request", owner);
         owner.addNotiication(request);
+        myRef.child("notifications").child(UUID.randomUUID().toString()).setValue(request)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(logTag, "Suscsesfully wrote user to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(logTag, "Failed to write User to database", e);
+                    }
+                });
+
         BorrowRecord bookRequest = new BorrowRecord(owner, curUser, book);
         bookRequest.setApproved(false);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();;
-        final String logTag = "";
         myRef.child("transactions").child(UUID.randomUUID().toString()).setValue(bookRequest)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -69,8 +85,9 @@ public class bookInfoActivity extends AppCompatActivity {
 
     public void onClickViewOwner(View view){
         Intent intent = new Intent(this, userProfileActivity.class);
-        Gson gson = new Gson();
-        String message = gson.toJson(owner);
+        IntentJson passing = new IntentJson(curUser);
+        passing.addObject(owner);
+        String message = passing.toJson();
         intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
         startActivity(intent);
     }

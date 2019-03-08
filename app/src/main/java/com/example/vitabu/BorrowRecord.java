@@ -9,17 +9,17 @@ import java.util.Date;
  * Doubles as a book request, if approved is false.
  */
 public class BorrowRecord {
-    private User owner;
-    private User borrower;
-    private Book book;
+    private String ownerid;
+    private String borrowerid;
+    private String bookid;
     private Date dateBorrowed;
     private Location pickUpLocation;
     private boolean approved;
 
-    public BorrowRecord(User owner, User borrower, Book book) {
-        this.owner = owner;
-        this.borrower = borrower;
-        this.book = book;
+    public BorrowRecord(String ownerid, String borrowerid, String bookid) {
+        this.ownerid = ownerid;
+        this.borrowerid = borrowerid;
+        this.bookid = bookid;
         dateBorrowed = new Date();
     }
 
@@ -35,28 +35,28 @@ public class BorrowRecord {
         this.approved = approved;
     }
 
-    public User getOwner() {
-        return owner;
+    public String getOwnerid() {
+        return ownerid;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setOwner(String ownerid) {
+        this.ownerid = ownerid;
     }
 
-    public User getBorrower() {
-        return borrower;
+    public String getBorrowerid() {
+        return borrowerid;
     }
 
-    public void setBorrower(User borrower) {
-        this.borrower = borrower;
+    public void setBorrower(String borrowerid) {
+        this.borrowerid = borrowerid;
     }
 
-    public Book getBook() {
-        return book;
+    public String getBookid() {
+        return bookid;
     }
 
-    public void setBook(Book book) {
-        this.book = book;
+    public void setBookid(String bookid) {
+        this.bookid = bookid;
     }
 
     public Date getDateBorrowed() {

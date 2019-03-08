@@ -11,30 +11,29 @@ public class Notification {
     private Date date;
     private String title;
     private String message;
+    private String type;
+    private boolean seen;
+    private String userid;
 
-    public Notification(String title, String message, String type, User user) {
+    public Notification(String title, String message, String type, String userid) {
         this.date = new Date();
         this.title = title;
         this.message = message;
         this.type = type;
         this.seen = false;
-        this.user = user;
+        this.userid = userid;
     }
-
-    private String type;
-    private boolean seen;
-    private User user;
 
     public Notification(){
 
     }
 
-    public User getUser() {
-        return user;
+    public String getUserid() {
+        return userid;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public Date getDate() {
