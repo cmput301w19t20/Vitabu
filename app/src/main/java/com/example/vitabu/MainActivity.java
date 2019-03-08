@@ -12,23 +12,29 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    FirebaseAuth auth;
+    private FirebaseAuth auth;
     private String logTag = "MainActivity";
+    public static final String EXTRA_MESSAGE = "com.example.vitabu.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +49,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        FirebaseUser user = auth.getCurrentUser();
+        //FirebaseUser user = auth.getCurrentUser();
         // Check if already signed in.
-        if (user != null) {
-            Log.i(logTag, "Signed in as: " + user.toString());
-            updateUI(user);
-        }
+//        if (user != null) {
+//            Log.i(logTag, "Signed in as: " + user.toString());
+//            updateUI(user);
+//        }
     }
 
     @Override
@@ -72,11 +78,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Sign in user with firebase.
      */
-    public void signIn() {
-        // Get info from text boxes.
-        final String email = ((EditText) findViewById(R.id.login_email)).getText().toString();
-        String password = ((EditText) findViewById(R.id.login_password)).getText().toString();
-
+    public void signIn(final String email, final String password) {
         // Attempt to sign in a user with email.
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -87,39 +89,12 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(logTag, "Successfully signed in with email: " + email);
                             FirebaseUser user = auth.getCurrentUser();
                             updateUI(user);
+                            Intent intent = new Intent(getApplicationContext(), browseBooksActivity.class);
+                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(logTag, "Failed to sign in with email: " + email, task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-                    }
-                });
-    }
-
-    /**
-     * Registers a user with firebase.
-     */
-    public void signUp(){
-        // Get info from text boxes.
-        final String email = ((EditText) findViewById(R.id.login_email)).getText().toString();
-        String password = ((EditText) findViewById(R.id.login_password)).getText().toString();
-
-        // Attempt to create user.
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(logTag, "Successfully created user with email: " + email);
-                            FirebaseUser user = auth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(logTag, "Failed to create user with email: " + email, task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(MainActivity.this, "Sign In failed.",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -149,15 +124,20 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+
     public void onPressLogin(View view) {
 
         // TODO: Validate login details. If valid email/password combo, proceed, otherwise alert user to incorrect login.
-        signIn();
+        String email = ((TextView) findViewById(R.id.login_email)).getText().toString();
+        String password = ((TextView) findViewById(R.id.login_password)).getText().toString();
+        signIn(email, password);
         // TODO Launch UI B activity.
     }
 
     public void onPressRegister(View view) {
-        signUp();
+        //signUp();
+        Intent intent = new Intent(this, registerActivity.class);
+        startActivity(intent);
         // Firebase user now created.
         // TODO start activity to finish creating profile. ie. username, picture, default location etc.
     }
