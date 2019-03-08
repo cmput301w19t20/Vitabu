@@ -3,6 +3,7 @@ package com.example.vitabu;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,34 +14,28 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class browseBooksActivity extends AppCompatActivity implements BrowseBooksBookRecyclerViewAdapter.ItemClickListener {
-    BrowseBooksBookRecyclerViewAdapter adapter;
+public class browseBooksActivity extends AppCompatActivity {
+    private FragmentManager fragmentManager;
+    private Fragment requests;
+    private Fragment browseBooks;
+    private Fragment addBook;
+    private Fragment notifications;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_books);
 
+        fragmentManager = getSupportFragmentManager();
+
+        // Initialize fragments
+        requests = new Fragment();//RequestsFragment();
+        browseBooks = new BrowseBooksFragment();
+        addBook = new AddBookFragment();
+        notifications = new Fragment();//NotificationFragment();
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.browse_books_bottom_nav);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        // data to populate the RecyclerView with
-        ArrayList<Book> books = new ArrayList<>();
-        Book book;
-        for (int i = 0; i < 10; i++) {
-            book = new Book();
-            book.setTitle("Title");
-            book.setAuthor("Author");
-            books.add(book);
-        }
-
-
-        // set up the RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.browse_books_recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new BrowseBooksBookRecyclerViewAdapter(this, books);
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -48,24 +43,27 @@ public class browseBooksActivity extends AppCompatActivity implements BrowseBook
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment fragment;
 //            TODO: Implement nav bar behaviour for tab switching
             switch (item.getItemId()) {
                 case R.id.browse_books_bottom_nav_menu_requests:
-                    return true;
+                    fragment = requests;
+                    break;
                 case R.id.browse_books_bottom_nav_menu_browse:
-                    return true;
+                    fragment = browseBooks;
+                    break;
                 case R.id.browse_books_bottom_nav_menu_add_book:
-                    return true;
+                    fragment = addBook;
+                    break;
                 case R.id.browse_books_bottom_nav_menu_notifications:
-                    return true;
+                    fragment = notifications;
+                    break;
+                default:
+                    fragment = browseBooks;
+                    break;
             }
-            return false;
+            fragmentManager.beginTransaction().replace(R.id.browse_books_frame, fragment).commit();
+            return true;
         }
     };
-
-    @Override
-    public void onItemClick(View view, int position) {
-//        TODO: Opens book info activity
-        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
-    }
 }
