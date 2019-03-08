@@ -97,4 +97,10 @@
     <string name="book_status_borrower_book_owner" >owner</string>
     <string name="book_status_to_owner_switch">"borrow "</string>
     <string name="book_status_borrower_filter_by">Filter by:</string>
+    <string name="book_status_owner_book_title">title</string>
+    <string name="book_status_owner_book_author">author</string>
+    <string name="book_status_owner_book_comment">comment</string>
+    <string name="book_status_owner_extra">view requests</string>
+    <string name="book_status_to_borrow_switch">"borrow "</string>
+    <string name="book_status_owner_filter_by">Filter by:</string>
 </resources>

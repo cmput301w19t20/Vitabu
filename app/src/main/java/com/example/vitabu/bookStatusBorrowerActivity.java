@@ -22,7 +22,7 @@ public class bookStatusBorrowerActivity extends AppCompatActivity implements boo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_book_status_borrower);
+        setContentView(R.layout.activity_book_status_borrower);
 
         Spinner spinner = (Spinner) findViewById(R.id.book_status_borrower_spinner);
         Switch onOffSwitch = (Switch) findViewById(R.id.book_status_owner_switch);
