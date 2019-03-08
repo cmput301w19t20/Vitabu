@@ -12,6 +12,7 @@ public class Book {
     private String status;
     private String ownerid;
     private String description;
+    private String bookid;
 
     public Book(String title, String author, int ISBN, String status, String ownerid) {
         this.title = title;
@@ -23,6 +24,14 @@ public class Book {
 
     public Book(){
 
+    }
+
+    public String getBookid() {
+        return bookid;
+    }
+
+    public void setBookid(String bookid) {
+        this.bookid = bookid;
     }
 
     public String getOwnerid() {
