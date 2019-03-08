@@ -14,8 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_above="@+id/browse_books_bottom_nav"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/browse_books_bottom_nav"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
