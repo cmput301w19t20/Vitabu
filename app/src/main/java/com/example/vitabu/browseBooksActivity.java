@@ -26,13 +26,14 @@ public class browseBooksActivity extends AppCompatActivity implements BrowseBook
 
         // data to populate the RecyclerView with
         ArrayList<Book> books = new ArrayList<>();
-        books.add(new Book("Book1", "Author1", 1234,"available"));
-        books.add(new Book("Book2", "Author2", 1235,"available"));
-        books.add(new Book("Book3", "Author3", 1236,"available"));
-        books.add(new Book("Book4", "Author4", 1237,"available"));
-        books.add(new Book("Book5", "Author5", 1238,"available"));
-        books.add(new Book("Book6", "Author6", 1239,"available"));
-        books.add(new Book("Book7", "Author7", 1241,"available"));
+        Book book;
+        for (int i = 0; i < 10; i++) {
+            book = new Book();
+            book.setTitle("Title");
+            book.setAuthor("Author");
+            books.add(book);
+        }
+
 
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.browse_books_recyclerview);
