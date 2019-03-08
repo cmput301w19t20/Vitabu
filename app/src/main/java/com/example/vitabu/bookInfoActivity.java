@@ -1,12 +1,20 @@
 package com.example.vitabu;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
+
+import java.util.UUID;
 
 public class bookInfoActivity extends AppCompatActivity {
 
@@ -14,6 +22,7 @@ public class bookInfoActivity extends AppCompatActivity {
     Intent intent;
     Book book;
     User owner;
+    User curUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +30,9 @@ public class bookInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         Gson gson = new Gson();
-        book = gson.fromJson(message, Book.class);
+        IntentJson passed = gson.fromJson(message, IntentJson.class);
+        curUser = passed.getUser();
+        book = (Book) passed.getObject(0);
         owner = book.getOwner();
         TextView title = (TextView) findViewById(R.id.book_info_title);
         title.setText(book.getTitle());
@@ -36,9 +47,24 @@ public class bookInfoActivity extends AppCompatActivity {
                                                 "A user has requested your book. Click here to view.",
                                                 "request", owner);
         owner.addNotiication(request);
-        //TODO: get the current user
-        //BorrowRecord bookRequest = new BorrowRecord(owner, curUser, book);
-        //bookRequest.setApproved(false);
+        BorrowRecord bookRequest = new BorrowRecord(owner, curUser, book);
+        bookRequest.setApproved(false);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();;
+        final String logTag = "";
+        myRef.child("transactions").child(UUID.randomUUID().toString()).setValue(bookRequest)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(logTag, "Suscsesfully wrote user to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(logTag, "Failed to write User to database", e);
+                    }
+                });
     }
 
     public void onClickViewOwner(View view){
