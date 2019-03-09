@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".userProfileActivity" />
-        <activity android:name=".bookStatusActivity" />
+        <activity android:name=".bookStatusFragment" />
         <activity
             android:name=".bookInfoActivity"
             android:label="@string/book_info_title" />
