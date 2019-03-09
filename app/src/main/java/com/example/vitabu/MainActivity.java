@@ -56,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         // Check if already signed in.
-        if (firebaseUser != null) {
-            Log.i(logTag, "Signed in as: " + firebaseUser.getDisplayName());
-            updateUI();
-        }
+        //if (firebaseUser != null) {
+        //    Log.i(logTag, "Signed in as: " + firebaseUser.getDisplayName());
+        //    updateUI();
+        //}
     }
 
     @Override
