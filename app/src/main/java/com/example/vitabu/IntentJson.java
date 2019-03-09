@@ -9,7 +9,8 @@ import java.util.ArrayList;
 
 public class IntentJson {
     private UserAbstract curUser;
-    private ArrayList<Object> objects;
+    private ArrayList<Object> objects = new ArrayList<Object>();
+
 
     public IntentJson(LocalUser curUser) {
         this.curUser = (UserAbstract) curUser;

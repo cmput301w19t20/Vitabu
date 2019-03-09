@@ -31,10 +31,10 @@ public class browseBooksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_books);
-
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        String message = intent.getStringExtra("IntentJson");
         Gson gson = new Gson();
+
         IntentJson passed = gson.fromJson(message, IntentJson.class);
         curUser = passed.getUser();
 
