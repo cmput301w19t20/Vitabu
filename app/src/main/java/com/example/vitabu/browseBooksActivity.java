@@ -33,7 +33,7 @@ public class browseBooksActivity extends AppCompatActivity {
         requests = new bookRequestsFragment();
         browseBooks = new BrowseBooksFragment();
         addBook = new AddBookFragment();
-        notifications = new Fragment();//NotificationFragment();
+        notifications = new NotificationsFragment();
         ownedBooks = new Fragment();//OwnedBooksFragment();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.browse_books_bottom_nav);
@@ -46,7 +46,7 @@ public class browseBooksActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment;
-//            TODO: Implement nav bar behaviour for tab switching
+
             switch (item.getItemId()) {
                 case R.id.browse_books_bottom_nav_menu_requests:
                     fragment = requests;
