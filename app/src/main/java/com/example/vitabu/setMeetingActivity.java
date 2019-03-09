@@ -11,11 +11,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
@@ -34,18 +37,25 @@ public class setMeetingActivity extends AppCompatActivity implements DatePickerD
     Button timeButton;
     Button dateButton;
     String logTag = "set Meeting Activity";
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        auth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_set_meeting);
+
         // Get Intent.
         Intent intent = getIntent();
         String message = intent.getStringExtra("IntentJson");
         Gson gson = new Gson();
         IntentJson passed = gson.fromJson(message, IntentJson.class);
+        Log.d(logTag, "Passed=" + passed);
         user = passed.getUser();
-        borrowRecord = (BorrowRecord) passed.getObject(0);
+
+        //borrowRecord = (BorrowRecord) passed.getObject(0);
+
+        borrowRecord = new BorrowRecord("OWNERID", "BORROWERID", "BOOKID");
         timeButton = (Button) findViewById(R.id.set_meeting_set_time_button);
         dateButton = (Button) findViewById(R.id.set_meeting_set_date_button);
 
@@ -57,6 +67,11 @@ public class setMeetingActivity extends AppCompatActivity implements DatePickerD
      * checks User's entrered data is valid and submits.
      */
     public void continuePressed(View v){
+
+        email = ((EditText) findViewById(R.id.set_meeting_email_edittext)).getText().toString();
+        phone = ((EditText) findViewById(R.id.set_meeting_phone_edittext)).getText().toString();
+        notes = ((EditText) findViewById(R.id.set_meeting_notes_edittext)).getText().toString();
+
         // check required fields.
         if (email.length() < 3 || ! email.contains("@")){
             Toast.makeText(getApplicationContext(), "Invalid email.", Toast.LENGTH_LONG).show();

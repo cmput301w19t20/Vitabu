@@ -20,6 +20,8 @@ import com.google.gson.Gson;
 
 public class userProfileActivity extends AppCompatActivity {
 
+    User owner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +34,7 @@ public class userProfileActivity extends AppCompatActivity {
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         Gson gson = new Gson();
         IntentJson passed = gson.fromJson(message, IntentJson.class);
-        User user = passed.getUser();
+        LocalUser user = passed.getUser();
 
         // setting temporary default rating for borrower and owner bars
         // also set in .xml file for each rating bar for viewing purposes
@@ -48,9 +50,9 @@ public class userProfileActivity extends AppCompatActivity {
         TextView locationHolder = (TextView) findViewById(R.id.user_profile_location);
         locationHolder.setText(user.getLocation().getCity());
         TextView booksBorrowedHolder = (TextView) findViewById(R.id.user_profile_books_borrowed);
-        int size = user.getBorrowedBooks().size();
+        int size = user.getBooksBorrowed();
         booksBorrowedHolder.setText("Number of Books Borrowed: " + Integer.toString(size));
-        size = user.getOwnedBooks().size();
+        size = user.getBooksOwned();
         TextView booksOwnedHolder = (TextView) findViewById(R.id.user_profile_books_owned);
         booksOwnedHolder.setText("Number of Books Owned: " + Integer.toString(size));
         TextView joinedHolder = (TextView) findViewById(R.id.user_profile_joined_on);
@@ -59,8 +61,5 @@ public class userProfileActivity extends AppCompatActivity {
         ratingBar.setRating(user.getBorrowerRating());
         ratingBar = (RatingBar) findViewById(R.id.user_profile_owner_rating_bar);
         ratingBar.setRating(user.getOwnerRating());
-
-
-
     }
 }

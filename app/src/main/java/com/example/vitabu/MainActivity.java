@@ -25,8 +25,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +37,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private String logTag = "MainActivity";
-    public static final String EXTRA_MESSAGE = "com.example.vitabu.MESSAGE";
+    public static final String EXTRA_MESSAGE = "IntentJson";
+    private LocalUser localUser;
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Initialize firebase auth.
         auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
     }
 
     @Override
@@ -51,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         //FirebaseUser user = auth.getCurrentUser();
         // Check if already signed in.
-//        if (user != null) {
-//            Log.i(logTag, "Signed in as: " + user.toString());
-//            updateUI(user);
-//        }
+        if (firebaseUser != null) {
+            Log.i(logTag, "Signed in as: " + firebaseUser.getDisplayName());
+            updateUI();
+        }
     }
 
     @Override
@@ -87,17 +93,16 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(logTag, "Successfully signed in with email: " + email);
-                            User usr = new User(auth.getCurrentUser());
-                            Intent intent = new Intent(getApplicationContext(), browseBooksActivity.class);
-                            IntentJson userjson = new IntentJson(usr);
-                            intent.putExtra("IntentJson", userjson.toJson());
-                            startActivity(intent);
+                            firebaseUser = auth.getCurrentUser();
+                            localUser = new LocalUser(firebaseUser);
+                            updateUI();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(logTag, "Failed to sign in with email: " + email, task.getException());
                             Toast.makeText(MainActivity.this, "Sign In failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            updateUI();
                         }
                     }
                 });
@@ -120,14 +125,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.i("AuthActivity", "Signed out user successfully!");
-                        updateUI(null);
+                        updateUI();
                     }
                 });
     }
 
 
     public void onPressLogin(View view) {
-
+        //Intent intent = new Intent(this, browseBooksActivity.class);
+        //startActivity(intent);
         // TODO: Validate login details. If valid email/password combo, proceed, otherwise alert user to incorrect login.
         String email = ((TextView) findViewById(R.id.login_email)).getText().toString();
         String password = ((TextView) findViewById(R.id.login_password)).getText().toString();
@@ -143,13 +149,45 @@ public class MainActivity extends AppCompatActivity {
         // TODO start activity to finish creating profile. ie. username, picture, default location etc.
     }
 
-    public void updateUI(FirebaseUser user){
-        if (user == null) {
+    private void updateLocalUser(LocalUser localUser){
+        this.localUser = localUser;
+    }
+
+    private void updateFirebaseUser(FirebaseUser firebaseUser){
+        this.firebaseUser = firebaseUser;
+    }
+
+    public void updateUI(){
+        if (firebaseUser == null) {
             // No user signed in.
+            Log.d(logTag, "Update ui No user signed in.");
             return;
         }
+
+
         // TODO Update ui here with newly signed in users info.
+        String userName = firebaseUser.getDisplayName();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        myRef.child("users").child(userName).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        updateLocalUser(dataSnapshot.getValue(LocalUser.class));
+                        Log.d(logTag, "Read owner");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d(logTag, "Cancelled");
+                    }
+                }
+        );
+
+
+        IntentJson passing = new IntentJson(localUser);
         Intent intent = new Intent(this, browseBooksActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, passing.toJson());
         startActivity(intent);
     }
 }

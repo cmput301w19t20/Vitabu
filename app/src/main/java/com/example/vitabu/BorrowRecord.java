@@ -1,6 +1,7 @@
 package com.example.vitabu;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @version 1.0
@@ -19,14 +20,17 @@ public class BorrowRecord {
     private String ownerNotes;
     private String ownerEmail;
 
+
     public BorrowRecord(String ownerid, String borrowerid, String bookid) {
         this.ownerid = ownerid;
         this.borrowerid = borrowerid;
         this.bookid = bookid;
         dateBorrowed = new Date();
+        recordid = UUID.randomUUID().toString();
     }
 
     public BorrowRecord(){
+        recordid = UUID.randomUUID().toString();
 
     }
 
