@@ -3,7 +3,6 @@ package com.example.vitabu;
 import java.util.Date;
 
 /**
- * @author davidowe
  * @version 1.0
  * A Notification object specific to a user that should show up in their notifications
  */
@@ -11,30 +10,38 @@ public class Notification {
     private Date date;
     private String title;
     private String message;
+    private String type;
+    private boolean seen;
+    private String userName;
+    private String notificationid;
 
-    public Notification(String title, String message, String type, User user) {
+    public Notification(String title, String message, String type, String userName) {
         this.date = new Date();
         this.title = title;
         this.message = message;
         this.type = type;
         this.seen = false;
-        this.user = user;
+        this.userName = userName;
     }
-
-    private String type;
-    private boolean seen;
-    private User user;
 
     public Notification(){
 
     }
 
-    public User getUser() {
-        return user;
+    public String getNotificationid() {
+        return notificationid;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setNotificationid(String notificationid) {
+        this.notificationid = notificationid;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Date getDate() {

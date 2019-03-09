@@ -3,28 +3,36 @@ package com.example.vitabu;
 import java.util.Date;
 
 /**
- * @author davidowe
  * @version 1.0
  * Object used to keep track of borrow/lending transactions between users. Both lender and borrower should receive a copy of this record.
  * Doubles as a book request, if approved is false.
  */
 public class BorrowRecord {
-    private User owner;
-    private User borrower;
-    private Book book;
+    private String userName;
+    private String borrowerName;
+    private String bookid;
     private Date dateBorrowed;
     private Location pickUpLocation;
     private boolean approved;
+    private String recordid;
 
-    public BorrowRecord(User owner, User borrower, Book book) {
-        this.owner = owner;
-        this.borrower = borrower;
-        this.book = book;
+    public BorrowRecord(String userName, String borrowerName, String bookid) {
+        this.userName = userName;
+        this.borrowerName = borrowerName;
+        this.bookid = bookid;
         dateBorrowed = new Date();
     }
 
     public BorrowRecord(){
 
+    }
+
+    public String getRecordid() {
+        return recordid;
+    }
+
+    public void setRecordid(String recordid) {
+        this.recordid = recordid;
     }
 
     public boolean isApproved() {
@@ -35,28 +43,28 @@ public class BorrowRecord {
         this.approved = approved;
     }
 
-    public User getOwner() {
-        return owner;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public User getBorrower() {
-        return borrower;
+    public String getBorrowerName() {
+        return borrowerName;
     }
 
-    public void setBorrower(User borrower) {
-        this.borrower = borrower;
+    public void setBorrowerName(String borrowerName) {
+        this.borrowerName = borrowerName;
     }
 
-    public Book getBook() {
-        return book;
+    public String getBookid() {
+        return bookid;
     }
 
-    public void setBook(Book book) {
-        this.book = book;
+    public void setBookid(String bookid) {
+        this.bookid = bookid;
     }
 
     public Date getDateBorrowed() {

@@ -27,7 +27,7 @@
     <string name="add_book_required">(required)</string>
     <string name="add_book_add_image_text">Add Image (not required):</string>
     <string name="add_book_add_image_button">Add Image</string>
-    
+
     <!--Register Strings-->
     <string name="register_header">Register</string>
     <string name="register_username">User Name</string>
@@ -67,14 +67,15 @@
     <!--User Profile Activity Strings-->
     <string name="user_profile_location">general location</string>
     <string name="user_profile_username">username</string>
+    <string name="user_profile_email">email</string>
     <string name="user_profile_borrower_rating">Borrower Rating:</string>
     <string name="user_profile_owner_rating">Owner Rating:</string>
     <string name="user_profile_joined_on">Joined On:</string>
     <string name="book_requests_book_name">Pending requests for: BOOK NAME HERE</string>
     <string name="book_status_filter_title">Filter by:</string>
     <string name="book_status_requests_title">Requests</string>
-    <string name="user_profile_books_borrowed">Books borrowed: #</string>
-    <string name="user_profile_books_owned">Books owned: #</string>
+    <string name="user_profile_books_borrowed">Number of Books Borrowed: </string>
+    <string name="user_profile_books_owned">Number of Books Owned: </string>
 
     <!--
       As a heads up, these strings were creating significant merge conflicts. Resolve with UI
@@ -101,4 +102,20 @@
         <item>borrowed</item>
         <item>borrowing</item>
     </string-array>
+    <string name="title_activity_book_status_owner">bookStatusOwnerActivity</string>
+    <string name="book_status_borrower_book_title" >title</string>
+    <string name="book_status_borrower_book_author" >author</string>
+    <string name="book_status_borrower_book_comment" >comment</string>
+    <string name="book_status_borrower_book_owner" >owner</string>
+    <string name="book_status_to_owner_switch">"borrow "</string>
+    <string name="book_status_borrower_filter_by">Filter by:</string>
+    <string name="book_status_owner_book_title">title</string>
+    <string name="book_status_owner_book_author">author</string>
+    <string name="book_status_owner_book_comment">comment</string>
+    <string name="book_status_owner_extra">view requests</string>
+    <string name="book_status_to_borrow_switch">"borrow "</string>
+    <string name="book_status_owner_filter_by">Filter by:</string>
+    <string name="book_requests_accept_button">accept</string>
+    <string name="book_requests_decline_button">decline</string>
+    <string name="book_requests_requester_username">username</string>
 </resources>

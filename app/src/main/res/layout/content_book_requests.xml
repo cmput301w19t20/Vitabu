@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/book_requests_requester_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginStart="20dp"
+        android:text="@string/book_requests_requester_username"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/book_requests_accept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/book_requests_requester_username"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="1dp"
+        android:layout_toEndOf="@+id/book_requests_requester_username"
+        android:text="@string/book_requests_accept_button" />
+
+    <Button
+        android:id="@+id/book_requests_decline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/book_requests_requester_username"
+        android:layout_toEndOf="@id/book_requests_accept"
+        android:text="@string/book_requests_decline_button" />
+
+
+</RelativeLayout>

@@ -2,7 +2,6 @@ package com.example.vitabu;
 
 
 /**
- * @author davidowe
  * @version 1.0
  * The Book object for Vitabu that encapsulates all the possible attributes of a book
  */
@@ -11,26 +10,36 @@ public class Book {
     private String author;
     private int ISBN;
     private String status;
-    private User owner;
+    private String ownerName;
+    private String description;
+    private String bookid;
 
-    public Book(String title, String author, int ISBN, String status, User owner) {
+    public Book(String title, String author, int ISBN, String status, String ownerName) {
         this.title = title;
         this.author = author;
         this.ISBN = ISBN;
         setStatus(status);
-        this.owner = owner;
+        this.ownerName = ownerName;
     }
 
     public Book(){
 
     }
 
-    public User getOwner() {
-        return owner;
+    public String getBookid() {
+        return bookid;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setBookid(String bookid) {
+        this.bookid = bookid;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public String getTitle() {
@@ -71,5 +80,13 @@ public class Book {
             throw new IllegalArgumentException("Status must be one of the following: available, requested, accepted, borrowed.");
         }
         this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
