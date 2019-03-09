@@ -25,8 +25,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private String logTag = "MainActivity";
     public static final String EXTRA_MESSAGE = "com.example.vitabu.MESSAGE";
+    private LocalUser localUser;
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +92,8 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(logTag, "Successfully signed in with email: " + email);
-                            FirebaseUser user = auth.getCurrentUser();
-                            updateUI(user);
-                            Intent intent = new Intent(getApplicationContext(), browseBooksActivity.class);
-                            startActivity(intent);
+                            FirebaseUser firebaseUser = auth.getCurrentUser();
+                            updateUI(firebaseUser);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(logTag, "Failed to sign in with email: " + email, task.getException());
@@ -126,11 +129,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onPressLogin(View view) {
+        Intent intent = new Intent(this, browseBooksActivity.class);
+        startActivity(intent);
 
         // TODO: Validate login details. If valid email/password combo, proceed, otherwise alert user to incorrect login.
-        String email = ((TextView) findViewById(R.id.login_email)).getText().toString();
-        String password = ((TextView) findViewById(R.id.login_password)).getText().toString();
-        signIn(email, password);
+//        String email = ((TextView) findViewById(R.id.login_email)).getText().toString();
+//        String password = ((TextView) findViewById(R.id.login_password)).getText().toString();
+//        signIn(email, password);
         // TODO Launch UI B activity.
     }
 
@@ -142,13 +147,55 @@ public class MainActivity extends AppCompatActivity {
         // TODO start activity to finish creating profile. ie. username, picture, default location etc.
     }
 
-    public void updateUI(FirebaseUser user){
-        if (user == null) {
+    private void updateLocalUser(LocalUser localUser){
+        this.localUser = localUser;
+    }
+
+    private void updateFirebaseUser(FirebaseUser firebaseUser){
+        this.firebaseUser = firebaseUser;
+    }
+
+    public void updateUI(FirebaseUser firebaseUser){
+        if (firebaseUser == null) {
             // No user signed in.
             return;
         }
         // TODO Update ui here with newly signed in users info.
+        String userName = firebaseUser.getDisplayName();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        myRef.child("users").child(userName).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        updateLocalUser(dataSnapshot.getValue(LocalUser.class));
+                        Log.d(logTag, "Read owner");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d(logTag, "Cancelled");
+                    }
+                }
+        );
+        myRef.child("firebaseUsers").child(userName).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        updateFirebaseUser(dataSnapshot.getValue(FirebaseUser.class));
+                        Log.d(logTag, "Read owner");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d(logTag, "Cancelled");
+                    }
+                }
+        );
+        localUser.setFirebaseUser(firebaseUser);
+        IntentJson passing = new IntentJson(localUser);
         Intent intent = new Intent(this, browseBooksActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, passing.toJson());
         startActivity(intent);
     }
 }

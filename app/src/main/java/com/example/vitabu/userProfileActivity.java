@@ -26,6 +26,8 @@ import com.google.gson.Gson;
 
 public class userProfileActivity extends AppCompatActivity {
 
+    User owner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +70,6 @@ public class userProfileActivity extends AppCompatActivity {
         ratingBar.setRating(user.getBorrowerRating());
         ratingBar = (RatingBar) findViewById(R.id.user_profile_owner_rating_bar);
         ratingBar.setRating(user.getOwnerRating());
-
 
         // create on click listener for see user reviews button
         Button button = (Button) findViewById(R.id.user_profile_review_button);

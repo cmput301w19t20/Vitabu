@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
@@ -36,7 +37,6 @@ public class LocalUser extends UserAbstract {
      * Constructor for use when reconstructing already created user.
      */
     public LocalUser(FirebaseUser user){
-        // Attempt to sign in a user with email.
         firebaseUser = user;
         // TODO Pull All other data from database.
     }
@@ -44,11 +44,16 @@ public class LocalUser extends UserAbstract {
     /**
      * Constructor for use when creating a new user.
      */
-    public LocalUser(Location location, FirebaseUser user) {
+    public LocalUser(Location location, String userName, String email, FirebaseUser user) {
         this.location = location;
         this.borrowerRating = 0;
         this.ownerRating = 0;
-        firebaseUser = user;
+        this.booksBorrowed = 0;
+        this.booksBorrowed = 0;
+        this.userName = userName;
+        this.email = email;
+        this.firebaseUser = user;
+        this.userid = user.getUid();
     }
 
     /**
@@ -57,11 +62,11 @@ public class LocalUser extends UserAbstract {
     public void writeToDatabase(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
-        myRef.child("users").child(this.getUserName()).setValue(this)
+        myRef.child("users").child(userName).setValue((UserAbstract) this)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(logTag, "Suscsesfully wrote user to database.");
+                        Log.d(logTag, "Successfully wrote user to database.");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -70,11 +75,24 @@ public class LocalUser extends UserAbstract {
                         Log.d(logTag, "Failed to write User to database", e);
                     }
                 });
-        myRef.child("usernames").child(this.getUserName()).setValue(this.getUserid())
+        myRef.child("usernames").child(userName).setValue(userid)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(logTag, "Suscsesfully wrote username to database.");
+                        Log.d(logTag, "Successfully wrote username to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(logTag, "Failed to write Username to database", e);
+                    }
+                });
+        myRef.child("firebaseUsers").child(userName).setValue(firebaseUser)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(logTag, "Successfully wrote username to database.");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -141,6 +159,7 @@ public class LocalUser extends UserAbstract {
 
     public void setEmail(String email) {
         firebaseUser.updateEmail(email);
+        this.email = email;
     }
 
 
