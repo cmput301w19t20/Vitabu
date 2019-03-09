@@ -20,9 +20,9 @@ import static org.junit.Assert.assertEquals;
  */
 public class VitabuUnitTest {
 
-/*
+
     //Test IntenJson class
-    @Test
+    /*@Test
     public void intentJsonTest() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
