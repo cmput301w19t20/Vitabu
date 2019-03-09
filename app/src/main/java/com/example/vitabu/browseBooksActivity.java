@@ -36,6 +36,8 @@ public class browseBooksActivity extends AppCompatActivity {
         notifications = new NotificationsFragment();
         ownedBooks = new Fragment();//OwnedBooksFragment();
 
+        fragmentManager.beginTransaction().replace(R.id.browse_books_frame, browseBooks).commit();
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.browse_books_bottom_nav);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }

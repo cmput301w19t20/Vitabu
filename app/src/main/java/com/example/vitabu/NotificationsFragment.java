@@ -2,6 +2,7 @@ package com.example.vitabu;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         adapter = new NotificationsRecyclerViewAdapter(this.getActivity(), notifications);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
         return fragmentView;
     }
