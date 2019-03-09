@@ -25,6 +25,8 @@
     <string name="add_book_description_input">Description (not required)</string>
     <string name="add_book_submit_button">Add Book</string>
     <string name="add_book_required">(required)</string>
+    <string name="add_book_add_image_text">Add Image (not required):</string>
+    <string name="add_book_add_image_button">Add Image</string>
     
     <!--Register Strings-->
     <string name="register_header">Register</string>
