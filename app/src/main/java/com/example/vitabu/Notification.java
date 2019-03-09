@@ -14,6 +14,7 @@ public class Notification {
     private String type;
     private boolean seen;
     private String userid;
+    private String notificationid;
 
     public Notification(String title, String message, String type, String userid) {
         this.date = new Date();
@@ -26,6 +27,14 @@ public class Notification {
 
     public Notification(){
 
+    }
+
+    public String getNotificationid() {
+        return notificationid;
+    }
+
+    public void setNotificationid(String notificationid) {
+        this.notificationid = notificationid;
     }
 
     public String getUserid() {
