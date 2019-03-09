@@ -1,13 +1,16 @@
 package com.example.vitabu;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-public class bookStatusActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class bookStatusFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     /**
      * TODO: design row for each book in RecyclerView (CardView?), IMG: Title, Author, book details
@@ -15,18 +18,19 @@ public class bookStatusActivity extends AppCompatActivity implements AdapterView
      */
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_status);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View fragmentView = inflater.inflate(R.layout.fragment_book_status, container, false);
 
         // Since we have predetermined the items for the drop down status menu,
         // will use a string array containing the status items -- located in the resource file
-        Spinner spinner = (Spinner) findViewById(R.id.book_status_status_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        Spinner spinner = (Spinner) fragmentView.findViewById(R.id.book_status_status_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(),
                 R.array.status_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
+        return fragmentView;
     }
 
     @Override

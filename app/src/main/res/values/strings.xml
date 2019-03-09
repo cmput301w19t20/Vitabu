@@ -14,6 +14,7 @@
     <string name="browse_books_bottom_nav_menu_browse">Browse</string>
     <string name="browse_books_bottom_nav_menu_add_book">Add Book</string>
     <string name="browse_books_bottom_nav_menu_notifications">Notifications</string>
+    <string name="browse_books_bottom_nav_menu_owned_books">My Books</string>
     
     <!--Register Strings-->
     <string name="register_header">Register</string>
