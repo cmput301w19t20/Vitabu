@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".userProfileActivity" />
+        <activity android:name=".bookStatusFragment" />
         <activity
             android:name=".bookInfoActivity"
             android:label="@string/book_info_title" />
@@ -42,6 +43,6 @@
             android:name=".bookStatusOwnerActivity"
             android:label="@string/title_activity_book_status_owner" />
         <activity android:name=".bookStatusBorrowerActivity"></activity>
+        <activity android:name=".registerActivity"></activity>
     </application>
-
 </manifest>

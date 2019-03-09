@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/browse_books_bottom_nav_menu_owned_books"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/browse_books_bottom_nav_menu_owned_books" />
+
+    <item
         android:id="@+id/browse_books_bottom_nav_menu_requests"
         android:icon="@mipmap/ic_launcher"
         android:title="@string/browse_books_bottom_nav_menu_requests" />
