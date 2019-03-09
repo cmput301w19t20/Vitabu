@@ -20,7 +20,7 @@ public class IntentJson {
         LocalUser usr = (LocalUser) curUser;
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
-        usr.setFirebaseUser(firebaseUser);
+//        usr.setFirebaseUser(firebaseUser);
         return usr;
     }
 
