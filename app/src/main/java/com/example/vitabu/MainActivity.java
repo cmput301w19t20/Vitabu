@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        //FirebaseUser user = auth.getCurrentUser();
         // Check if already signed in.
         if (firebaseUser != null) {
             Log.i(logTag, "Signed in as: " + firebaseUser.getDisplayName());
@@ -132,35 +131,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onPressLogin(View view) {
-        //Intent intent = new Intent(this, browseBooksActivity.class);
-        //startActivity(intent);
-        // TODO: Validate login details. If valid email/password combo, proceed, otherwise alert user to incorrect login.
         String email = ((TextView) findViewById(R.id.login_email)).getText().toString();
         String password = ((TextView) findViewById(R.id.login_password)).getText().toString();
         signIn(email, password);
-        // TODO Launch UI B activity.
     }
 
     public void onPressRegister(View view) {
-        //signUp();
+        // Start register activity.
         Intent intent = new Intent(this, registerActivity.class);
         startActivity(intent);
-        // Firebase user now created.
-        // TODO start activity to finish creating profile. ie. username, picture, default location etc.
-    }
-
-    private void updateLocalUser(LocalUser localUser){
-        this.localUser = localUser;
-    }
-
-    private void updateFirebaseUser(FirebaseUser firebaseUser){
-        this.firebaseUser = firebaseUser;
     }
 
     public void updateUI(){
         if (firebaseUser == null) {
             // No user signed in.
-            Log.d(logTag, "Update ui No user signed in.");
+            Log.d(logTag, "Update ui: No user signed in.");
             return;
         }
 
@@ -173,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        updateLocalUser(dataSnapshot.getValue(LocalUser.class));
+                        localUser = (dataSnapshot.getValue(LocalUser.class));
                         Log.d(logTag, "Read owner");
                     }
 
