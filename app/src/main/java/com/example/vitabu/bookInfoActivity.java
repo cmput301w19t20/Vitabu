@@ -36,7 +36,7 @@ public class bookInfoActivity extends AppCompatActivity {
         IntentJson passed = gson.fromJson(message, IntentJson.class);
         curUser = passed.getUser();
         book = (Book) passed.getObject(0);
-        //ownerid = book.getOwnerid();
+        ownerid = book.getOwnerName();
         TextView title = (TextView) findViewById(R.id.book_info_title);
         title.setText(book.getTitle());
         TextView author = (TextView) findViewById(R.id.book_info_author);
