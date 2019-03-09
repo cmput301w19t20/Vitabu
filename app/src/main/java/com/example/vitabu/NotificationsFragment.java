@@ -71,10 +71,9 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
                 Log.d("Count " ,""+snapshot.getChildrenCount());
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                     Notification n = postSnapshot.getValue(Notification.class);
-                    if(userName == n.getUserName()) {
+                    if(userName.equals(n.getUserName())) {
                         addNotification(n);
                     }
-                    //notifications.add(n);
                 }
                 nextStep(fragmentView);
             }
@@ -96,6 +95,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        adapter.notifyDataSetChanged();
     }
 
     @Override

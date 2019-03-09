@@ -45,12 +45,7 @@ public class bookInfoActivity extends AppCompatActivity {
         ISBN.setText(book.getISBN());
     }
 
-    private void setOwner(User owner){
-        this.owner = owner;
-    }
-
-    public void onClickRequestBook(View view){
-        //TODO: Untested, I suspect very strongly that I'm pushing the wrong things to the database
+    public void onClickRequestBook(View view) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
         final String logTag = "bookInfoActivity";
@@ -58,7 +53,7 @@ public class bookInfoActivity extends AppCompatActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        setOwner(dataSnapshot.getValue(User.class));
+                        nextStep(dataSnapshot.getValue(User.class));
                         Log.d(logTag, "Read owner");
                     }
 
@@ -68,7 +63,13 @@ public class bookInfoActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
 
+    private void nextStep(User owner){
+        this.owner = owner;
+        final String logTag = "bookInfoActivity";
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
         Notification request = new Notification("Book Request for '" + book.getTitle() + "'",
                                                 "A user has requested your book. Click here to view.",
                                                 "request", ownerid);
