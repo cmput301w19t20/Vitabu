@@ -178,14 +178,14 @@ public class registerActivity extends AppCompatActivity {
                                 .setDisplayName(userName)
                                 .build();
 
-                        usr.getFireBaseUser().updateProfile(profileUpdates)
+                        auth.getCurrentUser().updateProfile(profileUpdates)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Log.d(logTag, "User profile updated.");
-                                            //writeUserToDatabase();
-                                            usr.writeToDatabase();
+                                            writeUserToDatabase();
+
                                         }
                                         else{
                                             Log.d(logTag, "User Profile update Failed.  This is bad.");
@@ -209,4 +209,37 @@ public class registerActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void writeUserToDatabase(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        myRef.child("users").child(usr.getUserName()).setValue(usr)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(logTag, "Successfully wrote user to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(logTag, "Failed to write User to database", e);
+                    }
+                });
+        myRef.child("usernames").child(usr.getUserName()).setValue(usr.getUserid())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(logTag, "Successfully wrote username to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(logTag, "Failed to write Username to database", e);
+                    }
+                });
+
+    }
+
 }
