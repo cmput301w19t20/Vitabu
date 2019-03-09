@@ -36,7 +36,7 @@ public class browseBooksActivity extends AppCompatActivity {
         browseBooks = new BrowseBooksFragment();
         addBook = new AddBookFragment();
         notifications = new NotificationsFragment();
-        ownedBooks = new Fragment();//OwnedBooksFragment();
+        ownedBooks = new OwnedBooksFragment();
 
         fragmentManager.beginTransaction().replace(R.id.browse_books_frame, browseBooks).commit();
 
