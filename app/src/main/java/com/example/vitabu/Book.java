@@ -40,7 +40,7 @@ public class Book {
     public void setBookid(String bookid) {
         this.bookid = bookid;
     }
-    
+
     /**
      * @return returns the ownerid. A string.
      */

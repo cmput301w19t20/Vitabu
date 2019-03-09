@@ -14,7 +14,7 @@
     <string name="browse_books_bottom_nav_menu_browse">Browse</string>
     <string name="browse_books_bottom_nav_menu_add_book">Add Book</string>
     <string name="browse_books_bottom_nav_menu_notifications">Notifications</string>
-    
+
     <!--Register Strings-->
     <string name="register_header">Register</string>
     <string name="register_username">User Name</string>
@@ -62,8 +62,9 @@
     <string name="book_requests_book_name">Pending requests for: BOOK NAME HERE</string>
     <string name="book_status_filter_title">Filter by:</string>
     <string name="book_status_requests_title">Requests</string>
-    <string name="user_profile_books_borrowed">Number of Books Borrowed: </string>
-    <string name="user_profile_books_owned">Number of Books Owned: </string>
+    <string name="user_profile_books_borrowed">Number of Books Borrowed: %1$d</string>
+    <string name="user_profile_books_owned">Number of Books Owned: %1$d</string>
+    <string name="user_profile_review_button">See User Reviews</string>
 
     <!--
       As a heads up, these strings were creating significant merge conflicts. Resolve with UI

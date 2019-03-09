@@ -1,8 +1,14 @@
 package com.example.vitabu;
+/*
+References:
 
+Shane Conder & Lauren Darcey. "Android SDK Quick Tip: Formatting Resource Strings." Envato, https://code.tutsplus.com/tutorials/android-sdk-quick-tip-formatting-resource-strings--mobile-1775
+ */
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -30,7 +36,8 @@ public class userProfileActivity extends AppCompatActivity {
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         Gson gson = new Gson();
         IntentJson passed = gson.fromJson(message, IntentJson.class);
-        LocalUser user = passed.getUser();
+        final LocalUser curUser = passed.getUser();
+        final UserAbstract user = (UserAbstract) passed.getObject(0);
 
         // setting temporary default rating for borrower and owner bars
         // also set in .xml file for each rating bar for viewing purposes
@@ -47,10 +54,14 @@ public class userProfileActivity extends AppCompatActivity {
         locationHolder.setText(user.getLocation().getCity());
         TextView booksBorrowedHolder = (TextView) findViewById(R.id.user_profile_books_borrowed);
         int number = user.getBooksBorrowed();
-        booksBorrowedHolder.setText("Number of Books Borrowed: " + Integer.toString(number));
-        number = user.getBooksOwned();
+        String format = getResources().getString(R.string.user_profile_books_borrowed);
+        message = String.format(format, number);
+        booksBorrowedHolder.setText(message);
         TextView booksOwnedHolder = (TextView) findViewById(R.id.user_profile_books_owned);
-        booksOwnedHolder.setText("Number of Books Owned: " + Integer.toString(number));
+        number = user.getBooksOwned();
+        format = getResources().getString(R.string.user_profile_books_borrowed);
+        message = String.format(format, number);
+        booksOwnedHolder.setText(message);
         TextView joinedHolder = (TextView) findViewById(R.id.user_profile_joined_on);
         joinedHolder.setText(user.getJoinDate().toString());
         RatingBar ratingBar = (RatingBar) findViewById(R.id.user_profile_borrower_rating_bar);
@@ -59,6 +70,20 @@ public class userProfileActivity extends AppCompatActivity {
         ratingBar.setRating(user.getOwnerRating());
 
 
-
+        // create on click listener for see user reviews button
+        Button button = (Button) findViewById(R.id.user_profile_review_button);
+        button.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(userProfileActivity.this, userReviewActivity.class);
+                        IntentJson passing = new IntentJson(curUser);
+                        passing.addObject(user);
+                        String message = passing.toJson();
+                        intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+                        startActivity(intent);
+                    }
+                }
+        );
     }
 }

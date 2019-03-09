@@ -38,7 +38,8 @@
             android:name=".setMeetingActivity"
             android:label="@string/set_meeting_title" />
         <activity android:name=".bookRequestsActivity" />
-        <activity android:name=".registerActivity"></activity>
+        <activity android:name=".registerActivity" />
+        <activity android:name=".userReviewActivity"></activity>
     </application>
 
 </manifest>
