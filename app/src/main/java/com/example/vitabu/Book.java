@@ -10,16 +10,16 @@ public class Book {
     private String author;
     private int ISBN;
     private String status;
-    private String ownerid;
+    private String ownerName;
     private String description;
     private String bookid;
 
-    public Book(String title, String author, int ISBN, String status, String ownerid) {
+    public Book(String title, String author, int ISBN, String status, String ownerName) {
         this.title = title;
         this.author = author;
         this.ISBN = ISBN;
         setStatus(status);
-        this.ownerid = ownerid;
+        this.ownerName = ownerName;
     }
 
     public Book(){
@@ -34,12 +34,12 @@ public class Book {
         this.bookid = bookid;
     }
 
-    public String getOwnerid() {
-        return ownerid;
+    public String getOwnerName() {
+        return ownerName;
     }
 
-    public void setOwnerid(String ownerid) {
-        this.ownerid = ownerid;
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public String getTitle() {
