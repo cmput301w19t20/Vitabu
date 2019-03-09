@@ -103,4 +103,7 @@
     <string name="book_status_owner_extra">view requests</string>
     <string name="book_status_to_borrow_switch">"borrow "</string>
     <string name="book_status_owner_filter_by">Filter by:</string>
+    <string name="book_requests_accept_button">accept</string>
+    <string name="book_requests_decline_button">decline</string>
+    <string name="book_requests_requester_username">username</string>
 </resources>
