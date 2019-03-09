@@ -131,15 +131,15 @@ public class registerActivity extends AppCompatActivity {
         myRef.child("usernames").child(strUsername).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.d(logTag, "got data");
+                Log.d(logTag, "Got username " + username + " Data from the database");
                 if (snapshot.exists()){
                     //Notifies the user that the username is already taken.
-                    Log.d(logTag, "uname taken");
+                    Log.d(logTag, username + " taken");
                     Toast.makeText(getApplicationContext(), "Username Is taken.", Toast.LENGTH_LONG).show();
 
                 }
                 else{
-                    Log.d(logTag, "uname not taken");
+                    Log.d(logTag, username + " not taken");
                     // Create new user.
                     signUp(location, username.getText().toString(), email.getText().toString(), password.getText().toString());
                 }
@@ -166,16 +166,14 @@ public class registerActivity extends AppCompatActivity {
     public void signUp(final Location location, final String userName, final String email, final String password){
         // Attempt to create user.
         Log.d(logTag, "In signup");
-        final FirebaseUser firebaseUser = auth.getCurrentUser();
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(logTag, "Successfully created user with email: " + email);
-                        usr = new LocalUser(location, userName, email, firebaseUser);
+                        usr = new LocalUser(location, userName, email, auth.getCurrentUser());
 
-                        // TODO Deal with failed user account update.
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(userName)
                                 .build();
@@ -186,15 +184,17 @@ public class registerActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Log.d(logTag, "User profile updated.");
+                                            //writeUserToDatabase();
                                             usr.writeToDatabase();
+                                        }
+                                        else{
+                                            Log.d(logTag, "User Profile update Failed.  This is bad.");
                                         }
                                     }
                                 });
 
                         Toast.makeText(getApplicationContext(), "User Successfully registered, please sign in now.", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent();
-                        IntentJson userjson = new IntentJson(usr);
-                        intent.putExtra("IntentJson", userjson.toJson());
                         setResult(RESULT_OK, intent);
                         finish();
                     }
