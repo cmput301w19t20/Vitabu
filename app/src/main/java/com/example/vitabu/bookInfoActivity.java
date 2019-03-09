@@ -52,7 +52,7 @@ public class bookInfoActivity extends AppCompatActivity {
     public void onClickRequestBook(View view){
         //TODO: Untested, I suspect very strongly that I'm pushing the wrong things to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();;
+        DatabaseReference myRef = database.getReference();
         final String logTag = "bookInfoActivity";
         myRef.child("users").child(ownerid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -60,7 +60,6 @@ public class bookInfoActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         setOwner(dataSnapshot.getValue(User.class));
                         Log.d(logTag, "Read owner");
-
                     }
 
                     @Override

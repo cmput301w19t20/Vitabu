@@ -47,7 +47,7 @@ import org.json.JSONObject;
 public class registerActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;  //The firebase authorization handle.
-    private User usr;  //The user object handle.
+    private LocalUser usr;  //The user object handle.
     private Location location = new Location(); //Handle on the location object.
     private String logTag = "registerActivity";
     private FirebaseDatabase database = FirebaseDatabase.getInstance(); //The realtime database handle
@@ -166,13 +166,14 @@ public class registerActivity extends AppCompatActivity {
     public void signUp(final Location location, final String userName, final String email, final String password){
         // Attempt to create user.
         Log.d(logTag, "In signup");
+        final FirebaseUser firebaseUser = auth.getCurrentUser();
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(logTag, "Successfully created user with email: " + email);
-                        usr = new User(location, auth.getCurrentUser());
+                        usr = new LocalUser(location, userName, email, firebaseUser);
 
                         // TODO Deal with failed user account update.
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
