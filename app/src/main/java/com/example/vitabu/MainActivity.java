@@ -37,7 +37,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private String logTag = "MainActivity";
-    public static final String EXTRA_MESSAGE = "com.example.vitabu.MESSAGE";
+    public static final String EXTRA_MESSAGE = "IntentJson";
     private LocalUser localUser;
     private FirebaseUser firebaseUser;
 
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Initialize firebase auth.
         auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
     }
 
     @Override
@@ -56,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         //FirebaseUser user = auth.getCurrentUser();
         // Check if already signed in.
-//        if (user != null) {
-//            Log.i(logTag, "Signed in as: " + user.toString());
-//            updateUI(user);
-//        }
+        if (firebaseUser != null) {
+            Log.i(logTag, "Signed in as: " + firebaseUser.getDisplayName());
+            updateUI();
+        }
     }
 
     @Override
@@ -92,14 +93,16 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(logTag, "Successfully signed in with email: " + email);
-                            FirebaseUser firebaseUser = auth.getCurrentUser();
-                            updateUI(firebaseUser);
+                            firebaseUser = auth.getCurrentUser();
+                            localUser = new LocalUser(firebaseUser);
+                            updateUI();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(logTag, "Failed to sign in with email: " + email, task.getException());
                             Toast.makeText(MainActivity.this, "Sign In failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            updateUI();
                         }
                     }
                 });
@@ -122,19 +125,19 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.i("AuthActivity", "Signed out user successfully!");
-                        updateUI(null);
+                        updateUI();
                     }
                 });
     }
 
 
     public void onPressLogin(View view) {
-        Intent intent = new Intent(this, browseBooksActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, browseBooksActivity.class);
+        //startActivity(intent);
         // TODO: Validate login details. If valid email/password combo, proceed, otherwise alert user to incorrect login.
-//        String email = ((TextView) findViewById(R.id.login_email)).getText().toString();
-//        String password = ((TextView) findViewById(R.id.login_password)).getText().toString();
-//        signIn(email, password);
+        String email = ((TextView) findViewById(R.id.login_email)).getText().toString();
+        String password = ((TextView) findViewById(R.id.login_password)).getText().toString();
+        signIn(email, password);
         // TODO Launch UI B activity.
     }
 
@@ -154,11 +157,14 @@ public class MainActivity extends AppCompatActivity {
         this.firebaseUser = firebaseUser;
     }
 
-    public void updateUI(FirebaseUser firebaseUser){
+    public void updateUI(){
         if (firebaseUser == null) {
             // No user signed in.
+            Log.d(logTag, "Update ui No user signed in.");
             return;
         }
+
+
         // TODO Update ui here with newly signed in users info.
         String userName = firebaseUser.getDisplayName();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -177,21 +183,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-        myRef.child("firebaseUsers").child(userName).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        updateFirebaseUser(dataSnapshot.getValue(FirebaseUser.class));
-                        Log.d(logTag, "Read owner");
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d(logTag, "Cancelled");
-                    }
-                }
-        );
-        localUser.setFirebaseUser(firebaseUser);
+
         IntentJson passing = new IntentJson(localUser);
         Intent intent = new Intent(this, browseBooksActivity.class);
         intent.putExtra(EXTRA_MESSAGE, passing.toJson());

@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public class browseBooksActivity extends AppCompatActivity {
@@ -23,11 +25,18 @@ public class browseBooksActivity extends AppCompatActivity {
     private Fragment addBook;
     private Fragment notifications;
     private Fragment ownedBooks;
+    private LocalUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_books);
+        Intent intent = getIntent();
+        String message = intent.getStringExtra("IntentJson");
+        Gson gson = new Gson();
+        //IntentJson passed = gson.fromJson(message, IntentJson.class);
+        //user = (LocalUser) passed.getUser();
+
 
         fragmentManager = getSupportFragmentManager();
 

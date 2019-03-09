@@ -1,6 +1,7 @@
 package com.example.vitabu;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @version 1.0
@@ -15,17 +16,35 @@ public class BorrowRecord {
     private Location pickUpLocation;
     private boolean approved;
     private String recordid;
+    private String ownerPhoneNumber;
+    private String ownerNotes;
+    private String ownerEmail;
+
 
     public BorrowRecord(String userName, String borrowerName, String bookid) {
         this.userName = userName;
         this.borrowerName = borrowerName;
         this.bookid = bookid;
         dateBorrowed = new Date();
+        recordid = UUID.randomUUID().toString();
     }
 
     public BorrowRecord(){
+        recordid = UUID.randomUUID().toString();
 
     }
+
+    public String getOwnerPhoneNumber(){return ownerPhoneNumber;}
+
+    public String getOwnerNotes(){return ownerNotes;}
+
+    public String getOwnerEmail(){return ownerEmail;}
+
+    public void setOwnerPhoneNumber(String number){ownerPhoneNumber = number;}
+
+    public void setOwnerNotes(String notes){ownerNotes = notes;}
+
+    public void setOwnerEmail(String email){ownerEmail = email;}
 
     public String getRecordid() {
         return recordid;
