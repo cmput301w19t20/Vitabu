@@ -98,6 +98,7 @@ public class Book {
         return status;
     }
 
+
     /**
      * Can only set the status to one of the following: requested, accepted, borrowed, or available. Any other value throws an error.
      * @param status a string representing the status of the book. One of requested, accepted, borrowed, or available.

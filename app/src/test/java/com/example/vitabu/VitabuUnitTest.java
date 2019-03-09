@@ -1,5 +1,11 @@
 package com.example.vitabu;
 
+import android.util.Log;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -14,9 +20,25 @@ import static org.junit.Assert.assertEquals;
  */
 public class VitabuUnitTest {
 
+/*
+    //Test IntenJson class
+    @Test
+    public void intentJsonTest() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+        LocalUser user = new LocalUser(firebaseUser);
+        IntentJson p = new IntentJson(user);
+        String msg = p.toJson();
+        String tag = "JSON testing";
+        Log.d(tag, msg);
+        Gson gson = new Gson();
+        p = gson.fromJson(msg, IntentJson.class);
+        //Log.d(tag, p);
+
+    }*/
 
     // test book class
-    Book book = new Book("Vitabu", "Vitabu Inc", 123456789, "available");
+    Book book = new Book("Vitabu", "Vitabu Inc", 123456789, "available", "user name");
 
     @Test
     public void bookTitle_isCorrect() {
@@ -53,10 +75,9 @@ public class VitabuUnitTest {
         assertEquals("accepted", book.getStatus());
         book.setStatus("borrowed");
         assertEquals("borrowed", book.getStatus());
-        try{
+        try {
             book.setStatus("fake status");
-        }
-        catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             assertEquals(IllegalArgumentException.class, e.getClass());
         }
     }
@@ -65,28 +86,28 @@ public class VitabuUnitTest {
     Location loc = new Location();
 
     @Test
-    public void locCountry_isCorrect(){
+    public void locCountry_isCorrect() {
         // test getters and setters
         loc.setCountry("Canada");
         assertEquals("Canada", loc.getCountry());
     }
 
     @Test
-    public void locProvinceOrState_isCorrect(){
+    public void locProvinceOrState_isCorrect() {
         // test getters and setters
         loc.setProvinceOrState("Alberta");
         assertEquals("Alberta", loc.getProvinceOrState());
     }
 
     @Test
-    public void locCity_isCorrect(){
+    public void locCity_isCorrect() {
         // test getters and setters
         loc.setCity("Edmonton");
         assertEquals("Edmonton", loc.getCity());
     }
 
     @Test
-    public void locAddress_isCorrect(){
+    public void locAddress_isCorrect() {
         // test getters and setters
         loc.setAddress("UofA");
         assertEquals("UofA", loc.getAddress());
@@ -96,43 +117,42 @@ public class VitabuUnitTest {
     Date date = new Date();
     User user = new User("Vitabu User", date, "Vitabu@gmail.com");
     User user2 = new User("Vitabu User2", date, "Vitabu2@gmail.com");
-    BorrowRecord rec = new BorrowRecord(user, user2, book);
+    BorrowRecord rec = new BorrowRecord(user.getUserName(), user2.getUserName(), book.getBookid());
 
     @Test
-    public void recOwner_isCorrect(){
+    public void recOwner_isCorrect() {
         // test constructor
-        assertEquals(user, rec.getOwner());
+        assertEquals(user.getUserName(), rec.getUserName());
     }
 
     @Test
-    public void recBorrower_isCorrect(){
+    public void recBorrower_isCorrect() {
         // test getters and setters
-        assertEquals(user2, rec.getBorrower());
-        rec.setBorrower(user);
-        assertEquals(user, rec.getBorrower());
+        assertEquals(user2.getUserName(), rec.getBorrowerName());
+        rec.setBorrowerName(user.getUserName());
+        assertEquals(user.getUserName(), rec.getBorrowerName());
     }
 
     @Test
-    public void recLocation_isCorrect(){
+    public void recLocation_isCorrect() {
         // test getters and setters
         rec.setPickUpLocation(loc);
         assertEquals(loc, rec.getPickUpLocation());
     }
 
     @Test
-    public void recBook_isCorrect(){
+    public void recBook_isCorrect() {
         // test getters and setters
-        rec.setBook(book);
-        assertEquals(book, rec.getBook());
+        rec.setBookid(book.getBookid());
+        assertEquals(book.getBookid(), rec.getBookid());
     }
 
     @Test
-    public void recDate_isCorrect(){
+    public void recDate_isCorrect() {
         // test getters and setters
         rec.setDateBorrowed(date);
         assertEquals(date, rec.getDateBorrowed());
     }
-
 
 
     // test user class
@@ -144,7 +164,7 @@ public class VitabuUnitTest {
     @Test
     public void userUserid_isCorrect() {
         // test constructor
-        assertEquals("Vitabu User", user3.getUserid());
+        assertEquals("Vitabu User", user3.getUserName());
     }
 
     @Test
@@ -180,47 +200,5 @@ public class VitabuUnitTest {
         // test getters and setters
         user3.setOwnerRating(3);
         assertEquals(3, user3.getOwnerRating());
-    }
-
-    @Test
-    public void userBorrowedBooks_isCorrect() {
-        // test getters and setters
-        // tets arrayList correctness after changes
-        user3.setBorrowedBooks(new ArrayList<BorrowRecord>());
-        assertEquals(borrowed, user3.getBorrowedBooks());
-        user3.addBorrowedBook(rec);
-        borrowed.add(rec);
-        assertEquals(borrowed, user3.getBorrowedBooks());
-        user3.removeBorrowedBook(rec);
-        borrowed.remove(rec);
-        assertEquals(borrowed, user3.getBorrowedBooks());
-    }
-
-    @Test
-    public void userLentBooks_isCorrect() {
-        // test getters and setters
-        // tets arrayList correctness after changes
-        user3.setLentBooks(new ArrayList<BorrowRecord>());
-        assertEquals(lent, user3.getLentBooks());
-        user3.addLentBook(rec);
-        lent.add(rec);
-        assertEquals(lent, user3.getLentBooks());
-        user3.removeLentBook(rec);
-        lent.remove(rec);
-        assertEquals(lent, user3.getLentBooks());
-    }
-
-    @Test
-    public void userOwnedBooks_isCorrect() {
-        // test getters and setters
-        // tets arrayList correctness after changes
-        user3.setOwnedBooks(new ArrayList<Book>());
-        assertEquals(owned, user3.getOwnedBooks());
-        user3.addOwnedBook(book);
-        owned.add(book);
-        assertEquals(owned, user3.getOwnedBooks());
-        user3.removeOwnedBook(book);
-        owned.remove(book);
-        assertEquals(owned, user3.getOwnedBooks());
     }
 }

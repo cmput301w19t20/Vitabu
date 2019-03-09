@@ -42,7 +42,9 @@ public class userReviewActivity extends AppCompatActivity {
         IntentJson passed = gson.fromJson(message, IntentJson.class);
         user = (UserAbstract) passed.getObject(0);
 
-        getReviews();
+        //getReviewList();
+        Review t = new Review("Owner name", "borrow name", 10, "This is a generic review");
+        reviewList.add(t);
 
         //create recycler view
         recyclerView = (RecyclerView) findViewById(R.id.user_review_recyclerView);     // capture recycler view
@@ -85,7 +87,7 @@ public class userReviewActivity extends AppCompatActivity {
             // set text in textviews
             name.setText(currentReview.getBorrowerName());
             date.setText(currentReview.getDate().toString());
-            rating.setText(currentReview.getRating());
+            rating.setText(Integer.toString(currentReview.getRating()));
             review.setText(currentReview.getBody());
 
         }
@@ -129,7 +131,7 @@ public class userReviewActivity extends AppCompatActivity {
         }
     }
 
-    private void getReviews() {
+    private void getReviewList() {
         // query database to get reviews
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();

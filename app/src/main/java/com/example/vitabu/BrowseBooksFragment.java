@@ -29,8 +29,6 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
             books.add(book);
         }
 
-        System.out.println(books.toString());
-
         // set up the RecyclerView
         RecyclerView recyclerView = fragmentView.findViewById(R.id.browse_books_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));

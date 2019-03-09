@@ -2,7 +2,7 @@ package com.example.vitabu;
 
 import java.util.Date;
 
-public abstract class UserAbstract {
+public abstract class UserAbstract extends Object{
     protected String userid;
     protected Location location;
     protected String userName;
