@@ -166,13 +166,14 @@ public class registerActivity extends AppCompatActivity {
     public void signUp(final Location location, final String userName, final String email, final String password){
         // Attempt to create user.
         Log.d(logTag, "In signup");
+        final FirebaseUser firebaseUser = auth.getCurrentUser();
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(logTag, "Successfully created user with email: " + email);
-                        usr = new LocalUser(location, auth.getCurrentUser());
+                        usr = new LocalUser(location, userName, email, firebaseUser);
 
                         // TODO Deal with failed user account update.
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
