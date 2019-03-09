@@ -36,7 +36,7 @@ public class browseBooksActivity extends AppCompatActivity {
         browseBooks = new BrowseBooksFragment();
         addBook = new AddBookFragment();
         notifications = new NotificationsFragment();
-        ownedBooks = new Fragment();//OwnedBooksFragment();
+        ownedBooks = new OwnedBooksFragment();
 
         fragmentManager.beginTransaction().replace(R.id.browse_books_frame, browseBooks).commit();
 
@@ -63,6 +63,13 @@ public class browseBooksActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //This function sends the onActivityResult(...) call to the fragment where that
+    //other activity was called so that it can be processed and dealt with correctly.
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
