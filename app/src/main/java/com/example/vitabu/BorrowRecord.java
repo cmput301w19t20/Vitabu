@@ -15,6 +15,9 @@ public class BorrowRecord {
     private Location pickUpLocation;
     private boolean approved;
     private String recordid;
+    private String ownerPhoneNumber;
+    private String ownerNotes;
+    private String ownerEmail;
 
     public BorrowRecord(String ownerid, String borrowerid, String bookid) {
         this.ownerid = ownerid;
@@ -26,6 +29,18 @@ public class BorrowRecord {
     public BorrowRecord(){
 
     }
+
+    public String getOwnerPhoneNumber(){return ownerPhoneNumber;}
+
+    public String getOwnerNotes(){return ownerNotes;}
+
+    public String getOwnerEmail(){return ownerEmail;}
+
+    public void setOwnerPhoneNumber(String number){ownerPhoneNumber = number;}
+
+    public void setOwnerNotes(String notes){ownerNotes = notes;}
+
+    public void setOwnerEmail(String email){ownerEmail = email;}
 
     public String getRecordid() {
         return recordid;

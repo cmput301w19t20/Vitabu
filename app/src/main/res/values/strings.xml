@@ -39,6 +39,7 @@
     <string name="set_meeting_email_hint">Email</string>
     <string name="set_meeting_phone_hint">Phone Number</string>
     <string name="set_meeting_notes_hint">Notes</string>
+    <string name="set_meting_confirm_button">Confirm</string>
 
     <!--Search Books Activity Strings-->
     <string name="search_books_title">Search</string>

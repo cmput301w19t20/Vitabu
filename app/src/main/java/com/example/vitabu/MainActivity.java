@@ -87,9 +87,10 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(logTag, "Successfully signed in with email: " + email);
-                            FirebaseUser user = auth.getCurrentUser();
-                            updateUI(user);
+                            User usr = new User(auth.getCurrentUser());
                             Intent intent = new Intent(getApplicationContext(), browseBooksActivity.class);
+                            IntentJson userjson = new IntentJson(usr);
+                            intent.putExtra("IntentJson", userjson.toJson());
                             startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.

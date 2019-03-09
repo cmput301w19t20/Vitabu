@@ -1,5 +1,6 @@
 package com.example.vitabu;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -11,15 +12,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public class browseBooksActivity extends AppCompatActivity implements BrowseBooksBookRecyclerViewAdapter.ItemClickListener {
     BrowseBooksBookRecyclerViewAdapter adapter;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_books);
+        Intent intent = getIntent();
+        String message = intent.getStringExtra("IntentJson");
+        Gson gson = new Gson();
+        IntentJson passed = gson.fromJson(message, IntentJson.class);
+        user = (User) passed.getUser();
+
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.browse_books_bottom_nav);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

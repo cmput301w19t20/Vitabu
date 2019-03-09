@@ -192,6 +192,8 @@ public class registerActivity extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), "User Successfully registered, please sign in now.", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent();
+                        IntentJson userjson = new IntentJson(usr);
+                        intent.putExtra("IntentJson", userjson.toJson());
                         setResult(RESULT_OK, intent);
                         finish();
                     }
