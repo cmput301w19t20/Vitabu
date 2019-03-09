@@ -9,13 +9,35 @@
     <string name="login_email_hint">email</string>
     <string name="login_password_hint">password</string>
 
-    <!--Browse Book Activity Strings-->
+    <!--Browse Book Fragment Strings-->
     <string name="browse_books_bottom_nav_menu_requests">Requests</string>
     <string name="browse_books_bottom_nav_menu_browse">Browse</string>
     <string name="browse_books_bottom_nav_menu_add_book">Add Book</string>
     <string name="browse_books_bottom_nav_menu_notifications">Notifications</string>
     <string name="browse_books_bottom_nav_menu_owned_books">My Books</string>
-  
+
+    <!--Owned Book Fragment Strings-->
+    <string name="owned_books_title">My Books</string>
+    <string-array name="owned_books_status_array">
+        <item>available</item>
+        <item>requested</item>
+        <item>accepted</item>
+        <item>borrowed</item>
+        <item>borrowing</item>
+    </string-array>
+
+    <!--Add Book Fragment Screens-->
+    <string name="add_book_header">Add Book</string>
+    <string name="add_book_title_text">Title:</string>
+    <string name="add_book_author_text">Author:</string>
+    <string name="add_book_isbn_text">ISBN:</string>
+    <string name="add_book_isbn_button">Scan ISBN</string>
+    <string name="add_book_description_input">Description (not required)</string>
+    <string name="add_book_submit_button">Add Book</string>
+    <string name="add_book_required">(required)</string>
+    <string name="add_book_add_image_text">Add Image (not required):</string>
+    <string name="add_book_add_image_button">Add Image</string>
+
     <!--Register Strings-->
     <string name="register_header">Register</string>
     <string name="register_username">User Name</string>
@@ -26,7 +48,6 @@
     <string name="register_register_button">Register</string>
     <string name="register_password">Password</string>
     <string name="register_information">Please fill in every field before submitting.</string>
-
 
     <!--Book Info Activity Strings-->
     <string name="book_info_title">Book Info</string>
@@ -85,14 +106,11 @@
     <string name="isbn_barcode_success">Detector Setup</string>
     <string name="isbn_no_ISBN_fail">No ISBN detected</string>
 
-
-    <string-array name="status_array">
-        <item>available</item>
+    <string-array name="requests_status_array">
         <item>requested</item>
         <item>accepted</item>
-        <item>borrowed</item>
-        <item>borrowing</item>
     </string-array>
+
     <string name="title_activity_book_status_owner">bookStatusOwnerActivity</string>
     <string name="book_status_borrower_book_title" >title</string>
     <string name="book_status_borrower_book_author" >author</string>
