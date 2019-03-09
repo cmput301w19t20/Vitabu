@@ -48,7 +48,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
-        for (int i = 0; i < 5; i++) {
+        /*for (int i = 0; i < 5; i++) {
             Notification notification = new Notification("Notif USERNAME" + Integer.toString(i),
                                                         "New message #" + Integer.toString(i),
                                                         "TYPE",
@@ -62,7 +62,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
                     "TYPE",
                     "notarealusername");
             myRef.child("notifications").child(UUID.randomUUID().toString()).setValue(notification);
-        }
+        }*/
 
         myRef.child("notifications").addListenerForSingleValueEvent(
                 new ValueEventListener() {
