@@ -45,8 +45,7 @@ public class RegisterTest extends ActivityTestRule<registerActivity> {
 //        No username
         solo.enterText((EditText) solo.getView(R.id.register_email), "test@email.com");
         solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
-        solo.enterText((EditText) solo.getView(R.id.register_country), "Canada");
-        solo.enterText((EditText) solo.getView(R.id.register_province), "BC");
+        solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword");
         solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
         solo.clickOnButton("Register");
         assertTrue(solo.waitForText("Please, provide a full username.", 1, 2000));
@@ -58,8 +57,7 @@ public class RegisterTest extends ActivityTestRule<registerActivity> {
         solo.enterText((EditText) solo.getView(R.id.register_email), "test@email.com");
         solo.enterText((EditText) solo.getView(R.id.register_username), "Tristan");
         solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
-        solo.enterText((EditText) solo.getView(R.id.register_country), "Canada");
-        solo.enterText((EditText) solo.getView(R.id.register_province), "BC");
+        solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword");
         solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
         solo.clickOnButton("Register");
         assertTrue(solo.waitForText("Username Is taken.", 1, 2000));
@@ -68,10 +66,9 @@ public class RegisterTest extends ActivityTestRule<registerActivity> {
     @Test
     public void testEmptyEmail() {
 //        No email
-        solo.enterText((EditText) solo.getView(R.id.register_username), "testusername");
+        solo.enterText((EditText) solo.getView(R.id.register_username), "testEmptyEmail");
         solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
-        solo.enterText((EditText) solo.getView(R.id.register_country), "Canada");
-        solo.enterText((EditText) solo.getView(R.id.register_province), "BC");
+        solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword");
         solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
         solo.clickOnButton("Register");
         assertTrue(solo.waitForText("Please, provide a valid email.", 1, 2000));
@@ -80,11 +77,10 @@ public class RegisterTest extends ActivityTestRule<registerActivity> {
     @Test
     public void testTakenEmail() {
 //        Email already taken
-        solo.enterText((EditText) solo.getView(R.id.register_username), "testusername");
+        solo.enterText((EditText) solo.getView(R.id.register_username), "testTakenEmail");
         solo.enterText((EditText) solo.getView(R.id.register_email), "arseniykd@gmail.com");
         solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
-        solo.enterText((EditText) solo.getView(R.id.register_country), "Canada");
-        solo.enterText((EditText) solo.getView(R.id.register_province), "BC");
+        solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword");
         solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
         solo.clickOnButton("Register");
         assertTrue(solo.waitForText("That email has been taken.", 1, 2000));
@@ -93,14 +89,13 @@ public class RegisterTest extends ActivityTestRule<registerActivity> {
     @Test
     public void testInvalidEmail() {
 //        Invalid email
-        solo.enterText((EditText) solo.getView(R.id.register_username), "testusername");
+        solo.enterText((EditText) solo.getView(R.id.register_username), "testInvalidEmail");
         solo.enterText((EditText) solo.getView(R.id.register_email), "testemail");
         solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
-        solo.enterText((EditText) solo.getView(R.id.register_country), "Canada");
-        solo.enterText((EditText) solo.getView(R.id.register_province), "BC");
+        solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword");
         solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
         solo.clickOnButton("Register");
-        assertTrue(solo.waitForText("Please, provide a valid email.", 1, 2000));
+        assertTrue(solo.waitForText("Please provide a valid email.", 1, 2000));
     }
 
     @Test
@@ -108,11 +103,22 @@ public class RegisterTest extends ActivityTestRule<registerActivity> {
 //        No password
         solo.enterText((EditText) solo.getView(R.id.register_username), "testusername");
         solo.enterText((EditText) solo.getView(R.id.register_email), "test@email.com");
-        solo.enterText((EditText) solo.getView(R.id.register_country), "Canada");
-        solo.enterText((EditText) solo.getView(R.id.register_province), "BC");
         solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
         solo.clickOnButton("Register");
-        assertTrue(solo.waitForText("Please, provide a password that is more than 8 characters long."));
+        assertTrue(solo.waitForText("Please, provide a password that is at least 8 characters long."));
+    }
+
+    @Test
+    public void testNotMatchingPassword() {
+//        Passwords don't match
+        solo.enterText((EditText) solo.getView(R.id.register_username), "testusername");
+        solo.enterText((EditText) solo.getView(R.id.register_email), "test@email.com");
+        solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
+        solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "doesnotmatch");
+        solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
+        solo.clickOnButton("Register");
+        assertTrue(solo.waitForText("Please, type in the same password in both the Password and Re-enter Password fields.", 1, 2000));
+        solo.assertCurrentActivity("Wrong Activity.", registerActivity.class);
     }
 
     @Test
@@ -121,36 +127,36 @@ public class RegisterTest extends ActivityTestRule<registerActivity> {
         solo.enterText((EditText) solo.getView(R.id.register_username), "testusername");
         solo.enterText((EditText) solo.getView(R.id.register_email), "test@email.com");
         solo.enterText((EditText) solo.getView(R.id.register_password), "pw");
-        solo.enterText((EditText) solo.getView(R.id.register_country), "Canada");
-        solo.enterText((EditText) solo.getView(R.id.register_province), "BC");
+        solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "pw");
         solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
         solo.clickOnButton("Register");
-        assertTrue(solo.waitForText("Please, provide a password that is more than 8 characters long."));
+        assertTrue(solo.waitForText("Please, provide a password that is at least 8 characters long.", 1, 2000));
+        solo.assertCurrentActivity("Wrong Activity.", registerActivity.class);
     }
 
-    @Test
-    public void testEmptyCountry() {
-//        No country
-        solo.enterText((EditText) solo.getView(R.id.register_username), "testusername");
-        solo.enterText((EditText) solo.getView(R.id.register_email), "test@email.com");
-        solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
-        solo.enterText((EditText) solo.getView(R.id.register_province), "BC");
-        solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
-        solo.clickOnButton("Register");
-        assertTrue(solo.waitForText("Please, provide a country."));
-    }
+//    @Test
+//    public void testEmptyCountry() {
+////        No country
+//        solo.enterText((EditText) solo.getView(R.id.register_username), "testusername");
+//        solo.enterText((EditText) solo.getView(R.id.register_email), "test@email.com");
+//        solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
+//        solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword");
+//        solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
+//        solo.clickOnButton("Register");
+//        assertTrue(solo.waitForText("Please, provide a country."));
+//    }
 
-    @Test
-    public void testEmptyProvince() {
-//        No province
-        solo.enterText((EditText) solo.getView(R.id.register_username), "testusername");
-        solo.enterText((EditText) solo.getView(R.id.register_email), "test@email.com");
-        solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
-        solo.enterText((EditText) solo.getView(R.id.register_country), "Canada");
-        solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
-        solo.clickOnButton("Register");
-        assertTrue(solo.waitForText("Please, provide a province.."));
-    }
+//    @Test
+//    public void testEmptyProvince() {
+////        No province
+//        solo.enterText((EditText) solo.getView(R.id.register_username), "testusername");
+//        solo.enterText((EditText) solo.getView(R.id.register_email), "test@email.com");
+//        solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
+//        solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword");
+//        solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
+//        solo.clickOnButton("Register");
+//        assertTrue(solo.waitForText("Please, provide a province.."));
+//    }
 
     @Test
     public void testEmptyCity() {
@@ -158,10 +164,9 @@ public class RegisterTest extends ActivityTestRule<registerActivity> {
         solo.enterText((EditText) solo.getView(R.id.register_username), "testusername");
         solo.enterText((EditText) solo.getView(R.id.register_email), "test@email.com");
         solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
-        solo.enterText((EditText) solo.getView(R.id.register_country), "Canada");
-        solo.enterText((EditText) solo.getView(R.id.register_province), "BC");
+        solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword");
         solo.clickOnButton("Register");
-        assertTrue(solo.waitForText("Please, provide a city."));
+        assertTrue(solo.waitForText("Please, provide a city.", 1, 2000));
     }
 
     @Test
@@ -170,8 +175,7 @@ public class RegisterTest extends ActivityTestRule<registerActivity> {
         solo.enterText((EditText) solo.getView(R.id.register_username), "testusername");
         solo.enterText((EditText) solo.getView(R.id.register_email), "test@email.com");
         solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
-        solo.enterText((EditText) solo.getView(R.id.register_country), "Canada");
-        solo.enterText((EditText) solo.getView(R.id.register_province), "BC");
+        solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword");
         solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
         solo.clickOnButton("Register");
         solo.assertCurrentActivity("Wrong Activity.", browseBooksActivity.class);
