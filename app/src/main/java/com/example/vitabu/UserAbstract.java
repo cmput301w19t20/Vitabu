@@ -28,7 +28,7 @@ public abstract class UserAbstract extends Object{
     public abstract Date getJoinDate();
     public abstract void setJoinDate(Date d);
     public abstract String getEmail();
-    public abstract void setEmail(String s);
+    //public abstract void setEmail(String s);
     public abstract String getUserid();
     public abstract void setUserid(String s);
 }

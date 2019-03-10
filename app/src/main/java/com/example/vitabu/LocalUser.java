@@ -30,15 +30,21 @@ import static com.firebase.ui.auth.AuthUI.getApplicationContext;
  * An object encapsulating all the attributes and information pertaining to a user.
  */
 public class LocalUser extends UserAbstract {
-    private FirebaseUser firebaseUser;
     private String logTag = "User object";
 
+
     /**
+     * @deprecated
      * Constructor for use when reconstructing already created user.
      */
     public LocalUser(FirebaseUser user){
-        firebaseUser = user;
+        super();
         // TODO Pull All other data from database.
+    }
+
+    public LocalUser(){
+        super();
+
     }
 
     /**
@@ -52,60 +58,15 @@ public class LocalUser extends UserAbstract {
         this.booksBorrowed = 0;
         this.userName = userName;
         this.email = email;
-        this.firebaseUser = user;
         this.userid = user.getUid();
     }
 
-    /**
-     * Writes This class to the database.
-     */
-    public void writeToDatabase(){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        myRef.child("users").child(userName).setValue((UserAbstract) this)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(logTag, "Successfully wrote user to database.");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(logTag, "Failed to write User to database", e);
-                    }
-                });
-        myRef.child("usernames").child(userName).setValue(userid)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(logTag, "Successfully wrote username to database.");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(logTag, "Failed to write Username to database", e);
-                    }
-                });
-        myRef.child("firebaseUsers").child(userName).setValue(firebaseUser)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(logTag, "Successfully wrote username to database.");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(logTag, "Failed to write Username to database", e);
-                    }
-                });
-
-    }
 
     public String getUserName() {
-        return firebaseUser.getDisplayName();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        return auth.getCurrentUser().getDisplayName();
+
+        //return firebaseUser.getDisplayName();
     }
 
     public void setUserName(String userName){
@@ -113,7 +74,8 @@ public class LocalUser extends UserAbstract {
     }
 
     public String getUserid() {
-        return firebaseUser.getUid();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        return auth.getCurrentUser().getUid();
     }
 
     public void setUserid(String userid){
@@ -145,6 +107,8 @@ public class LocalUser extends UserAbstract {
     }
 
     public Date getJoinDate() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = auth.getCurrentUser();
         // TODO Deal with possible nullptr exception.
         return new Date(firebaseUser.getMetadata().getCreationTimestamp());
     }
@@ -154,22 +118,16 @@ public class LocalUser extends UserAbstract {
     }
 
     public String getEmail() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = auth.getCurrentUser();
         return firebaseUser.getEmail();
     }
 
-    public void setEmail(String email) {
-        firebaseUser.updateEmail(email);
-        this.email = email;
-    }
-
-
-    public FirebaseUser getFireBaseUser(){
-        return firebaseUser;
-    }
-
-    public void setFirebaseUser(FirebaseUser firebaseUser){
-        this.firebaseUser = firebaseUser;
-    }
+//    public void setEmail(String email) {
+//        // TODO Uncomment this.
+//        //firebaseUser.updateEmail(email);
+//        //this.email = email;
+//    }
 
     public int getBooksOwned() {
         return booksOwned;

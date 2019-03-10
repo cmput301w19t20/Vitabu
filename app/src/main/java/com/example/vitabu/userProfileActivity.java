@@ -38,8 +38,7 @@ public class userProfileActivity extends AppCompatActivity {
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         Gson gson = new Gson();
         IntentJson passed = gson.fromJson(message, IntentJson.class);
-        final LocalUser curUser = passed.getUser();
-        final UserAbstract user = (UserAbstract) passed.getObject(0);
+        final LocalUser user = passed.getUser();
 
         // setting temporary default rating for borrower and owner bars
         // also set in .xml file for each rating bar for viewing purposes
@@ -49,35 +48,36 @@ public class userProfileActivity extends AppCompatActivity {
 
         // get hold of textviews and populate information
         TextView nameHolder = (TextView) findViewById(R.id.user_profile_username);
-        //nameHolder.setText(user.getUserid());
-        nameHolder.setText("userid");
+        nameHolder.setText(user.getUserName());
+        //nameHolder.setText("userid");
         TextView emailHolder = (TextView) findViewById(R.id.user_profile_email);
-        //nameHolder.setText(user.getEmail());
-        nameHolder.setText("email");
+        emailHolder.setText(user.getEmail());
+        //nameHolder.setText("email");
         TextView locationHolder = (TextView) findViewById(R.id.user_profile_location);
         //locationHolder.setText(user.getLocation().getCity());
-        locationHolder.setText("Edmonton");
+        //locationHolder.setText("Edmonton");
         TextView booksBorrowedHolder = (TextView) findViewById(R.id.user_profile_books_borrowed);
-        //int number = user.getBooksBorrowed();
-        //String format = getResources().getString(R.string.user_profile_books_borrowed);
-        //message = String.format(format, number);
-        //booksBorrowedHolder.setText(message);
-        booksBorrowedHolder.setText("10");
+        int number = user.getBooksBorrowed();
+        String format = getResources().getString(R.string.user_profile_books_borrowed);
+        message = String.format(format, number);
+        booksBorrowedHolder.setText(message);
+        //booksBorrowedHolder.setText("10");
         TextView booksOwnedHolder = (TextView) findViewById(R.id.user_profile_books_owned);
-        //number = user.getBooksOwned();
-        //format = getResources().getString(R.string.user_profile_books_borrowed);
-        //message = String.format(format, number);
-        //booksOwnedHolder.setText(message);
-        booksOwnedHolder.setText("12");
+        number = user.getBooksOwned();
+        format = getResources().getString(R.string.user_profile_books_borrowed);
+        message = String.format(format, number);
+        booksOwnedHolder.setText(message);
+        //booksOwnedHolder.setText("12");
         TextView joinedHolder = (TextView) findViewById(R.id.user_profile_joined_on);
         //joinedHolder.setText(user.getJoinDate().toString());
         joinedHolder.setText("join date");
         RatingBar ratingBar = (RatingBar) findViewById(R.id.user_profile_borrower_rating_bar);
-        //ratingBar.setRating(user.getBorrowerRating());
-        ratingBar.setRating(5);
+        ratingBar.setRating(user.getBorrowerRating());
+        //ratingBar.setRating(5);
         ratingBar = (RatingBar) findViewById(R.id.user_profile_owner_rating_bar);
-        //ratingBar.setRating(user.getOwnerRating());
-        ratingBar.setRating(1);
+        ratingBar.setRating(user.getOwnerRating());
+        //ratingBar.setRating(1);
+        //ratingBar.setRating(1);
 
         // create on click listener for see user reviews button
         Button button = (Button) findViewById(R.id.user_profile_review_button);
@@ -86,8 +86,7 @@ public class userProfileActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(userProfileActivity.this, userReviewActivity.class);
-                        IntentJson passing = new IntentJson(curUser);
-                        passing.addObject(user);
+                        IntentJson passing = new IntentJson(user);
                         String message = passing.toJson();
                         intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
                         startActivity(intent);

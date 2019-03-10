@@ -8,24 +8,21 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 public class IntentJson {
-    private UserAbstract curUser;
+    private LocalUser curUser;
     private ArrayList<Object> objects = new ArrayList<Object>();
 
 
     public IntentJson(LocalUser curUser) {
-        this.curUser = (UserAbstract) curUser;
+        this.curUser = (LocalUser) curUser;
     }
 
     public LocalUser getUser(){
         LocalUser usr = (LocalUser) curUser;
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = auth.getCurrentUser();
-        //usr.setFirebaseUser(firebaseUser);
         return usr;
     }
 
     public void setUser(LocalUser user){
-        curUser = (UserAbstract) user;
+        curUser = (LocalUser) user;
     }
 
     public void addObject(Object o){

@@ -28,7 +28,7 @@ public class userReviewActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CustomAdapter adapter;
     private RecyclerView.LayoutManager LayoutManager;
-    UserAbstract user;
+    LocalUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class userReviewActivity extends AppCompatActivity {
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         Gson gson = new Gson();
         IntentJson passed = gson.fromJson(message, IntentJson.class);
-        user = (UserAbstract) passed.getObject(0);
+        user = passed.getUser();
 
         //getReviewList();
         Review t = new Review("Owner name", "borrow name", 10, "This is a generic review");
@@ -145,6 +145,7 @@ public class userReviewActivity extends AppCompatActivity {
                 Review review = dataSnapshot.getValue(Review.class);
                 if (review.getOwnerName() ==  user.getUserName()) {
                     reviewList.add(review);
+                    adapter.notifyDataSetChanged();
                 }
 
             }
