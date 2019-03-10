@@ -40,8 +40,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         // data to populate the RecyclerView with
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
-        LocalUser user = new LocalUser(firebaseUser);
-        final String userName = user.getUserName();
+        final String userName = firebaseUser.getDisplayName();
         notifications = new ArrayList<>();
 
 
@@ -64,16 +63,14 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
             myRef.child("notifications").child(UUID.randomUUID().toString()).setValue(notification);
         }*/
 
-        myRef.child("notifications").addListenerForSingleValueEvent(
+        myRef.child("notifications").orderByChild("userName").equalTo(userName).addValueEventListener(
                 new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Log.d("Count " ,""+snapshot.getChildrenCount());
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                     Notification n = postSnapshot.getValue(Notification.class);
-                    if(userName.equals(n.getUserName())) {
-                        addNotification(n);
-                    }
+                    addNotification(n);
                 }
                 nextStep(fragmentView);
             }
