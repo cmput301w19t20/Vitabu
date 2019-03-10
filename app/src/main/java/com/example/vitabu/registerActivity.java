@@ -187,6 +187,11 @@ public class registerActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             Log.d(logTag, "User profile updated.");
                                             writeUserToDatabase();
+                                            Toast.makeText(getApplicationContext(), "User Successfully registered, please sign in now.", Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent();
+                                            setResult(RESULT_OK, intent);
+                                            finish();
+
                                         }
                                         else{
                                             Log.d(logTag, "User Profile update Failed.  This is bad.");
