@@ -36,7 +36,7 @@ public class userProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         Gson gson = new Gson();
-        final LocalUser user = gson.fromJson(message, LocalUser.class);
+        final User user = gson.fromJson(message, User.class);
 
         //final LocalUser user = MainActivity.t;
 
