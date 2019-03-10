@@ -43,7 +43,7 @@ public class browseBooksActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         // Initialize fragments
-        requests = new bookStatusFragment();
+        requests = new RequestedBooksFragment();
         browseBooks = new BrowseBooksFragment();
         addBook = new AddBookFragment();
         notifications = new NotificationsFragment();

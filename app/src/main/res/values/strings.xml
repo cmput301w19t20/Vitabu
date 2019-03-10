@@ -26,6 +26,13 @@
         <item>borrowing</item>
     </string-array>
 
+
+    <!--Requested books fragment strings for spinner-->
+    <string-array name="requested_books_status_array">
+        <item>requested</item>
+        <item>accepted</item>
+    </string-array>
+
     <!--Add Book Fragment Screens-->
     <string name="add_book_header">Add Book</string>
     <string name="add_book_title_text">Title:</string>
@@ -88,35 +95,17 @@
     <string name="user_profile_books_borrowed">Number of Books Borrowed: </string>
     <string name="user_profile_books_owned">Number of Books Owned: </string>
 
-    <!--
-      As a heads up, these strings were creating significant merge conflicts. Resolve with UI
-      people.
-    <string name="gen_location">general location</string>
-    <string name="username">username</string>
-    <string name="borrower_rating">Borrower Rating:</string>
-    <string name="owner_rating">Owner Rating:</string>
-    <string name="joined_on">Joined On:</string>
-    <string name="pending_title">Pending requests for: BOOK NAME HERE</string>
-    <string name="filter_by">Filter by:</string>
-    <string name="requestsTitle">Requests</string> -->
-
     <!--ISBN Activity Strings-->
     <string name="isbn_take_picture">Capture ISBN</string>
     <string name="isbn_barcode_fail">Could not set up the detector</string>
     <string name="isbn_barcode_success">Detector Setup</string>
     <string name="isbn_no_ISBN_fail">No ISBN detected</string>
 
-    <string-array name="requests_status_array">
-        <item>requested</item>
-        <item>accepted</item>
-    </string-array>
-
-master
     <string name="title_activity_book_status_owner">bookStatusOwnerActivity</string>
-    <string name="book_status_borrower_book_title" >title</string>
-    <string name="book_status_borrower_book_author" >author</string>
-    <string name="book_status_borrower_book_comment" >comment</string>
-    <string name="book_status_borrower_book_owner" >owner</string>
+    <string name="book_status_borrower_book_title">title</string>
+    <string name="book_status_borrower_book_author">author</string>
+    <string name="book_status_borrower_book_comment">comment</string>
+    <string name="book_status_borrower_book_owner">owner</string>
     <string name="book_status_to_owner_switch">"borrow "</string>
     <string name="book_status_borrower_filter_by">Filter by:</string>
     <string name="book_status_owner_book_title">title</string>
@@ -129,4 +118,14 @@ master
     <string name="book_requests_decline_button">decline</string>
     <string name="book_requests_requester_username">username</string>
     <string name="book_info_isbn">123567890</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="requested_books_requests_title">Requests</string>
+    <string name="requested_books_filter_title">Filter by:</string>
+    <string name="requested_book_title">title</string>
+    <string name="requested_books_book_author">author</string>
+    <string name="requested_books_book_title">title</string>
+    <string name="requested_books_book_comment">comment</string>
+    <string name="requested_books_book_owner">owner</string>
 </resources>

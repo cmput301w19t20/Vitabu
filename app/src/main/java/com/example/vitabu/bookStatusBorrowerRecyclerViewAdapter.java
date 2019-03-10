@@ -39,7 +39,6 @@ public class bookStatusBorrowerRecyclerViewAdapter extends RecyclerView.Adapter<
 
         String ownerName = book.getOwnerName();
 
- master
         String comments = "Comments go here"; // access comment from Book class when available
         holder.title.setText(title);
         holder.author.setText(author);
@@ -47,7 +46,6 @@ public class bookStatusBorrowerRecyclerViewAdapter extends RecyclerView.Adapter<
 
         holder.owner.setText(ownerName);
 
-master
     }
 
     // Returns total number of rows
@@ -77,8 +75,8 @@ master
 
         ViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.book_status_borrower_book_title);
-            author = itemView.findViewById(R.id.book_status_borrower_book_author);
+            title = itemView.findViewById(R.id.requested_book_title);
+            author = itemView.findViewById(R.id.requested_books_book_author);
             comments = itemView.findViewById(R.id.book_status_borrower_book_comment);
             owner = itemView.findViewById(R.id.book_status_borrower_book_owner);
             itemView.setOnClickListener(this);
