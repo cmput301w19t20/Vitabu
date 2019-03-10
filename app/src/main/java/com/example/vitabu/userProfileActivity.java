@@ -38,8 +38,6 @@ public class userProfileActivity extends AppCompatActivity {
         Gson gson = new Gson();
         final User user = gson.fromJson(message, User.class);
 
-        //final LocalUser user = MainActivity.t;
-
         // setting temporary default rating for borrower and owner bars
         // also set in .xml file for each rating bar for viewing purposes
         // so actually I'm not sure why I've put this here ...
@@ -51,7 +49,8 @@ public class userProfileActivity extends AppCompatActivity {
         nameHolder.setText(user.getUserName());
         TextView emailHolder = (TextView) findViewById(R.id.user_profile_email);
         emailHolder.setText(user.getEmail());
-        //TextView locationHolder = (TextView) findViewById(R.id.user_profile_location);
+        TextView locationHolder = (TextView) findViewById(R.id.user_profile_location);
+        locationHolder.setText(user.getLocation().getCity());
         TextView booksBorrowedHolder = (TextView) findViewById(R.id.user_profile_books_borrowed);
         int number = user.getBooksBorrowed();
         String format = getResources().getString(R.string.user_profile_books_borrowed);
@@ -59,12 +58,11 @@ public class userProfileActivity extends AppCompatActivity {
         booksBorrowedHolder.setText(message);
         TextView booksOwnedHolder = (TextView) findViewById(R.id.user_profile_books_owned);
         number = user.getBooksOwned();
-        format = getResources().getString(R.string.user_profile_books_borrowed);
+        format = getResources().getString(R.string.user_profile_books_owned);
         message = String.format(format, number);
         booksOwnedHolder.setText(message);
         TextView joinedHolder = (TextView) findViewById(R.id.user_profile_joined_on);
-        //joinedHolder.setText(user.getJoinDate().toString());
-        joinedHolder.setText("join date");
+        joinedHolder.setText(user.getJoinDate().toString());
         RatingBar ratingBar = (RatingBar) findViewById(R.id.user_profile_borrower_rating_bar);
         ratingBar.setRating(user.getBorrowerRating());
         ratingBar = (RatingBar) findViewById(R.id.user_profile_owner_rating_bar);

@@ -29,6 +29,7 @@ public class userReviewActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CustomAdapter adapter;
     private RecyclerView.LayoutManager LayoutManager;
+    private TextView emptyText;
     User user;
 
     @Override
@@ -41,8 +42,8 @@ public class userReviewActivity extends AppCompatActivity {
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         Gson gson = new Gson();
         user = gson.fromJson(message, User.class);
-        //user = MainActivity.t;
         getReviewList();
+
         //Review t = new Review("Owner name", "borrow name", 10, "This is a generic review");
         //reviewList.add(t);
 
@@ -52,6 +53,17 @@ public class userReviewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(LayoutManager);
         adapter = new CustomAdapter(reviewList);                                        // create adapter
         recyclerView.setAdapter(adapter);                                               // set adapter to view
+
+        // show no data text view if array list is empty
+        emptyText = (TextView) findViewById(R.id.user_review_no_data);
+        if (reviewList.size() == 0){
+            recyclerView.setVisibility(View.GONE);
+            emptyText.setVisibility(View.VISIBLE);
+        }
+        else{
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyText.setVisibility(View.GONE);
+        }
     }
 
     // class that creates the array adapter to display reviews
