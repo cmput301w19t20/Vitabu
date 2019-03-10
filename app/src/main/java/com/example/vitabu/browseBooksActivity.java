@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,17 +26,24 @@ public class browseBooksActivity extends AppCompatActivity {
     private Fragment addBook;
     private Fragment notifications;
     private Fragment ownedBooks;
-    private LocalUser user;
+    private LocalUser curUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_books);
+
         Intent intent = getIntent();
         String message = intent.getStringExtra("LocalUser");
         Gson gson = new Gson();
-        user = gson.fromJson(message, LocalUser.class);
+        curUser = gson.fromJson(message, LocalUser.class);
+//        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+//        Gson gson = new Gson();
+//        IntentJson passed = (IntentJson) gson.fromJson(message, IntentJson.class);
+//        curUser = (LocalUser) passed.getUser();
+//>>>>>>> c604f0d0db2e55b7e0521a3669ce754fefe12931
 
+        // Get fragment manager (for switching fragments)
         fragmentManager = getSupportFragmentManager();
 
         // Initialize fragments
@@ -110,4 +118,8 @@ public class browseBooksActivity extends AppCompatActivity {
             return true;
         }
     };
+
+    public LocalUser getCurUser() {
+        return curUser;
+    }
 }

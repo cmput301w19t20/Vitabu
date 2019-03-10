@@ -1,5 +1,6 @@
 package com.example.vitabu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,29 +19,38 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
+
 import java.util.ArrayList;
 
 public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecyclerViewAdapter.ItemClickListener {
-    BrowseBooksBookRecyclerViewAdapter adapter;
+    private BrowseBooksBookRecyclerViewAdapter adapter;
+    private ArrayList<Book> books;
+    private LocalUser curUser;
     FirebaseAuth auth;
     String logTag = "Browse Books Fragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         auth = FirebaseAuth.getInstance();
+
+        // Inflate layout
         View fragmentView = inflater.inflate(R.layout.fragment_browse_books, container, false);
 
-        // data to populate the RecyclerView with
-        ArrayList<Book> books = new ArrayList<>();
-        Book book;
-        for (int i = 0; i < 10; i++) {
-            book = new Book();
-            book.setTitle("Title");
-            book.setAuthor("Author");
-            books.add(book);
-        }
+        // Get current user from Activity
+        curUser = ((browseBooksActivity) getActivity()).getCurUser();
 
-        // set up the RecyclerView
+        // Generate data to populate the RecyclerView with
+        books = new ArrayList<>();
+//        Book book;
+//        for (int i = 0; i < 10; i++) {
+//            book = new Book();
+//            book.setTitle("Title");
+//            book.setAuthor("Author");
+//            books.add(book);
+//        }
+
+        // Set up the RecyclerView
         RecyclerView recyclerView = fragmentView.findViewById(R.id.browse_books_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         adapter = new BrowseBooksBookRecyclerViewAdapter(this.getActivity(), books);
@@ -53,7 +62,8 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
         // Get data from the database.
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference().child("books");
-        myRef.orderByChild("ownerName").equalTo(userName).addValueEventListener(
+        // myRef.orderByChild("ownerName").equalTo(userName).addValueEventListener
+        myRef.addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -72,13 +82,37 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
     }
 
     public void updateBooks(DataSnapshot snapshot){
-        // TODO actually update.
-        Log.d(logTag, snapshot.toString());
+        Book curBook;
+        int curBookIndex;
+        Log.d(logTag, "Got Books snapshot!");
+        for (DataSnapshot subSnapshot: snapshot.getChildren()){
+            curBook = subSnapshot.getValue(Book.class);
+            if (curBook.getOwnerName().equals(curUser.getUserName()) ){
+                continue;
+            }
+            curBookIndex = books.indexOf(curBook);
+            // Check if book is already in arraylist.  If it is update it, else add it.
+            if ( curBookIndex == -1 ){
+                books.add(curBook);
+            }
+            else{
+                books.add(curBookIndex, curBook);
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onItemClick(View view, int position) {
 //        TODO: Opens book info activity
+
+        Intent intent = new Intent(this.getContext(), bookInfoActivity.class);
+        IntentJson passing = new IntentJson(curUser);
+        passing.addObject(adapter.getItem(position));
+        String message = passing.toJson();
+        intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+        startActivity(intent);
+
         Toast.makeText(this.getActivity(), "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
 }
