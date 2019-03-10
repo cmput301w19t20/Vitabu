@@ -45,7 +45,6 @@ public class LoginTest extends ActivityTestRule<MainActivity> {
     @Test
     public void testEmptyPassword() {
 //        Empty password
-        clearEditTexts();
         solo.enterText((EditText) solo.getView(R.id.login_email), "arseniykd@gmail.com");
         solo.enterText((EditText) solo.getView(R.id.login_password), "");
         solo.clickOnButton("Login");
@@ -56,7 +55,6 @@ public class LoginTest extends ActivityTestRule<MainActivity> {
     @Test
     public void testWrongPassword() {
 //        Wrong password
-        clearEditTexts();
         solo.enterText((EditText) solo.getView(R.id.login_email), "arseniykd@gmail.com");
         solo.enterText((EditText) solo.getView(R.id.login_password), "wrongpass");
         solo.clickOnButton("Login");
@@ -67,7 +65,6 @@ public class LoginTest extends ActivityTestRule<MainActivity> {
     @Test
     public void testEmptyEmail() {
 //        Empty email
-        clearEditTexts();
         solo.enterText((EditText) solo.getView(R.id.login_email), "");
         solo.enterText((EditText) solo.getView(R.id.login_password), "qwertyui");
         solo.clickOnButton("Login");
@@ -78,7 +75,6 @@ public class LoginTest extends ActivityTestRule<MainActivity> {
     @Test
     public void testWrongEmail() {
 //        Wrong email
-        clearEditTexts();
         solo.enterText((EditText) solo.getView(R.id.login_email), "wrongemail@gmail.com");
         solo.enterText((EditText) solo.getView(R.id.login_password), "qwertyui");
         solo.clickOnButton("Login");
@@ -89,18 +85,17 @@ public class LoginTest extends ActivityTestRule<MainActivity> {
     @Test
     public void testLogin() {
 //        Correct email and password
-        clearEditTexts();
         solo.enterText((EditText) solo.getView(R.id.login_email), "arseniykd@gmail.com");
         solo.enterText((EditText) solo.getView(R.id.login_password), "qwertyui");
         solo.clickOnButton("Login");
         solo.assertCurrentActivity("Wrong Activity", browseBooksActivity.class);
     }
 
-    public void clearEditTexts() {
-        solo.clearEditText((EditText) solo.getView(R.id.login_email));
-        solo.clearEditText((EditText) solo.getView(R.id.login_password));
+    @Test
+    public void testRegister() {
+        solo.clickOnButton("Register");
+        solo.assertCurrentActivity("Wrong Activity", registerActivity.class);
     }
-
 
     @After
     public void tearDown() throws Exception{
