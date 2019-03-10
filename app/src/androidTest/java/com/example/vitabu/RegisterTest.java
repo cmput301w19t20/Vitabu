@@ -178,7 +178,7 @@ public class RegisterTest extends ActivityTestRule<registerActivity> {
         solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword");
         solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
         solo.clickOnButton("Register");
-        solo.assertCurrentActivity("Wrong Activity.", browseBooksActivity.class);
+        solo.assertCurrentActivity("Wrong Activity.", MainActivity.class);
     }
 
     @After
