@@ -49,35 +49,27 @@ public class userProfileActivity extends AppCompatActivity {
         // get hold of textviews and populate information
         TextView nameHolder = (TextView) findViewById(R.id.user_profile_username);
         nameHolder.setText(user.getUserName());
-        //nameHolder.setText("userid");
         TextView emailHolder = (TextView) findViewById(R.id.user_profile_email);
         emailHolder.setText(user.getEmail());
-        //nameHolder.setText("email");
         TextView locationHolder = (TextView) findViewById(R.id.user_profile_location);
-        //locationHolder.setText(user.getLocation().getCity());
-        //locationHolder.setText("Edmonton");
         TextView booksBorrowedHolder = (TextView) findViewById(R.id.user_profile_books_borrowed);
         int number = user.getBooksBorrowed();
         String format = getResources().getString(R.string.user_profile_books_borrowed);
         message = String.format(format, number);
         booksBorrowedHolder.setText(message);
-        //booksBorrowedHolder.setText("10");
         TextView booksOwnedHolder = (TextView) findViewById(R.id.user_profile_books_owned);
         number = user.getBooksOwned();
         format = getResources().getString(R.string.user_profile_books_borrowed);
         message = String.format(format, number);
         booksOwnedHolder.setText(message);
-        //booksOwnedHolder.setText("12");
         TextView joinedHolder = (TextView) findViewById(R.id.user_profile_joined_on);
         //joinedHolder.setText(user.getJoinDate().toString());
         joinedHolder.setText("join date");
         RatingBar ratingBar = (RatingBar) findViewById(R.id.user_profile_borrower_rating_bar);
         ratingBar.setRating(user.getBorrowerRating());
-        //ratingBar.setRating(5);
         ratingBar = (RatingBar) findViewById(R.id.user_profile_owner_rating_bar);
         ratingBar.setRating(user.getOwnerRating());
-        //ratingBar.setRating(1);
-        //ratingBar.setRating(1);
+
 
         // create on click listener for see user reviews button
         Button button = (Button) findViewById(R.id.user_profile_review_button);
