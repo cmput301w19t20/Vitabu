@@ -26,7 +26,6 @@ import com.google.gson.Gson;
 import java.util.Date;
 
 public class setMeetingActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
-    LocalUser user;
     BorrowRecord borrowRecord;
     Date date = new Date();
     boolean timeset = false;
@@ -47,15 +46,10 @@ public class setMeetingActivity extends AppCompatActivity implements DatePickerD
 
         // Get Intent.
         Intent intent = getIntent();
-        String message = intent.getStringExtra("IntentJson");
+        String message = intent.getStringExtra("BorrowRecord");
         Gson gson = new Gson();
-        IntentJson passed = gson.fromJson(message, IntentJson.class);
-        Log.d(logTag, "Passed=" + passed);
-        user = passed.getUser();
+        borrowRecord = gson.fromJson(message, BorrowRecord.class);
 
-        //borrowRecord = (BorrowRecord) passed.getObject(0);
-
-        borrowRecord = new BorrowRecord("OWNERID", "BORROWERID", "BOOKID");
         timeButton = (Button) findViewById(R.id.set_meeting_set_time_button);
         dateButton = (Button) findViewById(R.id.set_meeting_set_date_button);
 

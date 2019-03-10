@@ -185,7 +185,6 @@ public class registerActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             Log.d(logTag, "User profile updated.");
                                             writeUserToDatabase();
-
                                         }
                                         else{
                                             Log.d(logTag, "User Profile update Failed.  This is bad.");
