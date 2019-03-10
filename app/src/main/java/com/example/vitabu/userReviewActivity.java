@@ -38,7 +38,7 @@ public class userReviewActivity extends AppCompatActivity {
 
         // get user object from intent
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        String message = intent.getStringExtra(MainActivity.USER_MESSAGE);
         Gson gson = new Gson();
         user = gson.fromJson(message, User.class);
         //user = MainActivity.t;

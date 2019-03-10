@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,8 @@ public class bookStatusBorrowerActivity extends AppCompatActivity implements boo
         Spinner spinner = (Spinner) findViewById(R.id.book_status_borrower_spinner);
         Switch onOffSwitch = (Switch) findViewById(R.id.book_status_owner_switch);
 
+        // Get intent.
+
         // switch is always true on this activity to enforce that user is in correct tab
         onOffSwitch.setChecked(true);
 
@@ -46,10 +49,17 @@ public class bookStatusBorrowerActivity extends AppCompatActivity implements boo
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 //                 Log.d(TAG, "onCheckedChanged: " + isChecked);
                 Intent intent = new Intent(bookStatusBorrowerActivity.this, bookStatusOwnerActivity.class);
-                IntentJson passing = new IntentJson(curUser);
-                passing.addObject(owner);
-                String message = passing.toJson();
-                intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+//                IntentJson passing = new IntentJson(curUser);
+//                passing.addObject(owner);
+//                String message = passing.toJson();
+//                intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+//                startActivity(intent);
+
+                Gson gson = new Gson();
+                String curUserMessage = gson.toJson(curUser);
+                String ownerMessage = gson.toJson(owner);
+                intent.putExtra(MainActivity.LOCALUSER_MESSAGE, curUserMessage);
+                intent.putExtra(MainActivity.USER_MESSAGE, ownerMessage);
                 startActivity(intent);
             }
         });

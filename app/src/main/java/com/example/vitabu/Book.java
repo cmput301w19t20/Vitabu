@@ -136,7 +136,7 @@ public class Book {
      * @throws IllegalArgumentException
      */
     public void setStatus(String status) throws IllegalArgumentException{
-        if(! status.equals("available") && ! status.equals("requested") && ! status.equals("accepted") && ! status.equals("borrowed")) {
+        if(! status.equals("available") && ! status.equals("requested") && ! status.equals("accepted") && ! status.equals("borrowed") ) {
             throw new IllegalArgumentException("Status must be one of the following: available, requested, accepted, borrowed.");
         }
         this.status = status;
