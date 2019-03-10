@@ -109,8 +109,10 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
         Intent intent = new Intent(this.getContext(), bookInfoActivity.class);
         Log.d("fragment launch", adapter.getItem(position).getTitle());
         Gson gson = new Gson();
-        String message = gson.toJson(adapter.getItem(position));
-        intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+        String bookMessage = gson.toJson(adapter.getItem(position));
+        intent.putExtra(MainActivity.BOOK_MESSAGE, bookMessage);
+        String LocalUserMessage = gson.toJson(curUser);
+        intent.putExtra(MainActivity.LOCALUSER_MESSAGE, LocalUserMessage);
         startActivity(intent);
 
         Toast.makeText(this.getActivity(), "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();

@@ -13,6 +13,8 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public class bookStatusOwnerActivity extends Activity implements bookStatusOwnerRecyclerViewAdapter.ItemClickListener, AdapterView.OnItemSelectedListener{
@@ -38,10 +40,11 @@ public class bookStatusOwnerActivity extends Activity implements bookStatusOwner
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // Log.d(TAG, "onCheckedChanged: " + isChecked);
                 Intent intent = new Intent(bookStatusOwnerActivity.this, bookStatusBorrowerActivity.class);
-                IntentJson passing = new IntentJson(curUser);
-                passing.addObject(owner);
-                String message = passing.toJson();
-                intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+                Gson gson = new Gson();
+                String curUserMessage = gson.toJson(curUser);
+                String ownerMessage = gson.toJson(owner);
+                intent.putExtra(MainActivity.LOCALUSER_MESSAGE, curUserMessage);
+                intent.putExtra(MainActivity.USER_MESSAGE, ownerMessage);
                 startActivity(intent);
             }
         });

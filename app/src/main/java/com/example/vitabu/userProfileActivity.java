@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 public class userProfileActivity extends AppCompatActivity {
 
     User owner;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +32,9 @@ public class userProfileActivity extends AppCompatActivity {
 
         // get user object from intent
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        String userMessage = intent.getStringExtra(MainActivity.USER_MESSAGE);
         Gson gson = new Gson();
-        IntentJson passed = gson.fromJson(message, IntentJson.class);
-        LocalUser user = passed.getUser();
+        user = gson.fromJson(userMessage, User.class);
 
         // setting temporary default rating for borrower and owner bars
         // also set in .xml file for each rating bar for viewing purposes
