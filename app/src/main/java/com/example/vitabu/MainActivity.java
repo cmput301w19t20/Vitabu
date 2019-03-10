@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.w(logTag, "Failed to sign in with email: " + email, task.getException());
                             Toast.makeText(MainActivity.this, "Sign In failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI();
                         }
                     }
                 });
@@ -178,9 +177,8 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        IntentJson passing = new IntentJson(localUser);
         Intent intent = new Intent(this, browseBooksActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, passing.toJson());
+        intent.putExtra("LocalUser", localUser.toJson());
         startActivity(intent);
 
     }

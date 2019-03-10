@@ -36,16 +36,13 @@ public class bookStatusBorrowerRecyclerViewAdapter extends RecyclerView.Adapter<
         Book book = mData.get(position);
         String title = book.getTitle();
         String author = book.getAuthor();
-
         String ownerName = book.getOwnerName();
-
         String comments = "Comments go here"; // access comment from Book class when available
         holder.title.setText(title);
         holder.author.setText(author);
         holder.comments.setText(comments);
 
         holder.owner.setText(ownerName);
-
     }
 
     // Returns total number of rows
