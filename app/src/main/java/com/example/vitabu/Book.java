@@ -1,6 +1,8 @@
 package com.example.vitabu;
 
 
+import java.util.UUID;
+
 /**
  * @version 1.0
  * The Book object for Vitabu that encapsulates all the possible attributes of a book
@@ -8,13 +10,13 @@ package com.example.vitabu;
 public class Book {
     private String title;
     private String author;
-    private int ISBN;
+    private String ISBN;
     private String status;
     private String ownerName;
     private String description;
     private String bookid;
 
-    public Book(String title, String author, int ISBN, String status, String ownerName, String description, String bookid) {
+    public Book(String title, String author, String ISBN, String status, String ownerName, String description, String bookid) {
         this.title = title;
         this.author = author;
         this.ISBN = ISBN;
@@ -25,7 +27,7 @@ public class Book {
     }
 
     public Book(){
-
+        bookid = UUID.randomUUID().toString();
     }
 
     public String getBookid() {
@@ -60,11 +62,11 @@ public class Book {
         this.author = author;
     }
 
-    public int getISBN() {
+    public String getISBN() {
         return ISBN;
     }
 
-    public void setISBN(int ISBN) {
+    public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
 

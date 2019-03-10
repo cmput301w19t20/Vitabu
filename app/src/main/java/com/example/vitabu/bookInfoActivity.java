@@ -42,7 +42,7 @@ public class bookInfoActivity extends AppCompatActivity {
         TextView author = (TextView) findViewById(R.id.book_info_author);
         author.setText(book.getAuthor());
         TextView ISBN = (TextView) findViewById(R.id.book_info_isbn);
-        ISBN.setText(Integer.toString(book.getISBN()));
+        ISBN.setText(book.getISBN());
         TextView desc = (TextView) findViewById(R.id.book_info_desc);
         desc.setText(book.getDescription());
     }

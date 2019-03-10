@@ -166,12 +166,14 @@ public class registerActivity extends AppCompatActivity {
     public void signUp(final Location location, final String userName, final String email, final String password){
         // Attempt to create user.
         Log.d(logTag, "In signup");
+
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(logTag, "Successfully created user with email: " + email);
+
                         usr = new LocalUser(location, userName, email, auth.getCurrentUser());
 
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -185,7 +187,6 @@ public class registerActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             Log.d(logTag, "User profile updated.");
                                             writeUserToDatabase();
-
                                         }
                                         else{
                                             Log.d(logTag, "User Profile update Failed.  This is bad.");
@@ -193,10 +194,7 @@ public class registerActivity extends AppCompatActivity {
                                     }
                                 });
 
-                        Toast.makeText(getApplicationContext(), "User Successfully registered, please sign in now.", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
-                        finish();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

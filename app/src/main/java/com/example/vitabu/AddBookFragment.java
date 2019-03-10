@@ -16,13 +16,22 @@ package com.example.vitabu;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -38,6 +47,12 @@ public class AddBookFragment extends Fragment {
     Button addBookButton;
     EditText isbnText;
     Button addImageButton;
+    FirebaseAuth auth;
+    private final String logTag = "AddBookFragment";
+
+    private FirebaseDatabase database = FirebaseDatabase.getInstance(); //The realtime database handle
+    private DatabaseReference myRef = database.getReference(); //The reference to the database handle
+
 
     /**
      * This function initializes the view when the user clicks on the Add Book button in the bottom
@@ -51,6 +66,8 @@ public class AddBookFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_add_book, container, false);
+
+        auth = FirebaseAuth.getInstance();
 
         // This part simply creates an onClick listener to deal with the Scan ISBN button
         isbnButton = (Button) rootView.findViewById(R.id.add_book_isbn_scan_button);
@@ -150,12 +167,12 @@ public class AddBookFragment extends Fragment {
 
 
     /**
-     * This function will attempt to add the book into the database.
+     * This function will attempt to add the book into the database. On success will notify the user
+     * and clear the screen of the previous input.
      *
      * @param view the view where this fragment resides.
      */
-    public void attemptAddingBook(View view){
-        //TODO: implement the adding to the database of the book.
+    public void attemptAddingBook(final View view){
         Book bookToAdd = new Book();
         String title = ((EditText) view.findViewById(R.id.add_book_title_input)).getText().toString();
         String author = ((EditText) view.findViewById(R.id.add_book_author_input)).getText().toString();
@@ -164,8 +181,45 @@ public class AddBookFragment extends Fragment {
 
         bookToAdd.setTitle(title);
         bookToAdd.setAuthor(author);
-//        bookToAdd.setISBN(isbn);
+        bookToAdd.setISBN(isbn);
+        bookToAdd.setStatus("available");
         System.out.println("Incomplete!");
+
+        String user = auth.getCurrentUser().getDisplayName();
+        bookToAdd.setOwnerName(user);
+
+        if (description.length() > 0){
+            bookToAdd.setDescription(description);
+        }
+
+        myRef.child("books").child(bookToAdd.getBookid()).setValue(bookToAdd)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(logTag, "Successfully wrote book to database.");
+                        String reset = "";
+                        ((EditText) view.findViewById(R.id.add_book_title_input)).setText(reset);
+                        ((EditText) view.findViewById(R.id.add_book_author_input)).setText(reset);
+                        ((EditText) view.findViewById(R.id.add_book_isbn_input)).setText(reset);
+                        ((EditText) view.findViewById(R.id.add_book_description_input)).setText(reset);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(logTag, "Failed to write User to database", e);
+                    }
+                });
+
+        System.out.println("----------------------" + user);
+        //TODO: implement the adding to the database of the book.
+
+
+
+        //Shove this part into the onSuccessListener.
+
+
+
     }
 
     /**
