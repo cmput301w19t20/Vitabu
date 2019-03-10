@@ -6,4 +6,72 @@
     android:layout_height="match_parent"
     tools:context=".WriteReview">
 
+    <RatingBar
+        android:id="@+id/write_review_ratingBar"
+        android:layout_width="241dp"
+        android:layout_height="66dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/write_review_rating" />
+
+    <TextView
+        android:id="@+id/write_review_of_name"
+        android:layout_width="325dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:singleLine="false"
+        android:text="@string/write_review_of_name"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/write_review_rating"
+        android:layout_width="116dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/write_review_rating"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/write_review_of_name" />
+
+    <EditText
+        android:id="@+id/write_review_body"
+        android:layout_width="297dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:capitalize="sentences"
+        android:ems="10"
+        android:hint="@string/write_review_hint"
+        android:maxLines="12"
+        android:nestedScrollingEnabled="true"
+        android:singleLine="false"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/write_review_ratingBar" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:text="@string/write_review_submit"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>
