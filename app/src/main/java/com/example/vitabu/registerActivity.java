@@ -191,7 +191,6 @@ public class registerActivity extends AppCompatActivity {
                                             Intent intent = new Intent();
                                             setResult(RESULT_OK, intent);
                                             finish();
-
                                         }
                                         else{
                                             Log.d(logTag, "User Profile update Failed.  This is bad.");
