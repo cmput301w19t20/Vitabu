@@ -38,9 +38,15 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private String logTag = "MainActivity";
-    public static final String EXTRA_MESSAGE = "IntentJson";
+    public static final String BOOK_MESSAGE = "Book";
+    public static final String LOCALUSER_MESSAGE = "LocalUser";
+    public static final String BORROWRECORD_MESSAGE = "BorrowRecord";
+    public static final String USER_MESSAGE = "User";
     private LocalUser localUser;
     private FirebaseUser firebaseUser;
+    private boolean uiUpdated = false;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +57,29 @@ public class MainActivity extends AppCompatActivity {
         // Initialize firebase auth.
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
+        // Initialize firebase database.
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
     }
 
     @Override
     protected void onStart(){
         super.onStart();
+        if (firebaseUser != null && ! uiUpdated){
+            Toast.makeText(MainActivity.this, "Auto-Sign in for " + firebaseUser.getDisplayName() + " in progress.", Toast.LENGTH_SHORT).show();
+        }
         // Check if already signed in.
-        //if (firebaseUser != null) {
-        //    Log.i(logTag, "Signed in as: " + firebaseUser.getDisplayName());
-        //    updateUI();
-        //}
+        if (firebaseUser != null) {
+            //Log.i(logTag, "Already Authenticated! Signed in as: " + firebaseUser.getDisplayName());
+            updateUI();
+        }
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        uiUpdated = false;
     }
 
     @Override
@@ -109,27 +128,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    /**
-     * Signs a firebase user out.
-     */
-    public void signOut(){
-        FirebaseUser usr = auth.getCurrentUser();
-        if (usr == null){
-            return;
-        }
-        Log.i("AuthActivity", "Signing out user : " + usr.toString());
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Log.i("AuthActivity", "Signed out user successfully!");
-                        updateUI();
-                    }
-                });
-    }
-
-
     public void onPressLogin(View view) {
 //        Intent intent = new Intent(this, browseBooksActivity.class);
 //        startActivity(intent);
@@ -157,17 +155,22 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        if (uiUpdated){
+            return;
+        }
+
+        uiUpdated = true;
+
 
         // TODO Update ui here with newly signed in users info.
         String userName = firebaseUser.getDisplayName();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
         myRef.child("users").child(userName).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         localUser = (dataSnapshot.getValue(LocalUser.class));
-                        Log.d(logTag, "Read owner");
+                        Log.d(logTag, "Retrived User account " + localUser.getUserName() + " from Database");
+                        startBrowseBooksActivity();
                     }
 
                     @Override
@@ -176,11 +179,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
 
+    public void startBrowseBooksActivity(){
         Intent intent = new Intent(this, browseBooksActivity.class);
-        intent.putExtra("LocalUser", localUser.toJson());
+        intent.putExtra(MainActivity.LOCALUSER_MESSAGE, localUser.toJson());
         startActivity(intent);
-
+        firebaseUser = null;
     }
 
 }

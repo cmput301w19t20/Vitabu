@@ -26,6 +26,8 @@ import com.google.gson.Gson;
  */
 
 public class userProfileActivity extends AppCompatActivity {
+    User owner;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +36,9 @@ public class userProfileActivity extends AppCompatActivity {
 
         // get user object from intent
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        String userMessage = intent.getStringExtra(MainActivity.USER_MESSAGE);
         Gson gson = new Gson();
-        final User user = gson.fromJson(message, User.class);
+        user = gson.fromJson(userMessage, User.class);
 
         // setting temporary default rating for borrower and owner bars
         // also set in .xml file for each rating bar for viewing purposes
@@ -54,7 +56,7 @@ public class userProfileActivity extends AppCompatActivity {
         TextView booksBorrowedHolder = (TextView) findViewById(R.id.user_profile_books_borrowed);
         int number = user.getBooksBorrowed();
         String format = getResources().getString(R.string.user_profile_books_borrowed);
-        message = String.format(format, number);
+        String message = String.format(format, number);
         booksBorrowedHolder.setText(message);
         TextView booksOwnedHolder = (TextView) findViewById(R.id.user_profile_books_owned);
         number = user.getBooksOwned();
@@ -78,7 +80,7 @@ public class userProfileActivity extends AppCompatActivity {
                         Intent intent = new Intent(userProfileActivity.this, userReviewActivity.class);
                         Gson gson = new Gson();
                         String message = gson.toJson(user);
-                        intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+                        intent.putExtra(MainActivity.USER_MESSAGE, message);
                         startActivity(intent);
                     }
                 }
