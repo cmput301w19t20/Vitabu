@@ -1,3 +1,10 @@
+/*
+ * This file contains the fragment that has the logic and UI for displaying and dealing with books
+ * that have been requested by the user so far and have not yet been borrowed.
+ *
+ * Author: Jacob Paton
+ * Outstanding Issues: Implement the functionality of the fragment.
+ */
 package com.example.vitabu;
 
 import android.content.Intent;

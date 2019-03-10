@@ -1,3 +1,9 @@
+/*
+ * This file contains the adapter for the bookStatusBorrowerRecyclerView. It implements the functionality
+ * for the recycler view and makes it display things as needed / intended.
+ *
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import android.content.Context;
