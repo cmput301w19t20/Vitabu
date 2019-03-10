@@ -38,7 +38,7 @@ public class VitabuUnitTest {
     }*/
 
     // test book class
-    Book book = new Book("Vitabu", "Vitabu Inc", 123456789, "available", "user name");
+    Book book = new Book("Vitabu", "Vitabu Inc", "123456789", "available", "owner name", "This book was good");
 
     @Test
     public void bookTitle_isCorrect() {
@@ -59,9 +59,9 @@ public class VitabuUnitTest {
     @Test
     public void bookISBN_isCorrect() {
         // test getters and setters
-        assertEquals(123456789, book.getISBN());
-        book.setISBN(987654321);
-        assertEquals(987654321, book.getISBN());
+        assertEquals("123456789", book.getISBN());
+        book.setISBN("987654321");
+        assertEquals("987654321", book.getISBN());
     }
 
     @Test
@@ -80,6 +80,14 @@ public class VitabuUnitTest {
         } catch (IllegalArgumentException e) {
             assertEquals(IllegalArgumentException.class, e.getClass());
         }
+    }
+
+    @Test
+    public void bookDescription_isCorrect(){
+        // check book description is correct
+        assertEquals("This book was good", book.getDescription());
+        book.setDescription("This book wasn't good");
+        assertEquals("This book wasn't good", book.getDescription());
     }
 
     // test Location class
@@ -122,7 +130,7 @@ public class VitabuUnitTest {
     @Test
     public void recOwner_isCorrect() {
         // test constructor
-        assertEquals(user.getUserName(), rec.getUserName());
+        assertEquals(user.getUserName(), rec.getOwnerName());
     }
 
     @Test

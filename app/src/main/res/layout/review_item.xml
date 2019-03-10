@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/review_item_borrower_name"
         android:layout_width="176dp"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="12dp"
@@ -32,12 +32,13 @@
         android:layout_marginEnd="12dp"
         android:layout_marginTop="13dp"
         android:text="@string/review_item_rating"
+        android:textAlignment="center"
         android:textSize="36sp" />
 
     <TextView
         android:id="@+id/review_item_review"
         android:layout_width="match_parent"
-        android:layout_height="138dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/review_item_date"
         android:text="@string/review_item_body" />
