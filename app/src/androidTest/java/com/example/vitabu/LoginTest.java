@@ -40,8 +40,6 @@ public class LoginTest extends ActivityTestRule<MainActivity> {
 
     @Test
     public void testLogin() {
-        MainActivity activity = (MainActivity) solo.getCurrentActivity();
-
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
 //        Empty password
