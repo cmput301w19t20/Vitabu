@@ -25,8 +25,7 @@ public class LoginTest extends ActivityTestRule<MainActivity> {
     }
 
     @Rule
-    public ActivityTestRule<MainActivity> rule =
-            new ActivityTestRule<>(MainActivity.class, false, true);
+    public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class, false, true);
 
     @Before
     public void setUp() throws Exception {
@@ -39,39 +38,69 @@ public class LoginTest extends ActivityTestRule<MainActivity> {
     }
 
     @Test
-    public void testLogin() {
+    public void testActivity() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+    }
 
+    @Test
+    public void testEmptyPassword() {
 //        Empty password
+        clearEditTexts();
         solo.enterText((EditText) solo.getView(R.id.login_email), "arseniykd@gmail.com");
+        solo.enterText((EditText) solo.getView(R.id.login_password), "");
         solo.clickOnButton("Login");
-        assertTrue(solo.waitForText("Sign In failed."));
+        assertTrue(solo.waitForText("The email and password fields cannot be empty."));
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+    }
 
-//        Empty email
-        solo.enterText((EditText) solo.getView(R.id.login_email), "");
-        solo.enterText((EditText) solo.getView(R.id.login_password), "qwertyui");
-        solo.clickOnButton("Login");
-        assertTrue(solo.waitForText("Sign In failed.", 1, 2000));
-
-//        Wrong email
-        solo.enterText((EditText) solo.getView(R.id.login_email), "wrongemail@gmail.com");
-        solo.enterText((EditText) solo.getView(R.id.login_password), "qwertyui");
-        solo.clickOnButton("Login");
-        assertTrue(solo.waitForText("Sign In failed.", 1, 2000));
-
+    @Test
+    public void testWrongPassword() {
 //        Wrong password
+        clearEditTexts();
         solo.enterText((EditText) solo.getView(R.id.login_email), "arseniykd@gmail.com");
         solo.enterText((EditText) solo.getView(R.id.login_password), "wrongpass");
         solo.clickOnButton("Login");
         assertTrue(solo.waitForText("Sign In failed.", 1, 2000));
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+    }
 
+    @Test
+    public void testEmptyEmail() {
+//        Empty email
+        clearEditTexts();
+        solo.enterText((EditText) solo.getView(R.id.login_email), "");
+        solo.enterText((EditText) solo.getView(R.id.login_password), "qwertyui");
+        solo.clickOnButton("Login");
+        assertTrue(solo.waitForText("The email and password fields cannot be empty.", 1, 2000));
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+    }
+
+    @Test
+    public void testWrongEmail() {
+//        Wrong email
+        clearEditTexts();
+        solo.enterText((EditText) solo.getView(R.id.login_email), "wrongemail@gmail.com");
+        solo.enterText((EditText) solo.getView(R.id.login_password), "qwertyui");
+        solo.clickOnButton("Login");
+        assertTrue(solo.waitForText("Sign In failed.", 1, 2000));
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+    }
+
+    @Test
+    public void testLogin() {
 //        Correct email and password
+        clearEditTexts();
         solo.enterText((EditText) solo.getView(R.id.login_email), "arseniykd@gmail.com");
         solo.enterText((EditText) solo.getView(R.id.login_password), "qwertyui");
         solo.clickOnButton("Login");
         solo.assertCurrentActivity("Wrong Activity", browseBooksActivity.class);
-
     }
+
+    public void clearEditTexts() {
+        solo.clearEditText((EditText) solo.getView(R.id.login_email));
+        solo.clearEditText((EditText) solo.getView(R.id.login_password));
+    }
+
 
     @After
     public void tearDown() throws Exception{
