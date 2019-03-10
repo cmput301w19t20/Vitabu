@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.List;
 
 public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<OwnedBooksBookRecyclerViewAdapter.ViewHolder> {
@@ -33,11 +36,16 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
         Book book = mData.get(position);
         String title = book.getTitle();
         String author = book.getAuthor();
-//            Once Book has comments attribute added, get comments from there
-        String comments = "Comments go here";//book.getComments();
+        String status = book.getStatus();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+        String userName = firebaseUser.getDisplayName();
+        if(!book.getOwnerName().equals(userName)){
+            status = "borrowing";
+        }
         holder.title.setText(title);
         holder.author.setText(author);
-        holder.comments.setText(comments);
+        holder.status.setText(status);
     }
 
     // Returns total number of rows
@@ -49,13 +57,13 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title, author, comments;
+        TextView title, author, status;
 
         ViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.browse_books_book_title);
             author = itemView.findViewById(R.id.browse_books_book_author);
-            comments = itemView.findViewById(R.id.browse_books_book_comments);
+            status = itemView.findViewById(R.id.browse_books_book_status);
             itemView.setOnClickListener(this);
         }
 

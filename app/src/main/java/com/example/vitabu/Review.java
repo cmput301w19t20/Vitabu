@@ -1,8 +1,22 @@
+/*
+ * This file contains the model class for the Review object. It is used to create and read reviews
+ * to and from the Firebase Database.
+ *
+ * Author: Owen Randall
+ * Version: 1.0
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * A Review object to keep track of the information relevant to a user review.
+ *
+ * @author Owen Randall
+ * @version 1.0
+ */
 public class Review {
     private String reviewid;
     private String ownerName;
@@ -11,6 +25,10 @@ public class Review {
     private int rating;
     private String body;
 
+    /**
+     * This is the default constructor that is used by Firebase Database and whenever we want to
+     * create a Review object without pre-populating it with specific data.
+     */
     public Review(){
 
     }
@@ -60,6 +78,14 @@ public class Review {
         return rating;
     }
 
+    /**
+     * This is a setter for the rating that only permits the rating to be within a specific range of
+     * values.
+     *
+     * @param rating the rating that we want to set.
+     * @throws IllegalArgumentException an exception when someone tries to set the rating with data
+     *                                  that is outside of the range of accepted values.
+     */
     public void setRating(int rating) throws IllegalArgumentException {
         if(rating > 5 || rating < 0){
             throw new IllegalArgumentException();
