@@ -9,11 +9,12 @@ import java.util.ArrayList;
 
 public class IntentJson {
     private LocalUser curUser;
-    private ArrayList<Object> objects = new ArrayList<Object>();
+    private ArrayList<Object> objects;
 
 
     public IntentJson(LocalUser curUser) {
         this.curUser = (LocalUser) curUser;
+        objects = new ArrayList<>();
     }
 
     public LocalUser getUser(){

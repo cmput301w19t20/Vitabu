@@ -45,5 +45,6 @@
         <activity android:name=".bookStatusBorrowerActivity"></activity>
         <activity android:name=".registerActivity"/>
         <activity android:name=".ISBNActivity" />
+
     </application>
 </manifest>

@@ -127,4 +127,5 @@
     <string name="book_requests_accept_button">accept</string>
     <string name="book_requests_decline_button">decline</string>
     <string name="book_requests_requester_username">username</string>
+    <string name="book_info_isbn">123567890</string>
 </resources>

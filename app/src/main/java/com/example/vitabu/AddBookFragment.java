@@ -5,10 +5,9 @@
  *
  * Author: Arseniy Kouzmenkov
  *
- * Version: 1.0
+ * Version: 1.1
  *
- * Outstanding issues: no database object addition, no checking for user input correctness, no check
- * for empty user input, no image addition activity (just button that does nothing).
+ * Outstanding issues: no image addition activity (just button that does nothing).
  *
  */
 
@@ -30,8 +29,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -183,9 +185,8 @@ public class AddBookFragment extends Fragment {
         bookToAdd.setAuthor(author);
         bookToAdd.setISBN(isbn);
         bookToAdd.setStatus("available");
-        System.out.println("Incomplete!");
 
-        String user = auth.getCurrentUser().getDisplayName();
+        final String user = auth.getCurrentUser().getDisplayName();
         bookToAdd.setOwnerName(user);
 
         if (description.length() > 0){
@@ -202,6 +203,19 @@ public class AddBookFragment extends Fragment {
                         ((EditText) view.findViewById(R.id.add_book_author_input)).setText(reset);
                         ((EditText) view.findViewById(R.id.add_book_isbn_input)).setText(reset);
                         ((EditText) view.findViewById(R.id.add_book_description_input)).setText(reset);
+
+                        myRef.child("users").child(user).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                User tempUser = dataSnapshot.getValue(User.class);
+                                updateUsersBooksOwned(tempUser);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -211,15 +225,24 @@ public class AddBookFragment extends Fragment {
                     }
                 });
 
-        System.out.println("----------------------" + user);
-        //TODO: implement the adding to the database of the book.
+    }
 
 
-
-        //Shove this part into the onSuccessListener.
-
-
-
+    /**
+     * This function will increment the number of books that user owns in the database.
+     *
+     * @param user the user for which we need to increment the books owned counter.
+     */
+    public void updateUsersBooksOwned(User user){
+        user.setBooksOwned(user.getBooksOwned() + 1);
+        myRef.child("users").child(user.getUserName()).setValue(user).addOnSuccessListener(
+                new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(logTag, "Successfully updated the User's books owned count.");
+                    }
+                }
+        );
     }
 
     /**
