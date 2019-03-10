@@ -1,9 +1,20 @@
+/*
+ * This file contains the model class for the Location object. It is used to set the meeting location
+ * and also keep track of a User's general location.
+ *
+ * Author: Owen Randall
+ * Version: 1.0
+ * Outstanding Issues: Potential issue with integration with Google Maps fragment.
+ */
+
 package com.example.vitabu;
 
 /**
- * @author davidowe
- * @version 1.0
  * A Location object to keep track of country, province, city, and (optionally) address.
+ *
+ * @author Owen Randall
+ * @version 1.0
+ * @see User
  */
 public class Location {
     private String country;
@@ -11,6 +22,10 @@ public class Location {
     private String city;
     private String address;
 
+    /**
+     * This is the default constructor used by Firebase Database and whenever we want to create a
+     * Location object without pre-populating it with anything.
+     */
     public Location(){
 
     }
