@@ -1,6 +1,7 @@
 package com.example.vitabu;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -79,6 +80,11 @@ public class bookInfoActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    public void onGoodreadsClick(View view){
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.goodreads.com/book/isbn/" + book.getISBN()));
+        startActivity(intent);
     }
 
 
