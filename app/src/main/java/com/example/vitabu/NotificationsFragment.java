@@ -48,7 +48,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
-        for (int i = 0; i < 5; i++) {
+        /*for (int i = 0; i < 5; i++) {
             Notification notification = new Notification("Notif USERNAME" + Integer.toString(i),
                                                         "New message #" + Integer.toString(i),
                                                         "TYPE",
@@ -62,7 +62,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
                     "TYPE",
                     "notarealusername");
             myRef.child("notifications").child(UUID.randomUUID().toString()).setValue(notification);
-        }
+        }*/
 
         myRef.child("notifications").addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -71,10 +71,9 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
                 Log.d("Count " ,""+snapshot.getChildrenCount());
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                     Notification n = postSnapshot.getValue(Notification.class);
-                    if(userName == n.getUserName()) {
+                    if(userName.equals(n.getUserName())) {
                         addNotification(n);
                     }
-                    //notifications.add(n);
                 }
                 nextStep(fragmentView);
             }
@@ -96,6 +95,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        adapter.notifyDataSetChanged();
     }
 
     @Override

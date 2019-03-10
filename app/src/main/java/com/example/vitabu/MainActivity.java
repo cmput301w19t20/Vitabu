@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(logTag, "Successfully signed in with email: " + email);
                             firebaseUser = auth.getCurrentUser();
-                            localUser = new LocalUser(firebaseUser);
+                            localUser = new LocalUser();
                             updateUI();
 
                         } else {
@@ -131,9 +131,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onPressLogin(View view) {
+//        Intent intent = new Intent(this, browseBooksActivity.class);
+//        startActivity(intent);
+        // TODO: Validate login details. If valid email/password combo, proceed, otherwise alert user to incorrect login.
         String email = ((TextView) findViewById(R.id.login_email)).getText().toString();
         String password = ((TextView) findViewById(R.id.login_password)).getText().toString();
+        if (email.length() < 1 || password.length() < 1){
+            Toast.makeText(MainActivity.this, "The email and password fields cannot be empty.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         signIn(email, password);
+
     }
 
     public void onPressRegister(View view) {
@@ -168,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-
 
         IntentJson passing = new IntentJson(localUser);
         Intent intent = new Intent(this, browseBooksActivity.class);

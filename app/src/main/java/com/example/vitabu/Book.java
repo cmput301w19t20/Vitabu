@@ -1,6 +1,8 @@
 package com.example.vitabu;
 
 
+import java.util.UUID;
+
 /**
  * @version 1.0
  * The Book object for Vitabu that encapsulates all the possible attributes of a book
@@ -24,7 +26,7 @@ public class Book {
     }
 
     public Book(){
-
+        bookid = UUID.randomUUID().toString();
     }
 
     /**
