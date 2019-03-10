@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,13 +14,23 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class bookStatusOwnerActivity extends Activity implements bookStatusOwnerRecyclerViewAdapter.ItemClickListener, AdapterView.OnItemSelectedListener{
 
-    bookStatusOwnerRecyclerViewAdapter recyclerAdapter;
+    private bookStatusOwnerRecyclerViewAdapter recyclerAdapter;
+    private ArrayList<Book> books;
+    private Spinner spinner;
     Book book;
     String ownerid;
     User owner;
@@ -29,7 +40,7 @@ public class bookStatusOwnerActivity extends Activity implements bookStatusOwner
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_status_owner);
-        Spinner spinner = (Spinner) findViewById(R.id.book_status_owner_spinner);
+        spinner = (Spinner) findViewById(R.id.book_status_owner_spinner);
         Switch onOffSwitch = (Switch) findViewById(R.id.book_status_to_borrow_switch);
 
         // switch is always false on this activity to enforce that user is in correct tab
@@ -49,17 +60,45 @@ public class bookStatusOwnerActivity extends Activity implements bookStatusOwner
             }
         });
 
-
-        ArrayList<Book> books = new ArrayList<>();
+        // populate array of books to display
+        books = new ArrayList<>();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+        String userName = firebaseUser.getDisplayName();
 
         Book book;
         for (int i = 0; i < 10; i++) {
             book = new Book();
-            book.setTitle("Title");
+            book.setTitle("Title" + Integer.toString(i));
             book.setAuthor("Author");
-            books.add(book);
+            myRef.child("books").child(UUID.randomUUID().toString()).setValue(book);
         }
 
+        myRef.child("books").orderByChild("ownerName").equalTo(userName).addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        Log.d("Count ", "" + snapshot.getChildrenCount());
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            Book b = postSnapshot.getValue(Book.class);
+                            addBook(b);
+                        }
+                        nextStep();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError e) {
+                    }
+                });
+    }
+
+    private void addBook(Book b){
+        books.add(b);
+    }
+
+    private void nextStep(){
         // set up the spinner
         String[] filterTypes = {"available", "requested", "accepted", "borrowed"};
         ArrayAdapter spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, filterTypes);
@@ -73,7 +112,6 @@ public class bookStatusOwnerActivity extends Activity implements bookStatusOwner
         recyclerAdapter = new bookStatusOwnerRecyclerViewAdapter(this, books);
         recyclerAdapter.setClickListener(this);
         recyclerView.setAdapter(recyclerAdapter);
-
     }
 
     @Override
@@ -99,6 +137,7 @@ public class bookStatusOwnerActivity extends Activity implements bookStatusOwner
                 //books array with status: borrowed
                 break;
         }
+
     }
 
     @Override

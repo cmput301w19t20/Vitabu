@@ -103,6 +103,7 @@
     <string name="review_item_date">date</string>
     <string name="review_item_rating">10</string>
     <string name="review_item_body">review text</string>
+    <string name="user_review_no_data">No reviews have been written for this user</string>
 
     <!--ISBN Activity Strings-->
     <string name="isbn_take_picture">Capture ISBN</string>

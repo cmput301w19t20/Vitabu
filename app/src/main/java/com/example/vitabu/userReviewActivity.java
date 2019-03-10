@@ -29,6 +29,7 @@ public class userReviewActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CustomAdapter adapter;
     private RecyclerView.LayoutManager LayoutManager;
+    private TextView emptyText;
     User user;
 
     @Override
@@ -41,8 +42,8 @@ public class userReviewActivity extends AppCompatActivity {
         String message = intent.getStringExtra(MainActivity.USER_MESSAGE);
         Gson gson = new Gson();
         user = gson.fromJson(message, User.class);
-        //user = MainActivity.t;
         getReviewList();
+
         //Review t = new Review("Owner name", "borrow name", 10, "This is a generic review");
         //reviewList.add(t);
 
@@ -52,6 +53,18 @@ public class userReviewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(LayoutManager);
         adapter = new CustomAdapter(reviewList);                                        // create adapter
         recyclerView.setAdapter(adapter);                                               // set adapter to view
+
+
+        // show no data textView if array list is empty
+        emptyText = (TextView) findViewById(R.id.user_review_no_data);
+        emptyText.setVisibility(View.VISIBLE);
+        /*
+        if (reviewList.size() == 0){
+            Log.e("empty", "It was seen as empty " + Integer.toString(reviewList.size()));
+            recyclerView.setVisibility(View.GONE);
+            emptyText.setVisibility(View.VISIBLE);
+        }
+        */
     }
 
     // class that creates the array adapter to display reviews
@@ -156,8 +169,12 @@ public class userReviewActivity extends AppCompatActivity {
         for (DataSnapshot subSnapshot: dataSnapshot.getChildren()){
             Review review = subSnapshot.getValue(Review.class);
             reviewList.add(review);
-            adapter.notifyDataSetChanged();
+            Log.e("review added", "Added a review");
+            if (emptyText != null) {
+                emptyText.setVisibility(View.GONE);
+            }
         }
+        adapter.notifyDataSetChanged();
     }
 
 }
