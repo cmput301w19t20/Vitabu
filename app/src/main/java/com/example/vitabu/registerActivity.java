@@ -166,13 +166,14 @@ public class registerActivity extends AppCompatActivity {
     public void signUp(final Location location, final String userName, final String email, final String password){
         // Attempt to create user.
         Log.d(logTag, "In signup");
-        final FirebaseUser firebaseUser = auth.getCurrentUser();
+//        final FirebaseUser firebaseUser = auth.getCurrentUser();
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(logTag, "Successfully created user with email: " + email);
+                        FirebaseUser firebaseUser = auth.getCurrentUser();
                         usr = new LocalUser(location, userName, email, firebaseUser);
 
                         // TODO Deal with failed user account update.
@@ -187,14 +188,15 @@ public class registerActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             Log.d(logTag, "User profile updated.");
                                             usr.writeToDatabase();
+                                            Toast.makeText(getApplicationContext(), "User Successfully registered, please sign in now.", Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent();
+                                            setResult(RESULT_OK, intent);
+                                            finish();
                                         }
                                     }
                                 });
 
-                        Toast.makeText(getApplicationContext(), "User Successfully registered, please sign in now.", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
-                        finish();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

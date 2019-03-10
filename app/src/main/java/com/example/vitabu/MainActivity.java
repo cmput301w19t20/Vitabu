@@ -54,12 +54,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        //FirebaseUser user = auth.getCurrentUser();
+        FirebaseUser user = auth.getCurrentUser();
         // Check if already signed in.
-//        if (user != null) {
-//            Log.i(logTag, "Signed in as: " + user.toString());
-//            updateUI(user);
-//        }
+        if (user != null) {
+            Log.i(logTag, "Signed in as: " + user.toString());
+            updateUI(user);
+        }
     }
 
     @Override
@@ -129,12 +129,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onPressLogin(View view) {
-        Intent intent = new Intent(this, browseBooksActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, browseBooksActivity.class);
+//        startActivity(intent);
         // TODO: Validate login details. If valid email/password combo, proceed, otherwise alert user to incorrect login.
-//        String email = ((TextView) findViewById(R.id.login_email)).getText().toString();
-//        String password = ((TextView) findViewById(R.id.login_password)).getText().toString();
-//        signIn(email, password);
+        String email = ((TextView) findViewById(R.id.login_email)).getText().toString();
+        String password = ((TextView) findViewById(R.id.login_password)).getText().toString();
+        if (email.length() < 1 || password.length() < 1){
+            Toast.makeText(MainActivity.this, "The email and password fields cannot be empty.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        signIn(email, password);
         // TODO Launch UI B activity.
     }
 
@@ -177,21 +181,21 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-        myRef.child("firebaseUsers").child(userName).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        updateFirebaseUser(dataSnapshot.getValue(FirebaseUser.class));
-                        Log.d(logTag, "Read owner");
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d(logTag, "Cancelled");
-                    }
-                }
-        );
-        localUser.setFirebaseUser(firebaseUser);
+//        myRef.child("firebaseUsers").child(userName).addListenerForSingleValueEvent(
+//                new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        updateFirebaseUser(dataSnapshot.getValue(FirebaseUser.class));
+//                        Log.d(logTag, "Read owner");
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//                        Log.d(logTag, "Cancelled");
+//                    }
+//                }
+//        );
+//        localUser.setFirebaseUser(firebaseUser);
         IntentJson passing = new IntentJson(localUser);
         Intent intent = new Intent(this, browseBooksActivity.class);
         intent.putExtra(EXTRA_MESSAGE, passing.toJson());
