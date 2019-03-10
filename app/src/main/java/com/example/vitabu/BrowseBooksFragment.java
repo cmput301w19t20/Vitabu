@@ -26,7 +26,6 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
 
         // Get current user from Activity
         curUser = ((browseBooksActivity) getActivity()).getCurUser();
-        System.out.println(curUser.getEmail());
 
         // Generate data to populate the RecyclerView with
         ArrayList<Book> books = new ArrayList<>();
