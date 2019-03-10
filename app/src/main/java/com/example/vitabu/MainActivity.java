@@ -73,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause(){
+        super.onPause();
+        uiUpdated = false;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -175,5 +181,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, browseBooksActivity.class);
         intent.putExtra(MainActivity.LOCALUSER_MESSAGE, localUser.toJson());
         startActivity(intent);
+        firebaseUser = null;
     }
 }
