@@ -32,7 +32,7 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
         ArrayList<Book> books = new ArrayList<>();
         Book book;
         for (int i = 0; i < 10; i++) {
-            book = new Book("Title" + Integer.toString(i), "Author", 1234, "available", "owen", "description", "bookid");
+            book = new Book("Title" + Integer.toString(i), "Author", "1234", "available", "owen", "description", "bookid");
             books.add(book);
         }
 
