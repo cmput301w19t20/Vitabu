@@ -1,24 +1,28 @@
 package com.example.vitabu;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class IntentJson {
     private LocalUser curUser;
-    private ArrayList<Object> objects;
+    private ArrayList<Object> objects = new ArrayList<Object>();
+
 
     public IntentJson(LocalUser curUser) {
-        this.curUser = curUser;
+        this.curUser = (LocalUser) curUser;
     }
 
     public LocalUser getUser(){
-        return curUser;
+        LocalUser usr = (LocalUser) curUser;
+        return usr;
     }
 
     public void setUser(LocalUser user){
-        curUser = user;
+        curUser = (LocalUser) user;
     }
 
     public void addObject(Object o){

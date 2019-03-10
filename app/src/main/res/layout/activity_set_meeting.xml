@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:onClick="showTimePickerDialog"
         android:text="@string/set_meeting_set_time_button_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:onClick="showDatePickerDialog"
         android:text="@string/set_meeting_set_date_button_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -101,7 +103,7 @@
         app:layout_constraintTop_toBottomOf="@+id/set_meeting_google_maps_place_holder" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/set_meeting_notes_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -113,5 +115,16 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/set_meeting_notes_textview"
         app:layout_constraintTop_toBottomOf="@+id/set_meeting_phone_edittext" />
+
+    <Button
+        android:id="@+id/set_meeting_confirm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="continuePressed"
+        android:text="@string/set_meting_confirm_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
