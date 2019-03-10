@@ -37,8 +37,7 @@ public class userProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         Gson gson = new Gson();
-        IntentJson passed = gson.fromJson(message, IntentJson.class);
-        final LocalUser user = passed.getUser();
+        final User user = gson.fromJson(message, User.class);
 
         // setting temporary default rating for borrower and owner bars
         // also set in .xml file for each rating bar for viewing purposes
@@ -78,8 +77,8 @@ public class userProfileActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(userProfileActivity.this, userReviewActivity.class);
-                        IntentJson passing = new IntentJson(user);
-                        String message = passing.toJson();
+                        Gson gson = new Gson();
+                        String message = gson.toJson(user);
                         intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
                         startActivity(intent);
                     }
