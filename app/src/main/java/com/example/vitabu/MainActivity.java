@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+        if (firebaseUser != null && ! uiUpdated){
+            Toast.makeText(MainActivity.this, "Auto-Sign in for " + firebaseUser.getDisplayName() + " in progress.", Toast.LENGTH_SHORT).show();
+        }
         // Check if already signed in.
         if (firebaseUser != null) {
             //Log.i(logTag, "Already Authenticated! Signed in as: " + firebaseUser.getDisplayName());
