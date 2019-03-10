@@ -211,6 +211,8 @@ public class registerActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
     }
 
     private void writeUserToDatabase(){

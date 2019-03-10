@@ -10,6 +10,8 @@
 package com.example.vitabu;
 
 
+import android.util.Log;
+
 import java.util.UUID;
 
 /**
@@ -107,7 +109,7 @@ public class Book {
      * @throws IllegalArgumentException
      */
     public void setStatus(String status) throws IllegalArgumentException{
-        if(status != "available" && status != "requested" && status != "accepted" && status != "borrowed") {
+        if(! status.equals("available") && ! status.equals("requested") && ! status.equals("accepted") && ! status.equals("borrowed")) {
             throw new IllegalArgumentException("Status must be one of the following: available, requested, accepted, borrowed.");
         }
         this.status = status;
