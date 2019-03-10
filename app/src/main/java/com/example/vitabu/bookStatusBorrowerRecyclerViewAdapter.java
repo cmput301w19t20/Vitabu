@@ -15,6 +15,8 @@ public class bookStatusBorrowerRecyclerViewAdapter extends RecyclerView.Adapter<
     private LayoutInflater mInflater;
     private bookStatusBorrowerRecyclerViewAdapter.ItemClickListener mClickListener;
 
+
+
     // data is passed into the constructor
     bookStatusBorrowerRecyclerViewAdapter(Context context, List<Book> data) {
         this.mInflater = LayoutInflater.from(context);
@@ -40,6 +42,7 @@ public class bookStatusBorrowerRecyclerViewAdapter extends RecyclerView.Adapter<
         holder.title.setText(title);
         holder.author.setText(author);
         holder.comments.setText(comments);
+
         holder.owner.setText(ownerName);
 
     }
@@ -71,8 +74,8 @@ public class bookStatusBorrowerRecyclerViewAdapter extends RecyclerView.Adapter<
 
         ViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.book_status_borrower_book_title);
-            author = itemView.findViewById(R.id.book_status_borrower_book_author);
+            title = itemView.findViewById(R.id.requested_book_title);
+            author = itemView.findViewById(R.id.requested_books_book_author);
             comments = itemView.findViewById(R.id.book_status_borrower_book_comment);
             owner = itemView.findViewById(R.id.book_status_borrower_book_owner);
             itemView.setOnClickListener(this);

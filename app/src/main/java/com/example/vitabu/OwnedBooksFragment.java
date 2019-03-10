@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSelectedListener, OwnedBooksBookRecyclerViewAdapter.ItemClickListener {
     OwnedBooksBookRecyclerViewAdapter recyclerViewAdapter;
@@ -59,7 +60,8 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
 
         Book book;
         for (int i = 0; i < 10; i++) {
-            book = new Book("Title" + Integer.toString(i), "Author", "1234", "available", "owen", "description", "bookid");
+            book = new Book("Title" + Integer.toString(i), "Author", "1234", "available", "owen", "description");
+            book.setBookid(UUID.randomUUID().toString());
             books.add(book);
         }
 
@@ -218,7 +220,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         Log.d("fragment launch", recyclerViewAdapter.getItem(position).getTitle());
         Gson gson = new Gson();
         String message = gson.toJson(recyclerViewAdapter.getItem(position));
-        intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+        intent.putExtra(MainActivity.BOOK_MESSAGE, message);
         startActivity(intent);
 
     }

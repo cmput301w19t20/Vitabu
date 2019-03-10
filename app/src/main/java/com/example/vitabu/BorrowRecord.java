@@ -9,7 +9,7 @@ import java.util.UUID;
  * Doubles as a book request, if approved is false.
  */
 public class BorrowRecord {
-    private String userName;
+    private String ownerName;
     private String borrowerName;
     private String bookid;
     private Date dateBorrowed;
@@ -21,16 +21,18 @@ public class BorrowRecord {
     private String ownerEmail;
 
 
-    public BorrowRecord(String userName, String borrowerName, String bookid) {
-        this.userName = userName;
+    public BorrowRecord(String ownerName, String borrowerName, String bookid) {
+        this.ownerName = ownerName;
         this.borrowerName = borrowerName;
         this.bookid = bookid;
-        dateBorrowed = new Date();
-        recordid = UUID.randomUUID().toString();
+        //this.dateBorrowed = new Date();
+        this.recordid = UUID.randomUUID().toString();
+        this.approved = false;
     }
 
     public BorrowRecord(){
-        recordid = UUID.randomUUID().toString();
+        this.recordid = UUID.randomUUID().toString();
+        this.approved = false;
 
     }
 
@@ -62,12 +64,12 @@ public class BorrowRecord {
         this.approved = approved;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getOwnerName() {
+        return ownerName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setOwnerName(String userName) {
+        this.ownerName = userName;
     }
 
     public String getBorrowerName() {

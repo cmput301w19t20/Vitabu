@@ -1,6 +1,7 @@
 package com.example.vitabu;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @version 1.0
@@ -16,6 +17,7 @@ public class Notification {
     private String notificationid;
 
     public Notification(String title, String message, String type, String userName) {
+        this.notificationid = UUID.randomUUID().toString();
         this.date = new Date();
         this.title = title;
         this.message = message;
@@ -25,6 +27,7 @@ public class Notification {
     }
 
     public Notification(){
+        notificationid = UUID.randomUUID().toString();
 
     }
 
@@ -83,5 +86,6 @@ public class Notification {
     public void setSeen(boolean seen) {
         this.seen = seen;
     }
+
 
 }

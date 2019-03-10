@@ -38,12 +38,13 @@
             android:name=".setMeetingActivity"
             android:label="@string/set_meeting_title" />
         <activity android:name=".bookRequestsActivity" />
-
+        <activity android:name=".registerActivity" />
+        <activity android:name=".userReviewActivity"/>
         <activity
             android:name=".bookStatusOwnerActivity"
             android:label="@string/title_activity_book_status_owner" />
-        <activity android:name=".bookStatusBorrowerActivity"></activity>
-        <activity android:name=".registerActivity"/>
+        <activity android:name=".bookStatusBorrowerActivity"/>
         <activity android:name=".ISBNActivity" />
+
     </application>
 </manifest>

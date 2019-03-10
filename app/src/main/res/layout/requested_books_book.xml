@@ -14,43 +14,32 @@
         android:layout_marginEnd="16dp" />
 
     <TextView
-        android:id="@+id/requested_book_title"
+        android:id="@+id/requested_books_book_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_toEndOf="@+id/requested_books_book_image"
-        android:text="@string/book_status_borrower_book_title"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:text="@string/requested_books_book_title"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/requested_books_book_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/requested_book_title"
+        android:layout_below="@+id/requested_books_book_title"
         android:layout_marginEnd="16dp"
         android:layout_toEndOf="@+id/requested_books_book_image"
         android:text="@string/book_status_borrower_book_author"
-        android:textSize="14sp" />
+        android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/book_status_borrower_book_comment"
+        android:id="@+id/requested_books_book_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/requested_books_book_author"
         android:layout_marginEnd="16dp"
         android:layout_toEndOf="@+id/requested_books_book_image"
-        android:text="@string/book_status_borrower_book_comment"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/book_status_borrower_book_owner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/requested_book_title"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="8dp"
-        android:text="@string/book_status_borrower_book_owner"
-        android:textSize="14sp" />
+        android:text="@string/requested_books_book_comment"
+        android:textSize="18sp" />
 
 </RelativeLayout>

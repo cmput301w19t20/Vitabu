@@ -29,8 +29,12 @@ import java.util.UUID;
 public class bookStatusOwnerActivity extends Activity implements bookStatusOwnerRecyclerViewAdapter.ItemClickListener, AdapterView.OnItemSelectedListener{
 
     private bookStatusOwnerRecyclerViewAdapter recyclerAdapter;
-    private ArrayList<Book> booksA;
+    private ArrayList<Book> books;
     private Spinner spinner;
+    Book book;
+    String ownerid;
+    User owner;
+    LocalUser curUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +50,18 @@ public class bookStatusOwnerActivity extends Activity implements bookStatusOwner
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // Log.d(TAG, "onCheckedChanged: " + isChecked);
-
                 Intent intent = new Intent(bookStatusOwnerActivity.this, bookStatusBorrowerActivity.class);
+                Gson gson = new Gson();
+                String curUserMessage = gson.toJson(curUser);
+                String ownerMessage = gson.toJson(owner);
+                intent.putExtra(MainActivity.LOCALUSER_MESSAGE, curUserMessage);
+                intent.putExtra(MainActivity.USER_MESSAGE, ownerMessage);
                 startActivity(intent);
             }
         });
 
         // populate array of books to display
-        booksA = new ArrayList<>();
+        books = new ArrayList<>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -87,7 +95,7 @@ public class bookStatusOwnerActivity extends Activity implements bookStatusOwner
     }
 
     private void addBook(Book b){
-        booksA.add(b);
+        books.add(b);
     }
 
     private void nextStep(){
@@ -101,7 +109,7 @@ public class bookStatusOwnerActivity extends Activity implements bookStatusOwner
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.book_status_owner_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerAdapter = new bookStatusOwnerRecyclerViewAdapter(this, booksA);
+        recyclerAdapter = new bookStatusOwnerRecyclerViewAdapter(this, books);
         recyclerAdapter.setClickListener(this);
         recyclerView.setAdapter(recyclerAdapter);
     }
@@ -119,6 +127,7 @@ public class bookStatusOwnerActivity extends Activity implements bookStatusOwner
         switch (position) {
             case 0:
                 //books array with status: available
+
             case 1:
                 //books array with status: requested
             case 2:
@@ -135,5 +144,7 @@ public class bookStatusOwnerActivity extends Activity implements bookStatusOwner
     public void onNothingSelected(AdapterView<?> parent) {
         // do nothing
     }
+
+
 
 }

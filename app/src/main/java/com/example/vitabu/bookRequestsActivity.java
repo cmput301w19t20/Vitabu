@@ -20,7 +20,7 @@ public class bookRequestsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_book_requests);
+//        setContentView(R.layout.fragment_book_requests);
 
     }
 }

@@ -27,15 +27,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.json.JSONObject;
 
 /**
  * This class deals with everything pertaining to new user registration to Vitabu.
@@ -79,9 +76,10 @@ public class registerActivity extends AppCompatActivity {
         final EditText username = (EditText) findViewById(R.id.register_username);
         final EditText email = (EditText) findViewById(R.id.register_email);
         final EditText password = (EditText) findViewById(R.id.register_password);
-        final EditText country = (EditText) findViewById(R.id.register_country);
-        final EditText province = (EditText) findViewById(R.id.register_province);
+        //final EditText country = (EditText) findViewById(R.id.register_reenter_password);
+        //final EditText province = (EditText) findViewById(R.id.register_province);
         final EditText city = (EditText) findViewById(R.id.register_city);
+        final EditText reenter_password = (EditText) findViewById(R.id.register_reenter_password);
 
         //Checks that the user has provided any username at all.
         if(username.getText().toString().length() < 1){
@@ -97,20 +95,26 @@ public class registerActivity extends AppCompatActivity {
 
         //Checks that the password is at least 8 characters in length.
         if(password.getText().toString().length() < 8){
-            Toast.makeText(getApplicationContext(), "Please, provide a password that is more than 8 characters long.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Please, provide a password that is at least 8 characters long.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        //Checks that the country field was filled with anything at all.
-        if(country.getText().toString().length() < 1){
-            Toast.makeText(getApplicationContext(), "Please, provide a country.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        //Checks that the country field was filled with anything at all.
+//        if(country.getText().toString().length() < 1){
+//            Toast.makeText(getApplicationContext(), "Please, provide a country.", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
-        //Checks that the province field is filled with anything at all.
-        if(province.getText().toString().length() < 1){
-            Toast.makeText(getApplicationContext(), "Please, provide a province..", Toast.LENGTH_SHORT).show();
+//        //Checks that the province field is filled with anything at all.
+//        if(province.getText().toString().length() < 1){
+//            Toast.makeText(getApplicationContext(), "Please, provide a province..", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+
+        if(!reenter_password.getText().toString().equals(password.getText().toString())){
+            Toast.makeText(getApplicationContext(), "Please, type in the same password in both the Password and Re-enter Password fields.", Toast.LENGTH_SHORT).show();
             return;
+
         }
 
         //Checks that the city field is filled with anything at all.
@@ -120,8 +124,8 @@ public class registerActivity extends AppCompatActivity {
         }
 
         //Fills in the location object that is required to create a user object later on.
-        location.setCountry(country.getText().toString());
-        location.setProvinceOrState(province.getText().toString());
+        //location.setCountry(country.getText().toString());
+        //location.setProvinceOrState(province.getText().toString());
         location.setCity(city.getText().toString());
 
         //Grabs the string representation of the username provided so far.
@@ -187,6 +191,10 @@ public class registerActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             Log.d(logTag, "User profile updated.");
                                             writeUserToDatabase();
+                                            Toast.makeText(getApplicationContext(), "User Successfully registered, please sign in now.", Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent();
+                                            setResult(RESULT_OK, intent);
+                                            finish();
                                         }
                                         else{
                                             Log.d(logTag, "User Profile update Failed.  This is bad.");
@@ -206,6 +214,8 @@ public class registerActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
     }
 
     private void writeUserToDatabase(){

@@ -26,6 +26,13 @@
         <item>borrowing</item>
     </string-array>
 
+
+    <!--Requested books fragment strings for spinner-->
+    <string-array name="requested_books_status_array">
+        <item>requested</item>
+        <item>accepted</item>
+    </string-array>
+
     <!--Add Book Fragment Screens-->
     <string name="add_book_header">Add Book</string>
     <string name="add_book_title_text">Title:</string>
@@ -42,8 +49,7 @@
     <string name="register_header">Register</string>
     <string name="register_username">User Name</string>
     <string name="register_email">Email</string>
-    <string name="register_country">Country</string>
-    <string name="register_province">Province</string>
+    <string name="register_reenter_password">Re-enter Password</string>
     <string name="register_city">City</string>
     <string name="register_register_button">Register</string>
     <string name="register_password">Password</string>
@@ -53,6 +59,9 @@
     <string name="book_info_title">Book Info</string>
     <string name="book_info_view_owner_button_text">View Owner</string>
     <string name="book_info_request_book_button_text">Request Book</string>
+    <string name="book_info_book_title">Title</string>
+    <string name="book_info_book_author">Author</string>
+    <string name="book_info_view_goodreads_page">View Goodreads Page</string>
 
     <!--Set Meeting Activity Strings-->
     <string name="set_meeting_title">Set Meeting</string>
@@ -85,20 +94,16 @@
     <string name="book_requests_book_name">Pending requests for: BOOK NAME HERE</string>
     <string name="book_status_filter_title">Filter by:</string>
     <string name="book_status_requests_title">Requests</string>
-    <string name="user_profile_books_borrowed">Number of Books Borrowed: </string>
-    <string name="user_profile_books_owned">Number of Books Owned: </string>
+    <string name="user_profile_books_borrowed">Number of Books Borrowed: %1$d</string>
+    <string name="user_profile_books_owned">Number of Books Owned: %1$d</string>
+    <string name="user_profile_review_button">See User Reviews</string>
 
-    <!--
-      As a heads up, these strings were creating significant merge conflicts. Resolve with UI
-      people.
-    <string name="gen_location">general location</string>
-    <string name="username">username</string>
-    <string name="borrower_rating">Borrower Rating:</string>
-    <string name="owner_rating">Owner Rating:</string>
-    <string name="joined_on">Joined On:</string>
-    <string name="pending_title">Pending requests for: BOOK NAME HERE</string>
-    <string name="filter_by">Filter by:</string>
-    <string name="requestsTitle">Requests</string> -->
+    <!--Review Item XML Strings-->
+    <string name="review_item_borrowname">borrower_name</string>
+    <string name="review_item_date">date</string>
+    <string name="review_item_rating">10</string>
+    <string name="review_item_body">review text</string>
+    <string name="user_review_no_data">No reviews have been written for this user</string>
 
     <!--ISBN Activity Strings-->
     <string name="isbn_take_picture">Capture ISBN</string>
@@ -106,16 +111,11 @@
     <string name="isbn_barcode_success">Detector Setup</string>
     <string name="isbn_no_ISBN_fail">No ISBN detected</string>
 
-    <string-array name="requests_status_array">
-        <item>requested</item>
-        <item>accepted</item>
-    </string-array>
-
     <string name="title_activity_book_status_owner">bookStatusOwnerActivity</string>
-    <string name="book_status_borrower_book_title" >title</string>
-    <string name="book_status_borrower_book_author" >author</string>
-    <string name="book_status_borrower_book_comment" >comment</string>
-    <string name="book_status_borrower_book_owner" >owner</string>
+    <string name="book_status_borrower_book_title">title</string>
+    <string name="book_status_borrower_book_author">author</string>
+    <string name="book_status_borrower_book_comment">comment</string>
+    <string name="book_status_borrower_book_owner">owner</string>
     <string name="book_status_to_owner_switch">"borrow "</string>
     <string name="book_status_borrower_filter_by">Filter by:</string>
     <string name="book_status_owner_book_title">title</string>
@@ -128,4 +128,14 @@
     <string name="book_requests_decline_button">decline</string>
     <string name="book_requests_requester_username">username</string>
     <string name="book_info_isbn">123567890</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="requested_books_requests_title">Requests</string>
+    <string name="requested_books_filter_title">Filter by:</string>
+    <string name="requested_book_title">title</string>
+    <string name="requested_books_book_author">author</string>
+    <string name="requested_books_book_title">title</string>
+    <string name="requested_books_book_comment">comment</string>
+    <string name="requested_books_book_owner">owner</string>
 </resources>
