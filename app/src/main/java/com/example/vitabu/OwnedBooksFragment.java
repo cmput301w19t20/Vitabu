@@ -102,6 +102,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         }*/
 
 
+        // pull all books that user owns
         myRef.child("books").orderByChild("ownerName").equalTo(userName).addValueEventListener(
                 new ValueEventListener() {
                     @Override
@@ -130,6 +131,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
     }
 
+    // pull all bookids from borrow records that have been approved, where user is the borrower
     private void nextStep1(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
@@ -153,6 +155,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
                 });
     }
 
+    // pull all book ids
     private void nextStep2(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
