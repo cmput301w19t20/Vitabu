@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.List;
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(logTag, "Successfully signed in with email: " + email);
                             firebaseUser = auth.getCurrentUser();
-                            localUser = new LocalUser(firebaseUser);
+                            localUser = new LocalUser();
                             updateUI();
 
                         } else {
@@ -179,5 +180,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, browseBooksActivity.class);
         intent.putExtra("LocalUser", localUser.toJson());
         startActivity(intent);
+
     }
+
 }
