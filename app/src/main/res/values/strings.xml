@@ -111,6 +111,7 @@
         <item>accepted</item>
     </string-array>
 
+master
     <string name="title_activity_book_status_owner">bookStatusOwnerActivity</string>
     <string name="book_status_borrower_book_title" >title</string>
     <string name="book_status_borrower_book_author" >author</string>
@@ -127,4 +128,5 @@
     <string name="book_requests_accept_button">accept</string>
     <string name="book_requests_decline_button">decline</string>
     <string name="book_requests_requester_username">username</string>
+    <string name="book_info_isbn">123567890</string>
 </resources>

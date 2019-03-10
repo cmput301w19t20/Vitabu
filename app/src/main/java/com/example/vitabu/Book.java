@@ -37,13 +37,14 @@ public class Book {
      * @param status the status of the book (borrowed, available, requested, accepted).
      * @param ownerName Username of the owner of the book.
      */
-    public Book(String title, String author, String ISBN, String status, String ownerName) {
+    public Book(String title, String author, String ISBN, String status, String ownerName, String description) {
         this.title = title;
         this.author = author;
         this.ISBN = ISBN;
         setStatus(status);
         this.ownerName = ownerName;
-        bookid = UUID.randomUUID().toString();
+        this.bookid = UUID.randomUUID().toString();
+        this.description = description;
     }
 
     /**
