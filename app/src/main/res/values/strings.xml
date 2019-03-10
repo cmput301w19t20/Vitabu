@@ -92,6 +92,13 @@
         <item>borrowed</item>
         <item>borrowing</item>
     </string-array>
+
+    <string-array name="requests_array">
+        <item>requested</item>
+        <item>accepted</item>
+    </string-array>
+
+
     <string name="title_activity_book_status_owner">bookStatusOwnerActivity</string>
     <string name="book_status_borrower_book_title" >title</string>
     <string name="book_status_borrower_book_author" >author</string>
