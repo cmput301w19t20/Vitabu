@@ -57,10 +57,16 @@ public class Book {
         bookid = UUID.randomUUID().toString();
     }
 
+    /**
+     * @return returns the bookId. A string.
+     */
     public String getBookid() {
         return bookid;
     }
 
+    /**
+     * @param bookid the bookId. A string.
+     */
     public void setBookid(String bookid) {
         this.bookid = bookid;
     }
@@ -73,30 +79,51 @@ public class Book {
         this.ownerName = ownerName;
     }
 
+    /**
+     * @return returns the title of the book. A string.
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * @param title the title of the book. A string.
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * @return returns the author of the book. A string.
+     */
     public String getAuthor() {
         return author;
     }
 
+    /**
+     * @param author the author of the book. A string.
+     */
     public void setAuthor(String author) {
         this.author = author;
     }
 
+    /**
+     * @return returns the ISBN of the book
+     */
     public String getISBN() {
         return ISBN;
     }
 
+    /**
+     * @param ISBN the isbn of the book
+     */
     public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
 
+    /**
+     * @return returns the status of the book
+     */
     public String getStatus() {
         return status;
     }
@@ -109,7 +136,7 @@ public class Book {
      * @throws IllegalArgumentException
      */
     public void setStatus(String status) throws IllegalArgumentException{
-        if(! status.equals("available") && ! status.equals("requested") && ! status.equals("accepted") && ! status.equals("borrowed")) {
+        if(! status.equals("available") && ! status.equals("requested") && ! status.equals("accepted") && ! status.equals("borrowed") ) {
             throw new IllegalArgumentException("Status must be one of the following: available, requested, accepted, borrowed.");
         }
         this.status = status;
