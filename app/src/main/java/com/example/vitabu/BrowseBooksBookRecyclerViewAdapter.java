@@ -36,11 +36,10 @@ public class BrowseBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Bro
             Book book = mData.get(position);
             String title = book.getTitle();
             String author = book.getAuthor();
-//            Once Book has comments attribute added, get comments from there
-            String comments = "Comments go here";//book.getComments();
+            String status = book.getStatus();
             holder.title.setText(title);
             holder.author.setText(author);
-            holder.comments.setText(comments);
+            holder.status.setText(status);
         }
 
         // Returns total number of rows
@@ -52,13 +51,13 @@ public class BrowseBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Bro
 
         // stores and recycles views as they are scrolled off screen
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            TextView title, author, comments;
+            TextView title, author, status;
 
             ViewHolder(View itemView) {
                 super(itemView);
                 title = itemView.findViewById(R.id.browse_books_book_title);
                 author = itemView.findViewById(R.id.browse_books_book_author);
-                comments = itemView.findViewById(R.id.browse_books_book_comments);
+                status = itemView.findViewById(R.id.browse_books_book_status);
                 itemView.setOnClickListener(this);
             }
 
