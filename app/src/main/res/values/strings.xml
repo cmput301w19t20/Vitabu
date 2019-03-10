@@ -111,6 +111,7 @@
         <item>accepted</item>
     </string-array>
 
+master
     <string name="title_activity_book_status_owner">bookStatusOwnerActivity</string>
     <string name="book_status_borrower_book_title" >title</string>
     <string name="book_status_borrower_book_author" >author</string>
