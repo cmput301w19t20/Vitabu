@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +32,7 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
         ArrayList<Book> books = new ArrayList<>();
         Book book;
         for (int i = 0; i < 10; i++) {
-            book = new Book();
-            book.setTitle("Title");
-            book.setAuthor("Author");
+            book = new Book("Title" + Integer.toString(i), "Author", "1234", "available", "owen", "description", "bookid");
             books.add(book);
         }
 
@@ -53,9 +52,9 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
 //        TODO: Opens book info activity
 
         Intent intent = new Intent(this.getContext(), bookInfoActivity.class);
-        IntentJson passing = new IntentJson(curUser);
-        passing.addObject(adapter.getItem(position));
-        String message = passing.toJson();
+        Log.d("fragment launch", adapter.getItem(position).getTitle());
+        Gson gson = new Gson();
+        String message = gson.toJson(adapter.getItem(position));
         intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
         startActivity(intent);
 
