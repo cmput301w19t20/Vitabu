@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -143,6 +144,11 @@ public class LocalUser extends UserAbstract {
 
     public void setBooksBorrowed(int booksBorrowed) {
         this.booksBorrowed = booksBorrowed;
+    }
+
+    public String toJson(){
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 
 }

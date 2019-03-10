@@ -36,7 +36,6 @@ public class bookStatusBorrowerRecyclerViewAdapter extends RecyclerView.Adapter<
         Book book = mData.get(position);
         String title = book.getTitle();
         String author = book.getAuthor();
-
         String ownerName = book.getOwnerName();
 
         String comments = "Comments go here"; // access comment from Book class when available

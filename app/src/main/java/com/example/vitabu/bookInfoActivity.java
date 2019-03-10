@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,17 +27,31 @@ public class bookInfoActivity extends AppCompatActivity {
     String ownerid;
     User owner;
     LocalUser curUser;
+    final String logTag = "bookInfoActivity";
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Set up view.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_info);
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
+        // Get Book, and Current user from intent.
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        Log.d("bookInfo", message);
+        String bookMessage = intent.getStringExtra(MainActivity.BOOK_MESSAGE);
+        String localUserMessage = intent.getStringExtra(MainActivity.LOCALUSER_MESSAGE);
+        Log.d("bookInfo", bookMessage);
+
         Gson gson = new Gson();
-        book = gson.fromJson(message, Book.class);
+        book = gson.fromJson(bookMessage, Book.class);
+        curUser = gson.fromJson(localUserMessage, LocalUser.class);
         ownerid = book.getOwnerName();
         Log.d("bookInfoTESTTEST", book.getOwnerName());
+
+        // Populate textviews with appropriate data.
         TextView title = (TextView) findViewById(R.id.book_info_title);
         title.setText(book.getTitle());
         TextView author = (TextView) findViewById(R.id.book_info_author);
@@ -48,15 +63,14 @@ public class bookInfoActivity extends AppCompatActivity {
     }
 
     public void onClickRequestBook(View view) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        final String logTag = "bookInfoActivity";
+
         myRef.child("users").child(ownerid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        nextStep(dataSnapshot.getValue(User.class));
-                        Log.d(logTag, "Read owner");
+                        writeRequestToDatabase(dataSnapshot.getValue(User.class));
+                        finishThisActivity();
+                        Toast.makeText(bookInfoActivity.this, "You have requested '" + book.getTitle() + "'", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -67,52 +81,75 @@ public class bookInfoActivity extends AppCompatActivity {
         );
     }
 
-    private void nextStep(User owner){
+
+    public void finishThisActivity(){
+        this.finish();
+    }
+
+    private void writeRequestToDatabase(User owner){
         this.owner = owner;
-        final String logTag = "bookInfoActivity";
+        // Get database reference
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
-        Notification request = new Notification("Book Request for '" + book.getTitle() + "'",
+        // Construct notification for owner
+        Notification newNotification = new Notification("Book Request for '" + book.getTitle() + "'",
                                                 "A user has requested your book. Click here to view.",
                                                 "request", ownerid);
-
-        myRef.child("notifications").child(UUID.randomUUID().toString()).setValue(request)
+        Log.d(logTag, "Notification ID = " + newNotification.getNotificationid());
+        // Write notification to database.
+        myRef.child("notifications").child(newNotification.getNotificationid()).setValue(newNotification)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(logTag, "Successfully wrote user to database.");
+                        Log.d(logTag, "Successfully wrote notification to database.");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(logTag, "Failed to write User to database", e);
+                        Log.d(logTag, "Failed to write notification to database", e);
                     }
                 });
 
-        BorrowRecord bookRequest = new BorrowRecord(ownerid, curUser.getUserid(), book.getBookid());
-        bookRequest.setApproved(false);
-        String id = UUID.randomUUID().toString();
-        bookRequest.setRecordid(id);
-        myRef.child("transactions").child(id).setValue(bookRequest)
+        // Construct BorrowRecord for this transaction.
+        BorrowRecord newRecord = new BorrowRecord(owner.getUserName(), curUser.getUserName(), book.getBookid());
+        myRef.child("borrowrecords").child(newRecord.getRecordid()).setValue(newRecord)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(logTag, "Successfully wrote user to database.");
+                        Log.d(logTag, "Successfully wrote Borrow record to database.");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(logTag, "Failed to write User to database", e);
+                        Log.d(logTag, "Failed to write Borrow record to database", e);
                     }
                 });
     }
 
     public void onClickViewOwner(View view){
+        // Get Owner from database. When done launch goToUserProfileActivity()
+        myRef.child("users").child(ownerid).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        goToUserProfileActivity(dataSnapshot.getValue(User.class));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d(logTag, "Database error", databaseError.toException());
+                    }
+                }
+        );
+    }
+
+    public void goToUserProfileActivity(User owner) {
+        this.owner = owner;
         Intent intent = new Intent(this, userProfileActivity.class);
         Gson gson = new Gson();
-        intent.putExtra(MainActivity.EXTRA_MESSAGE, gson.toJson(owner));
+        intent.putExtra(MainActivity.USER_MESSAGE, gson.toJson(owner));
         startActivity(intent);
     }
 }

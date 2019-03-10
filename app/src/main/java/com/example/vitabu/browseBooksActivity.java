@@ -34,10 +34,14 @@ public class browseBooksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_browse_books);
 
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        String message = intent.getStringExtra("LocalUser");
         Gson gson = new Gson();
-        IntentJson passed = (IntentJson) gson.fromJson(message, IntentJson.class);
-        curUser = (LocalUser) passed.getUser();
+        curUser = gson.fromJson(message, LocalUser.class);
+//        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+//        Gson gson = new Gson();
+//        IntentJson passed = (IntentJson) gson.fromJson(message, IntentJson.class);
+//        curUser = (LocalUser) passed.getUser();
+//>>>>>>> c604f0d0db2e55b7e0521a3669ce754fefe12931
 
         // Get fragment manager (for switching fragments)
         fragmentManager = getSupportFragmentManager();

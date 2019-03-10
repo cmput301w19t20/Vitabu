@@ -30,9 +30,9 @@ public class bookRequestsFragment extends Fragment implements AdapterView.OnItem
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_book_requests, container, false);
-
+        // TODO Rethink the following code, as it will not work.  This fragment recieves it's intent from BrowseBooksActivity, which is not (and should not) be passed a book through intent.
         Intent intent = getActivity().getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        String message = intent.getStringExtra(MainActivity.BOOK_MESSAGE);
         Gson gson = new Gson();
 //        Book book = gson.fromJson(message, Book.class);
 

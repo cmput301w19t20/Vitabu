@@ -92,8 +92,15 @@
     <string name="book_requests_book_name">Pending requests for: BOOK NAME HERE</string>
     <string name="book_status_filter_title">Filter by:</string>
     <string name="book_status_requests_title">Requests</string>
-    <string name="user_profile_books_borrowed">Number of Books Borrowed: </string>
-    <string name="user_profile_books_owned">Number of Books Owned: </string>
+    <string name="user_profile_books_borrowed">Number of Books Borrowed: %1$d</string>
+    <string name="user_profile_books_owned">Number of Books Owned: %1$d</string>
+    <string name="user_profile_review_button">See User Reviews</string>
+
+    <!--Review Item XML Strings-->
+    <string name="review_item_borrowname">borrower_name</string>
+    <string name="review_item_date">date</string>
+    <string name="review_item_rating">10</string>
+    <string name="review_item_body">review text</string>
 
     <!--ISBN Activity Strings-->
     <string name="isbn_take_picture">Capture ISBN</string>
