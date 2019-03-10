@@ -15,6 +15,8 @@ public class bookStatusBorrowerRecyclerViewAdapter extends RecyclerView.Adapter<
     private LayoutInflater mInflater;
     private bookStatusBorrowerRecyclerViewAdapter.ItemClickListener mClickListener;
 
+
+
     // data is passed into the constructor
     bookStatusBorrowerRecyclerViewAdapter(Context context, List<Book> data) {
         this.mInflater = LayoutInflater.from(context);
@@ -34,12 +36,13 @@ public class bookStatusBorrowerRecyclerViewAdapter extends RecyclerView.Adapter<
         Book book = mData.get(position);
         String title = book.getTitle();
         String author = book.getAuthor();
-        User owner = book.getOwner();
+//        User owner = book.getOwner();
         String comments = "Comments go here"; // access comment from Book class when available
         holder.title.setText(title);
         holder.author.setText(author);
         holder.comments.setText(comments);
-        holder.owner.setText(owner.getUserName());
+//        holder.owner.setText(owner.getUserName());
+        holder.owner.setText("owner"); //will need to pull owner from firebase
     }
 
     // Returns total number of rows
