@@ -9,10 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -23,12 +26,20 @@ public class browseBooksActivity extends AppCompatActivity {
     private Fragment addBook;
     private Fragment notifications;
     private Fragment ownedBooks;
+    private LocalUser curUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_books);
 
+        Intent intent = getIntent();
+        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        Gson gson = new Gson();
+        IntentJson passed = (IntentJson) gson.fromJson(message, IntentJson.class);
+        curUser = (LocalUser) passed.getUser();
+
+        // Get fragment manager (for switching fragments)
         fragmentManager = getSupportFragmentManager();
 
         // Initialize fragments
@@ -36,7 +47,7 @@ public class browseBooksActivity extends AppCompatActivity {
         browseBooks = new BrowseBooksFragment();
         addBook = new AddBookFragment();
         notifications = new NotificationsFragment();
-        ownedBooks = new Fragment();//OwnedBooksFragment();
+        ownedBooks = new OwnedBooksFragment();
 
         fragmentManager.beginTransaction().replace(R.id.browse_books_frame, browseBooks).commit();
 
@@ -63,6 +74,13 @@ public class browseBooksActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //This function sends the onActivityResult(...) call to the fragment where that
+    //other activity was called so that it can be processed and dealt with correctly.
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -96,4 +114,8 @@ public class browseBooksActivity extends AppCompatActivity {
             return true;
         }
     };
+
+    public LocalUser getCurUser() {
+        return curUser;
+    }
 }

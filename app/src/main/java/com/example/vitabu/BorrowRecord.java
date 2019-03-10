@@ -1,6 +1,7 @@
 package com.example.vitabu;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @version 1.0
@@ -8,24 +9,42 @@ import java.util.Date;
  * Doubles as a book request, if approved is false.
  */
 public class BorrowRecord {
-    private String ownerid;
-    private String borrowerid;
+    private String userName;
+    private String borrowerName;
     private String bookid;
     private Date dateBorrowed;
     private Location pickUpLocation;
     private boolean approved;
     private String recordid;
+    private String ownerPhoneNumber;
+    private String ownerNotes;
+    private String ownerEmail;
 
-    public BorrowRecord(String ownerid, String borrowerid, String bookid) {
-        this.ownerid = ownerid;
-        this.borrowerid = borrowerid;
+
+    public BorrowRecord(String userName, String borrowerName, String bookid) {
+        this.userName = userName;
+        this.borrowerName = borrowerName;
         this.bookid = bookid;
         dateBorrowed = new Date();
+        recordid = UUID.randomUUID().toString();
     }
 
     public BorrowRecord(){
+        recordid = UUID.randomUUID().toString();
 
     }
+
+    public String getOwnerPhoneNumber(){return ownerPhoneNumber;}
+
+    public String getOwnerNotes(){return ownerNotes;}
+
+    public String getOwnerEmail(){return ownerEmail;}
+
+    public void setOwnerPhoneNumber(String number){ownerPhoneNumber = number;}
+
+    public void setOwnerNotes(String notes){ownerNotes = notes;}
+
+    public void setOwnerEmail(String email){ownerEmail = email;}
 
     public String getRecordid() {
         return recordid;
@@ -43,20 +62,20 @@ public class BorrowRecord {
         this.approved = approved;
     }
 
-    public String getOwnerid() {
-        return ownerid;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setOwnerid(String ownerid) {
-        this.ownerid = ownerid;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getBorrowerid() {
-        return borrowerid;
+    public String getBorrowerName() {
+        return borrowerName;
     }
 
-    public void setBorrowerid(String borrowerid) {
-        this.borrowerid = borrowerid;
+    public void setBorrowerName(String borrowerName) {
+        this.borrowerName = borrowerName;
     }
 
     public String getBookid() {

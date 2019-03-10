@@ -2,7 +2,7 @@ package com.example.vitabu;
 
 import java.util.Date;
 
-public abstract class UserAbstract {
+public abstract class UserAbstract extends Object{
     protected String userid;
     protected Location location;
     protected String userName;
@@ -28,7 +28,7 @@ public abstract class UserAbstract {
     public abstract Date getJoinDate();
     public abstract void setJoinDate(Date d);
     public abstract String getEmail();
-    public abstract void setEmail(String s);
+    //public abstract void setEmail(String s);
     public abstract String getUserid();
     public abstract void setUserid(String s);
 }

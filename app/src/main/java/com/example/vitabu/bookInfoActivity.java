@@ -32,35 +32,31 @@ public class bookInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_book_info);
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        Log.d("bookInfo", message);
         Gson gson = new Gson();
-        IntentJson passed = gson.fromJson(message, IntentJson.class);
-        curUser = passed.getUser();
-        book = (Book) passed.getObject(0);
-        ownerid = book.getOwnerid();
+        book = gson.fromJson(message, Book.class);
+        ownerid = book.getOwnerName();
+        Log.d("bookInfoTESTTEST", book.getOwnerName());
         TextView title = (TextView) findViewById(R.id.book_info_title);
         title.setText(book.getTitle());
         TextView author = (TextView) findViewById(R.id.book_info_author);
         author.setText(book.getAuthor());
         TextView ISBN = (TextView) findViewById(R.id.book_info_isbn);
         ISBN.setText(book.getISBN());
+        TextView desc = (TextView) findViewById(R.id.book_info_desc);
+        desc.setText(book.getDescription());
     }
 
-    private void setOwner(User owner){
-        this.owner = owner;
-    }
-
-    public void onClickRequestBook(View view){
-        //TODO: Untested, I suspect very strongly that I'm pushing the wrong things to the database
+    public void onClickRequestBook(View view) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();;
+        DatabaseReference myRef = database.getReference();
         final String logTag = "bookInfoActivity";
         myRef.child("users").child(ownerid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        setOwner(dataSnapshot.getValue(User.class));
+                        nextStep(dataSnapshot.getValue(User.class));
                         Log.d(logTag, "Read owner");
-
                     }
 
                     @Override
@@ -69,7 +65,13 @@ public class bookInfoActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
 
+    private void nextStep(User owner){
+        this.owner = owner;
+        final String logTag = "bookInfoActivity";
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
         Notification request = new Notification("Book Request for '" + book.getTitle() + "'",
                                                 "A user has requested your book. Click here to view.",
                                                 "request", ownerid);
@@ -109,10 +111,8 @@ public class bookInfoActivity extends AppCompatActivity {
 
     public void onClickViewOwner(View view){
         Intent intent = new Intent(this, userProfileActivity.class);
-        IntentJson passing = new IntentJson(curUser);
-        passing.addObject(owner);
-        String message = passing.toJson();
-        intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+        Gson gson = new Gson();
+        intent.putExtra(MainActivity.EXTRA_MESSAGE, gson.toJson(owner));
         startActivity(intent);
     }
 }

@@ -4,6 +4,14 @@ import java.util.Date;
 
 public class User extends UserAbstract {
 
+    public User(){}
+
+    public User(String userName, Date date, String email){
+        this.userName = userName;
+        this.joinDate = date;
+        this.email = email;
+    }
+
     public Location getLocation() {
         return location;
     }

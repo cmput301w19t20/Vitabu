@@ -131,15 +131,15 @@ public class registerActivity extends AppCompatActivity {
         myRef.child("usernames").child(strUsername).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.d(logTag, "got data");
+                Log.d(logTag, "Got username " + username + " Data from the database");
                 if (snapshot.exists()){
                     //Notifies the user that the username is already taken.
-                    Log.d(logTag, "uname taken");
+                    Log.d(logTag, username + " taken");
                     Toast.makeText(getApplicationContext(), "Username Is taken.", Toast.LENGTH_LONG).show();
 
                 }
                 else{
-                    Log.d(logTag, "uname not taken");
+                    Log.d(logTag, username + " not taken");
                     // Create new user.
                     signUp(location, username.getText().toString(), email.getText().toString(), password.getText().toString());
                 }
@@ -166,34 +166,35 @@ public class registerActivity extends AppCompatActivity {
     public void signUp(final Location location, final String userName, final String email, final String password){
         // Attempt to create user.
         Log.d(logTag, "In signup");
+
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(logTag, "Successfully created user with email: " + email);
-                        usr = new LocalUser(location, auth.getCurrentUser());
 
-                        // TODO Deal with failed user account update.
+                        usr = new LocalUser(location, userName, email, auth.getCurrentUser());
+
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(userName)
                                 .build();
 
-                        usr.getFireBaseUser().updateProfile(profileUpdates)
+                        auth.getCurrentUser().updateProfile(profileUpdates)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Log.d(logTag, "User profile updated.");
-                                            usr.writeToDatabase();
+                                            writeUserToDatabase();
+                                        }
+                                        else{
+                                            Log.d(logTag, "User Profile update Failed.  This is bad.");
                                         }
                                     }
                                 });
 
-                        Toast.makeText(getApplicationContext(), "User Successfully registered, please sign in now.", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
-                        finish();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -206,4 +207,37 @@ public class registerActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void writeUserToDatabase(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        myRef.child("users").child(usr.getUserName()).setValue(usr)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(logTag, "Successfully wrote user to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(logTag, "Failed to write User to database", e);
+                    }
+                });
+        myRef.child("usernames").child(usr.getUserName()).setValue(usr.getUserid())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(logTag, "Successfully wrote username to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(logTag, "Failed to write Username to database", e);
+                    }
+                });
+
+    }
+
 }

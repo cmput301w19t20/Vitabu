@@ -36,13 +36,18 @@ public class bookStatusBorrowerRecyclerViewAdapter extends RecyclerView.Adapter<
         Book book = mData.get(position);
         String title = book.getTitle();
         String author = book.getAuthor();
-//        User owner = book.getOwner();
+
+        String ownerName = book.getOwnerName();
+
+ master
         String comments = "Comments go here"; // access comment from Book class when available
         holder.title.setText(title);
         holder.author.setText(author);
         holder.comments.setText(comments);
-//        holder.owner.setText(owner.getUserName());
-        holder.owner.setText("owner"); //will need to pull owner from firebase
+
+        holder.owner.setText(ownerName);
+
+master
     }
 
     // Returns total number of rows
