@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".userReviewActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/user_review_recyclerView"
-        android:layout_width="368dp"
-        android:layout_height="551dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/user_review_no_data"
         android:layout_width="match_parent"
@@ -25,4 +16,13 @@
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:visibility="gone" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/user_review_recyclerView"
+        android:layout_width="368dp"
+        android:layout_height="551dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

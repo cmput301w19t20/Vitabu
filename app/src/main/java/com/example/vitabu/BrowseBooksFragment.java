@@ -84,6 +84,7 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
     public void updateBooks(DataSnapshot snapshot){
         Book curBook;
         int curBookIndex;
+        books.clear();
         Log.d(logTag, "Got Books snapshot!");
         for (DataSnapshot subSnapshot: snapshot.getChildren()){
             curBook = subSnapshot.getValue(Book.class);

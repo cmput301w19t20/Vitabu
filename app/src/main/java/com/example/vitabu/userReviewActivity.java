@@ -54,16 +54,17 @@ public class userReviewActivity extends AppCompatActivity {
         adapter = new CustomAdapter(reviewList);                                        // create adapter
         recyclerView.setAdapter(adapter);                                               // set adapter to view
 
-        // show no data text view if array list is empty
+
+        // show no data textView if array list is empty
         emptyText = (TextView) findViewById(R.id.user_review_no_data);
+        emptyText.setVisibility(View.VISIBLE);
+        /*
         if (reviewList.size() == 0){
+            Log.e("empty", "It was seen as empty " + Integer.toString(reviewList.size()));
             recyclerView.setVisibility(View.GONE);
             emptyText.setVisibility(View.VISIBLE);
         }
-        else{
-            recyclerView.setVisibility(View.VISIBLE);
-            emptyText.setVisibility(View.GONE);
-        }
+        */
     }
 
     // class that creates the array adapter to display reviews
@@ -168,8 +169,12 @@ public class userReviewActivity extends AppCompatActivity {
         for (DataSnapshot subSnapshot: dataSnapshot.getChildren()){
             Review review = subSnapshot.getValue(Review.class);
             reviewList.add(review);
-            adapter.notifyDataSetChanged();
+            Log.e("review added", "Added a review");
+            if (emptyText != null) {
+                emptyText.setVisibility(View.GONE);
+            }
         }
+        adapter.notifyDataSetChanged();
     }
 
 }
