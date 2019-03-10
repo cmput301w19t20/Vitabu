@@ -37,7 +37,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View fragmentView = inflater.inflate(R.layout.fragment_owned_books, container, false);
+        fragmentView = inflater.inflate(R.layout.fragment_owned_books, container, false);
 
         // Since we have predetermined the items for the drop down status menu,
         // will use a string array containing the status items -- located in the resource file
@@ -48,9 +48,10 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
+
         books = new ArrayList<>();
         bookids = new ArrayList<>();
-
+      
         // set up the RecyclerView
         recyclerView = fragmentView.findViewById(R.id.owned_books_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -58,6 +59,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         recyclerViewAdapter.setClickListener(this);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        recyclerViewAdapter.notifyDataSetChanged();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
@@ -102,6 +104,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         }*/
 
 
+        // pull all books that user owns
         myRef.child("books").orderByChild("ownerName").equalTo(userName).addValueEventListener(
                 new ValueEventListener() {
                     @Override
@@ -130,6 +133,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
     }
 
+    // pull all bookids from borrow records that have been approved, where user is the borrower
     private void nextStep1(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
@@ -153,6 +157,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
                 });
     }
 
+    // pull all book ids
     private void nextStep2(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();

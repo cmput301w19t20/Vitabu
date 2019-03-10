@@ -1,3 +1,7 @@
+/*
+ * This file contains the book status fragment implementation.
+ */
+
 package com.example.vitabu;
 
 import android.support.v4.app.Fragment;

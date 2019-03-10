@@ -1,3 +1,9 @@
+/*
+ * This file was originally intended to hold the books and sort them by their status with a spinner
+ * before we switched to using fragments. See bookStatusFragment for completed version.
+ *
+ * THIS FILE IS DEPRECATED!
+ */
 package com.example.vitabu;
 
 import android.content.Intent;

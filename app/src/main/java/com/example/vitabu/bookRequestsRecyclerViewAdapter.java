@@ -1,3 +1,10 @@
+/*
+ * This file contains the adapter for the bookRequestsRecyclerView to implement the functionality
+ * behind the recyclerview.
+ *
+ * Author: Jacob Paton
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import android.content.Context;

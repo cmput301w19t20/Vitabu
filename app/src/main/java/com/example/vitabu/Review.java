@@ -21,6 +21,8 @@ public class Review {
     private String reviewid;
     private String ownerName;
     private String borrowerName;
+    private String reviewFrom;
+    private String reviewTo;
     private Date date;
     private int rating;
     private String body;
@@ -33,13 +35,15 @@ public class Review {
 
     }
 
-    public Review(String ownerName, String borrowerName, int rating, String body) {
+    public Review(String ownerName, String borrowerName, int rating, String body, String reviewFrom, String reviewTo) {
         this.ownerName = ownerName;
         this.borrowerName = borrowerName;
         this.rating = rating;
         this.body = body;
         this.date = new Date();
         this.reviewid = UUID.randomUUID().toString();
+        this.reviewFrom = reviewFrom;
+        this.reviewTo = reviewTo;
     }
 
     public String getReviewid() {
@@ -99,5 +103,21 @@ public class Review {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getReviewFrom() {
+        return reviewFrom;
+    }
+
+    public void setReviewFrom(String reviewFrom) {
+        this.reviewFrom = reviewFrom;
+    }
+
+    public String getReviewTo() {
+        return reviewTo;
+    }
+
+    public void setReviewTo(String reviewTo) {
+        this.reviewTo = reviewTo;
     }
 }
