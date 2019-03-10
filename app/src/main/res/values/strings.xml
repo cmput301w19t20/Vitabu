@@ -49,8 +49,7 @@
     <string name="register_header">Register</string>
     <string name="register_username">User Name</string>
     <string name="register_email">Email</string>
-    <string name="register_country">Country</string>
-    <string name="register_province">Province</string>
+    <string name="register_reenter_password">Re-enter Password</string>
     <string name="register_city">City</string>
     <string name="register_register_button">Register</string>
     <string name="register_password">Password</string>
@@ -60,6 +59,9 @@
     <string name="book_info_title">Book Info</string>
     <string name="book_info_view_owner_button_text">View Owner</string>
     <string name="book_info_request_book_button_text">Request Book</string>
+    <string name="book_info_book_title">Title</string>
+    <string name="book_info_book_author">Author</string>
+    <string name="book_info_view_goodreads_page">View Goodreads Page</string>
 
     <!--Set Meeting Activity Strings-->
     <string name="set_meeting_title">Set Meeting</string>
@@ -101,6 +103,7 @@
     <string name="review_item_date">date</string>
     <string name="review_item_rating">10</string>
     <string name="review_item_body">review text</string>
+    <string name="user_review_no_data">No reviews have been written for this user</string>
 
     <!--ISBN Activity Strings-->
     <string name="isbn_take_picture">Capture ISBN</string>
