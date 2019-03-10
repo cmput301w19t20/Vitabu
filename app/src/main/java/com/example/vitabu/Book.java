@@ -17,12 +17,15 @@ public class Book {
     private String bookid;
 
 
-    public Book(String title, String author, String ISBN, String status, String ownerName) {
+    public Book(String title, String author, String ISBN, String status, String ownerName) {}
+    public Book(String title, String author, String ISBN, String status, String ownerName, String description, String bookid) {
         this.title = title;
         this.author = author;
         this.ISBN = ISBN;
         setStatus(status);
         this.ownerName = ownerName;
+        this.description = description;
+        this.bookid = bookid;
     }
 
     public Book(){

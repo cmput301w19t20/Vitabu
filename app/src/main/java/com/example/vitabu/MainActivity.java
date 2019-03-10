@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "IntentJson";
     private LocalUser localUser;
     private FirebaseUser firebaseUser;
+    static public LocalUser t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(logTag, "Successfully signed in with email: " + email);
                             firebaseUser = auth.getCurrentUser();
                             localUser = new LocalUser();
+                            t = localUser;
                             updateUI();
 
                         } else {
@@ -167,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         localUser = (dataSnapshot.getValue(LocalUser.class));
+                        t = localUser;
                         Log.d(logTag, "Read owner");
                     }
 
@@ -181,5 +185,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, browseBooksActivity.class);
         intent.putExtra(EXTRA_MESSAGE, passing.toJson());
         startActivity(intent);
+
     }
+
 }

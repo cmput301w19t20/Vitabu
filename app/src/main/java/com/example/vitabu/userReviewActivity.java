@@ -1,6 +1,7 @@
 package com.example.vitabu;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +29,7 @@ public class userReviewActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CustomAdapter adapter;
     private RecyclerView.LayoutManager LayoutManager;
-    User user;
+    LocalUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,8 @@ public class userReviewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         Gson gson = new Gson();
-        user = gson.fromJson(message, User.class);
-
+        user = gson.fromJson(message, LocalUser.class);
+        //user = MainActivity.t;
         getReviewList();
         //Review t = new Review("Owner name", "borrow name", 10, "This is a generic review");
         //reviewList.add(t);
@@ -134,30 +135,29 @@ public class userReviewActivity extends AppCompatActivity {
         // query database to get reviews
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("reviews");
+        DatabaseReference myRef = database.getReference().child("reviews");
 
         // listener for reviews
-        ValueEventListener reviewListener = new ValueEventListener() {
+        myRef.orderByChild("reviewTo").equalTo(user.getUserName()).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Review object from the database
-                Review review = dataSnapshot.getValue(Review.class);
-                if ((review != null) &&(review.getOwnerName() ==  user.getUserName())) {
-                    reviewList.add(review);
-                    adapter.notifyDataSetChanged();
-                }
-
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                updateReviews(dataSnapshot);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Review failed, log a message
-                final String TAG = "bookInfoActivity";
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        };
-        myRef.addValueEventListener(reviewListener);
+        });
+    }
+
+    public void updateReviews(DataSnapshot dataSnapshot){
+
+        for (DataSnapshot subSnapshot: dataSnapshot.getChildren()){
+            Review review = subSnapshot.getValue(Review.class);
+            reviewList.add(review);
+            adapter.notifyDataSetChanged();
+        }
     }
 
 }

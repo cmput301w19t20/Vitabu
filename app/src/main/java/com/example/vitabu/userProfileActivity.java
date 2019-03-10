@@ -7,6 +7,7 @@ Shane Conder & Lauren Darcey. "Android SDK Quick Tip: Formatting Resource String
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -26,8 +27,6 @@ import com.google.gson.Gson;
 
 public class userProfileActivity extends AppCompatActivity {
 
-    User owner;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +36,9 @@ public class userProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         Gson gson = new Gson();
-        final User user = gson.fromJson(message, User.class);
+        final LocalUser user = gson.fromJson(message, LocalUser.class);
+
+        //final LocalUser user = MainActivity.t;
 
         // setting temporary default rating for borrower and owner bars
         // also set in .xml file for each rating bar for viewing purposes
@@ -50,7 +51,7 @@ public class userProfileActivity extends AppCompatActivity {
         nameHolder.setText(user.getUserName());
         TextView emailHolder = (TextView) findViewById(R.id.user_profile_email);
         emailHolder.setText(user.getEmail());
-        TextView locationHolder = (TextView) findViewById(R.id.user_profile_location);
+        //TextView locationHolder = (TextView) findViewById(R.id.user_profile_location);
         TextView booksBorrowedHolder = (TextView) findViewById(R.id.user_profile_books_borrowed);
         int number = user.getBooksBorrowed();
         String format = getResources().getString(R.string.user_profile_books_borrowed);

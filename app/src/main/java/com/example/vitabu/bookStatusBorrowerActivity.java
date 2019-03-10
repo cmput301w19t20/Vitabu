@@ -1,10 +1,12 @@
 package com.example.vitabu;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,11 +15,20 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 public class bookStatusBorrowerActivity extends AppCompatActivity implements bookStatusBorrowerRecyclerViewAdapter.ItemClickListener, AdapterView.OnItemSelectedListener {
 
     bookStatusBorrowerRecyclerViewAdapter recyclerAdapter;
+    String bookid;
+    User owner;
+    LocalUser curUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,23 +44,24 @@ public class bookStatusBorrowerActivity extends AppCompatActivity implements boo
         onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                 Log.i(TAG, "onCheckedChanged: " + isChecked);
+//                 Log.d(TAG, "onCheckedChanged: " + isChecked);
                 Intent intent = new Intent(bookStatusBorrowerActivity.this, bookStatusOwnerActivity.class);
+                IntentJson passing = new IntentJson(curUser);
+                passing.addObject(owner);
+                String message = passing.toJson();
+                intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
                 startActivity(intent);
             }
         });
 
-        // populate array of books to display
-        ArrayList<Book> booksA = new ArrayList<>();
+        ArrayList<Book> books = new ArrayList<>();
 
-        // would need to instantiate User objects to test this
         Book book;
         for (int i = 0; i < 10; i++) {
             book = new Book();
             book.setTitle("Title");
             book.setAuthor("Author");
-//            book.setOwner(); // get user
-            booksA.add(book);
+            books.add(book);
         }
 
         // set up the spinner
@@ -62,7 +74,7 @@ public class bookStatusBorrowerActivity extends AppCompatActivity implements boo
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.book_status_borrower_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerAdapter = new bookStatusBorrowerRecyclerViewAdapter(this, booksA);
+        recyclerAdapter = new bookStatusBorrowerRecyclerViewAdapter(this, books);
         recyclerView.setAdapter(recyclerAdapter);
         recyclerAdapter.setClickListener(this);
         recyclerView.setAdapter(recyclerAdapter);
@@ -75,6 +87,9 @@ public class bookStatusBorrowerActivity extends AppCompatActivity implements boo
         Toast.makeText(this, "You clicked " + recyclerAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
 
+    private void setOwner(User owner){
+        this.owner = owner;
+    }
 
     // update recycler when when spinner item is selected
     @Override
