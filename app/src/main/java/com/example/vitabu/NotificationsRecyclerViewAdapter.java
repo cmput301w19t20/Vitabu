@@ -1,3 +1,11 @@
+/*
+ * This file contains the adapter for the NotificationsRecyclerView. This adapter provides the UI and
+ * functionality to the recycler view to display the notifications correctly.
+ *
+ * Author: Katherine Richards
+ * Version: 1.0
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import android.content.Context;

@@ -1,3 +1,11 @@
+/*
+ * This file contains the fragment that has the logic and UI of showing the notifications to the user.
+ *
+ * Author: Jacob Paton
+ * Version: 1.2
+ * Outstanding Issues: Implement the requests listing and accepting.
+ */
+
 package com.example.vitabu;
 
 import android.content.Intent;
@@ -178,10 +186,10 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
 
     public void startAcceptBookRequestActivity(Book book){
         // TODO launch acceptBookRequestActivity.
-//        Intent intent = new Intent(this, acceptBookRequestActivity.class);
-//        Gson gson = new Gson();
-//        intent.putExtra(MainActivity.BOOK_MESSAGE, gson.toJson(book));
-//        startActivity(intent);
+        Intent intent = new Intent(this.getContext(), acceptBookRequestActivity.class);
+        Gson gson = new Gson();
+        intent.putExtra(MainActivity.BOOK_MESSAGE, gson.toJson(book));
+        startActivity(intent);
     }
 
 }

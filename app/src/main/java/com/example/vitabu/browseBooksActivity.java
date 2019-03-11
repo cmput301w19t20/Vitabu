@@ -49,6 +49,7 @@ public class browseBooksActivity extends AppCompatActivity {
     private Fragment notifications;
     private Fragment ownedBooks;
     private LocalUser curUser;
+    private String message;
 
     /**
      * This method is called when this activity gets called initially. It gets the information about
@@ -63,7 +64,7 @@ public class browseBooksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_browse_books);
 
         Intent intent = getIntent();
-        String message = intent.getStringExtra("LocalUser");
+        message = intent.getStringExtra("LocalUser");
         Gson gson = new Gson();
         curUser = gson.fromJson(message, LocalUser.class);
 
@@ -107,9 +108,14 @@ public class browseBooksActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.browse_books_appbar_search:
-                Intent intent = new Intent(this, searchBooksActivity.class);
-                startActivity(intent);
+                Intent searchBooksIntent = new Intent(this, searchBooksActivity.class);
+                searchBooksIntent.putExtra(MainActivity.USER_MESSAGE, message);
+                startActivity(searchBooksIntent);
                 break;
+            case R.id.browse_books_appbar_profile:
+                Intent editProfileIntent = new Intent(this, editProfileActivity.class);
+                editProfileIntent.putExtra(MainActivity.USER_MESSAGE, message);
+                startActivity(editProfileIntent);
             default:
                 break;
         }

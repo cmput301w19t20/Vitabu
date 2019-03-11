@@ -1,3 +1,11 @@
+/*
+ * This file contains the LogIn information to authenticate a user or register a new user. From there
+ * it invokes the main business logic of the rest of the app.
+ *
+ * Author: Tristan Carlson
+ * Version: 1.6
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import android.content.Intent;
@@ -42,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String LOCALUSER_MESSAGE = "LocalUser";
     public static final String BORROWRECORD_MESSAGE = "BorrowRecord";
     public static final String USER_MESSAGE = "User";
+    public static final String REVIEW_TYPE = "type";
     private LocalUser localUser;
     private FirebaseUser firebaseUser;
     private boolean uiUpdated = false;

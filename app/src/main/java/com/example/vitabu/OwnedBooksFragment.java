@@ -1,3 +1,11 @@
+/*
+ * This file contains the fragment that has the logic and UI of showing the books owned by the user.
+ *
+ * Author: Jacob Paton
+ * Version: 1.2
+ * Outstanding Issues: ---
+ */
+
 package com.example.vitabu;
 
 import android.content.Intent;
@@ -34,10 +42,12 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
     private ArrayList<String> bookids;
     private String userName;
     private RecyclerView recyclerView;
+    private boolean created;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_owned_books, container, false);
+        created = true;
 
         // Since we have predetermined the items for the drop down status menu,
         // will use a string array containing the status items -- located in the resource file
@@ -163,42 +173,47 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
     private void nextStep2(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
-        for(String id: bookids) {
-            try{
-                myRef.child("books").child(id).addListenerForSingleValueEvent(
-                    new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Book b = dataSnapshot.getValue(Book.class);
-                            if(bookids.size() == 0){
-                                String bid = b.getBookid();
-                                for(Book book: books){
-                                    if(book.getBookid().equals(bid)){
-                                        books.remove(book);
+        if(bookids.size() == 0 && created){
+            created = false;
+            orderBy("available");
+        }else {
+            for (String id : bookids) {
+                try {
+                    myRef.child("books").child(id).addListenerForSingleValueEvent(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Book b = dataSnapshot.getValue(Book.class);
+                                    if (bookids.size() == 0) {
+                                        String bid = b.getBookid();
+                                        bookids.add(bid);
+                                        for (Book book : books) {
+                                            if (book.getBookid().equals(bid)) {
+                                                books.remove(book);
+                                            }
+                                        }
                                     }
+                                    books.add(b);
+                                    removeBookid(b.getBookid());
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
                                 }
                             }
-                            books.add(b);
-                            removeBookid(b.getBookid());
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    }
-                );
-            }catch(Exception e){
-                Log.d("OWNED_BOOKS_FRAGMENT", "Missing bookid " + e.getMessage());
+                    );
+                } catch (Exception e) {
+                    Log.d("OWNED_BOOKS_FRAGMENT", "Missing bookid " + e.getMessage());
+                }
             }
         }
-        newAdapter();
     }
 
     private void removeBookid(String id){
         bookids.remove(id);
-        Log.d("Bookid removed ", "" + bookids.size());
-        if(bookids.size() == 0){
+        if(bookids.size() == 0 && created){
+            created = false;
             orderBy("available");
         }
     }
