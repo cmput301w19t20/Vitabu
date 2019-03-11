@@ -1,3 +1,11 @@
+/*
+ * This file contains the fragment that has the logic and UI for displaying and dealing with browsing
+ * all the books that have not yet been accepted or borrowed.
+ *
+ * Author: Jacob Paton
+ * Version: 1.5
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import android.content.Intent;

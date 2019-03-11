@@ -1,12 +1,22 @@
+/*
+ * This file contains the BorrowRecord model class that is used to keep track of the current status
+ * of a borrowing.
+ *
+ * Author: Owen Randall
+ * Version: 1.3
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import java.util.Date;
 import java.util.UUID;
 
 /**
- * @version 1.0
  * Object used to keep track of borrow/lending transactions between users. Both lender and borrower should receive a copy of this record.
  * Doubles as a book request, if approved is false.
+ *
+ * @version 1.3
+ * @author Owen Randall
  */
 public class BorrowRecord {
     private String ownerName;
@@ -21,6 +31,14 @@ public class BorrowRecord {
     private String ownerEmail;
 
 
+    /**
+     * This is the constructor that is used to instantiate the BorrowRecord object with all the necessary
+     * and specified parameters.
+     *
+     * @param ownerName the name of the owner of the book.
+     * @param borrowerName the name of the borrower of the book.
+     * @param bookid the id of the book that is being borrowed.
+     */
     public BorrowRecord(String ownerName, String borrowerName, String bookid) {
         this.ownerName = ownerName;
         this.borrowerName = borrowerName;
@@ -30,6 +48,10 @@ public class BorrowRecord {
         this.approved = false;
     }
 
+    /**
+     * This is the default constructor that is used to instantiate the BorrowRecord without any parameters.
+     * This is used with the Firebase Database for serialization.
+     */
     public BorrowRecord(){
         this.recordid = UUID.randomUUID().toString();
         this.approved = false;
