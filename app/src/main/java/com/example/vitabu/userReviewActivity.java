@@ -45,9 +45,6 @@ public class userReviewActivity extends AppCompatActivity {
         user = gson.fromJson(message, User.class);
         getReviewList();
 
-        //Review t = new Review("Owner name", "borrow name", 10, "This is a generic review");
-        //reviewList.add(t);
-
         //create recycler view
         recyclerView = (RecyclerView) findViewById(R.id.user_review_recyclerView);     // capture recycler view
         LayoutManager = new LinearLayoutManager(this);                          // use linear layout and set it
@@ -56,10 +53,11 @@ public class userReviewActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);                                               // set adapter to view
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-
         // show no data textView if array list is empty
         emptyText = (TextView) findViewById(R.id.user_review_no_data);
-        emptyText.setVisibility(View.VISIBLE);
+        if (reviewList.size() == 0) {
+            emptyText.setVisibility(View.VISIBLE);
+        }
     }
 
     // class that creates the array adapter to display reviews
