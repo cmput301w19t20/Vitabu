@@ -3,7 +3,6 @@ package com.example.vitabu;
 import android.app.Activity;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.widget.EditText;
 
 import com.robotium.solo.Solo;
 
@@ -19,11 +18,10 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.TestCase.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class BrowseBooksTest extends ActivityTestRule<MainActivity> {
+public class MyBooksTest extends ActivityTestRule<MainActivity> {
     private Solo solo;
-    private Date date;
 
-    public BrowseBooksTest() {
+    public MyBooksTest() {
         super(MainActivity.class, false, true);
     }
 
@@ -34,7 +32,6 @@ public class BrowseBooksTest extends ActivityTestRule<MainActivity> {
     @Before
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), rule.getActivity());
-        date = new Date();
     }
 
     @Test
@@ -43,22 +40,19 @@ public class BrowseBooksTest extends ActivityTestRule<MainActivity> {
     }
 
     @Test
-    public void testActivity() {
-        solo.clickOnButton("Browse");
-//        solo.assertCurrentActivity("Wrong Activity", browseBooksActivity.class);
-    }
-
-    @Test
     public void testBook() {
-        assertTrue(solo.waitForText("temp3", 1, 2000));
-        assertTrue(solo.waitForText("temp3", 1, 2000));
+        solo.clickOnText("My Books");
+        assertTrue(solo.waitForText("TestBook", 1, 2000));
+        assertTrue(solo.waitForText("TestAuthor", 1, 2000));
     }
 
     @Test
     public void testBookClick() {
+        solo.clickOnText("My Books");
         solo.clickOnText("Title:");
         solo.assertCurrentActivity("Wrong Activity (check that there are books in database to click).", bookInfoActivity.class);
     }
+
 
     @After
     public void tearDown() throws Exception{

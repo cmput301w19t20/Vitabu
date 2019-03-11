@@ -3,8 +3,9 @@ package com.example.vitabu;
 import android.app.Activity;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.widget.EditText;
 
+import com.example.vitabu.MainActivity;
+import com.example.vitabu.bookInfoActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -19,11 +20,11 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.TestCase.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class BrowseBooksTest extends ActivityTestRule<MainActivity> {
+public class RequestsTest extends ActivityTestRule<MainActivity> {
     private Solo solo;
     private Date date;
 
-    public BrowseBooksTest() {
+    public RequestsTest() {
         super(MainActivity.class, false, true);
     }
 
@@ -44,19 +45,21 @@ public class BrowseBooksTest extends ActivityTestRule<MainActivity> {
 
     @Test
     public void testActivity() {
-        solo.clickOnButton("Browse");
+        solo.clickOnText("Requests");
 //        solo.assertCurrentActivity("Wrong Activity", browseBooksActivity.class);
     }
 
     @Test
     public void testBook() {
+        solo.clickOnText("Requests");
         assertTrue(solo.waitForText("temp3", 1, 2000));
         assertTrue(solo.waitForText("temp3", 1, 2000));
     }
 
     @Test
     public void testBookClick() {
-        solo.clickOnText("Title:");
+        solo.clickOnText("Requests");
+        solo.clickOnText("temp3");
         solo.assertCurrentActivity("Wrong Activity (check that there are books in database to click).", bookInfoActivity.class);
     }
 
