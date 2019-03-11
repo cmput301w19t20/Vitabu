@@ -28,6 +28,7 @@ public class Book {
     private String ownerName;
     private String description;
     private String bookid;
+    private String borrower;
 
     /**
      * This is the constructor that is used to instantiate the Book object with all the necessary
@@ -39,7 +40,7 @@ public class Book {
      * @param status the status of the book (borrowed, available, requested, accepted).
      * @param ownerName Username of the owner of the book.
      */
-    public Book(String title, String author, String ISBN, String status, String ownerName, String description) {
+    public Book(String title, String author, String ISBN, String status, String ownerName, String description, String borrower) {
         this.title = title;
         this.author = author;
         this.ISBN = ISBN;
@@ -47,6 +48,7 @@ public class Book {
         this.ownerName = ownerName;
         this.bookid = UUID.randomUUID().toString();
         this.description = description;
+        this.borrower = borrower;
     }
 
     /**
@@ -148,5 +150,21 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * Sets the borrower.
+     * @param borrower The string username of the user borrowing the book.
+     */
+    public void setBorrower(String borrower) {
+        this.borrower = borrower;
+    }
+
+    /**
+     * Getter for borrower.
+     * @return Returns the username of the user currently borrowing (can be empty).
+     */
+    public String getBorrower() {
+        return borrower;
     }
 }
