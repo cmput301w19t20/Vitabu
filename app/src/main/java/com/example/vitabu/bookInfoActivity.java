@@ -147,10 +147,13 @@ public class bookInfoActivity extends AppCompatActivity {
         // Get database reference
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
+        // Construct BorrowRecord for this transaction.
+        BorrowRecord newRecord = new BorrowRecord(owner.getUserName(), curUser.getUserName(), book.getBookid());
         // Construct notification for owner
         Notification newNotification = new Notification("Book Request for '" + book.getTitle() + "'",
-                                                "A user has requested your book. Click here to view.",
-                                                "request", ownerid);
+                "A user has requested your book. Click here to view.",
+                "request", ownerid, newRecord.getRecordid());
+
         Log.d(logTag, "Notification ID = " + newNotification.getNotificationid());
         // Write notification to database.
         myRef.child("notifications").child(newNotification.getNotificationid()).setValue(newNotification)
@@ -167,8 +170,7 @@ public class bookInfoActivity extends AppCompatActivity {
                     }
                 });
 
-        // Construct BorrowRecord for this transaction.
-        BorrowRecord newRecord = new BorrowRecord(owner.getUserName(), curUser.getUserName(), book.getBookid());
+
         myRef.child("borrowrecords").child(newRecord.getRecordid()).setValue(newRecord)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

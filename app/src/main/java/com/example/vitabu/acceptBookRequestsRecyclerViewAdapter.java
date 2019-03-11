@@ -1,3 +1,12 @@
+/*
+ * This file contains the adapter for the acceptBookRequestRecyclerview that implements the UI and
+ * functionality of the recyclerView.
+ *
+ * Author: Katherine Richards
+ * Version: 1.0
+ * Outstanding Issues: ---
+ */
+
 package com.example.vitabu;
 
 import android.content.Context;

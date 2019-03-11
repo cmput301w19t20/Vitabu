@@ -26,6 +26,7 @@ public class Notification {
     private boolean seen;
     private String userName;
     private String notificationid;
+    private String borrowRecordId;
 
     /**
      * This is the constructor that is used to instantiate the Notification object with all the necessary
@@ -36,7 +37,8 @@ public class Notification {
      * @param type a type of the notification.
      * @param userName the username which needs to be notified.
      */
-    public Notification(String title, String message, String type, String userName) {
+    public Notification(String title, String message, String type, String userName, String borrowRecordId) {
+
         this.notificationid = UUID.randomUUID().toString();
         this.date = new Date();
         this.title = title;
@@ -44,6 +46,7 @@ public class Notification {
         this.type = type;
         this.seen = false;
         this.userName = userName;
+        this.borrowRecordId = borrowRecordId;
     }
 
     /**
@@ -71,6 +74,24 @@ public class Notification {
      */
     public void setNotificationid(String notificationid) {
         this.notificationid = notificationid;
+    }
+
+    /**
+     * The getter for the borrow record ID
+     *
+     * @return the borrow record ID
+     */
+    public String getBorrowRecordId(){
+        return borrowRecordId;
+    }
+
+    /**
+     * The setter for the borrow record ID
+     *
+     * @param borrowRecordId the borrow record ID
+     */
+    public void setBorrowRecordId(String borrowRecordId){
+        this.borrowRecordId = borrowRecordId;
     }
 
     /**
@@ -160,6 +181,9 @@ public class Notification {
      * @param type the type of notification
      */
     public void setType(String type) {
+        if(! type.equals("request") && ! type.equals("accept") && ! type.equals("dropoff") && ! type.equals("return")  && ! type.equals("pickup") && ! type.equals("review")) {
+            throw new IllegalArgumentException("Type must be one of the following: request, accept, dropoff, return, pickup, review");
+        }
         this.type = type;
     }
 
