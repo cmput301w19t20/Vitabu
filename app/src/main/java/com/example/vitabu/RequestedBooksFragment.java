@@ -59,14 +59,6 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
 
         // data to populate the RecyclerView with
         books = new ArrayList<>();
-//        Book book;
-//        for (int i = 0; i < 10; i++) {
-//            book = new Book();
-//            book.setTitle("Title");
-//            book.setAuthor("Author");
-//            books.add(book);
-//        }
-
         // set up the RecyclerView
         final RecyclerView recyclerView = fragmentView.findViewById(R.id.requested_books_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
