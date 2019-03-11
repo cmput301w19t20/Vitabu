@@ -91,7 +91,10 @@ public class LocalUser extends UserAbstract {
         return auth.getCurrentUser().getDisplayName();
     }
 
-
+    /**
+     * This is the setter for the user's username.
+     * @param userName the user's username.
+     */
     public void setUserName(String userName){
         this.userName = userName;
     }
@@ -106,30 +109,65 @@ public class LocalUser extends UserAbstract {
         return auth.getCurrentUser().getUid();
     }
 
+    /**
+     * The setter for the user's userid.
+     *
+     * @param userid the user's userid
+     */
     public void setUserid(String userid){
         this.userid = userid;
     }
 
+    /**
+     * The getter for the User's general location.
+     *
+     * @return the User's general location.
+     */
     public Location getLocation() {
         return location;
     }
 
+    /**
+     * The setter for the user's general location.
+     *
+     * @param location the user's general location.
+     */
     public void setLocation(Location location) {
         this.location = location;
     }
 
+    /**
+     * The getter for the user's borrower rating.
+     *
+     * @return the user's borrower rating.
+     */
     public int getBorrowerRating() {
         return borrowerRating;
     }
 
+    /**
+     * The setter for the user's borrower rating.
+     *
+     * @param borrowerRating the user's borrower rating.
+     */
     public void setBorrowerRating(int borrowerRating) {
         this.borrowerRating = borrowerRating;
     }
 
+    /**
+     * The getter for the user's owner rating.
+     *
+     * @return the user's owner rating.
+     */
     public int getOwnerRating() {
         return ownerRating;
     }
 
+    /**
+     * The setter for the user's owner rating.
+     *
+     * @param ownerRating the user's owner rating.
+     */
     public void setOwnerRating(int ownerRating) {
         this.ownerRating = ownerRating;
     }
@@ -146,6 +184,11 @@ public class LocalUser extends UserAbstract {
         return new Date(firebaseUser.getMetadata().getCreationTimestamp());
     }
 
+    /**
+     * The setter for the date when the user joined
+     *
+     * @param joinDate the date when the user joined
+     */
     public void setJoinDate(Date joinDate){
         this.joinDate = joinDate;
     }
@@ -168,18 +211,38 @@ public class LocalUser extends UserAbstract {
 //        //this.email = email;
 //    }
 
+    /**
+     * The getter for the number of books the user owns.
+     *
+     * @return the number of books the user owns.
+     */
     public int getBooksOwned() {
         return booksOwned;
     }
 
+    /**
+     * The setter for the number of books that the user owns.
+     *
+     * @param booksOwned the number of books that the user owns.
+     */
     public void setBooksOwned(int booksOwned) {
         this.booksOwned = booksOwned;
     }
 
+    /**
+     * The getter for the number of books that the user borrowed.
+     *
+     * @return the number of books that the user borrowed.
+     */
     public int getBooksBorrowed() {
         return booksBorrowed;
     }
 
+    /**
+     * The setter for the number of books that the user borrowed.
+     *
+     * @param booksBorrowed the number of books that the user borrowed.
+     */
     public void setBooksBorrowed(int booksBorrowed) {
         this.booksBorrowed = booksBorrowed;
     }

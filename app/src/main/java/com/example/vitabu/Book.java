@@ -60,6 +60,8 @@ public class Book {
     }
 
     /**
+     * The getter for the BookID
+     *
      * @return returns the bookId. A string.
      */
     public String getBookid() {
@@ -67,21 +69,35 @@ public class Book {
     }
 
     /**
+     * The setter for the BookID.
+     *
      * @param bookid the bookId. A string.
      */
     public void setBookid(String bookid) {
         this.bookid = bookid;
     }
 
+    /**
+     * The getter for the owner's username
+     *
+     * @return the owner's username
+     */
     public String getOwnerName() {
         return ownerName;
     }
 
+    /**
+     * The setter for the owner's username of the book.
+     *
+     * @param ownerName the username of the owner of the book.
+     */
     public void setOwnerName(String ownerName) {
         this.ownerName = ownerName;
     }
 
     /**
+     * The getter for the title of the book.
+     *
      * @return returns the title of the book. A string.
      */
     public String getTitle() {
@@ -89,6 +105,8 @@ public class Book {
     }
 
     /**
+     * The setter for the title of the book.
+     *
      * @param title the title of the book. A string.
      */
     public void setTitle(String title) {
@@ -96,6 +114,8 @@ public class Book {
     }
 
     /**
+     * The getter for the author of the book.
+     *
      * @return returns the author of the book. A string.
      */
     public String getAuthor() {
@@ -103,6 +123,8 @@ public class Book {
     }
 
     /**
+     * The setter for the author of the book.
+     *
      * @param author the author of the book. A string.
      */
     public void setAuthor(String author) {
@@ -110,6 +132,8 @@ public class Book {
     }
 
     /**
+     * The getter for the ISBN of the book.
+     *
      * @return returns the ISBN of the book
      */
     public String getISBN() {
@@ -117,6 +141,8 @@ public class Book {
     }
 
     /**
+     * The setter for the ISBN of the book.
+     *
      * @param ISBN the isbn of the book
      */
     public void setISBN(String ISBN) {
@@ -124,6 +150,8 @@ public class Book {
     }
 
     /**
+     * This is a getter for the status of the book
+     *
      * @return returns the status of the book
      */
     public String getStatus() {
@@ -144,16 +172,26 @@ public class Book {
         this.status = status;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets the description of the book.
+     *
+     * @param description the description of the book
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
      * Sets the borrower.
+     *
      * @param borrower The string username of the user borrowing the book.
      */
     public void setBorrower(String borrower) {
@@ -162,6 +200,7 @@ public class Book {
 
     /**
      * Getter for borrower.
+     *
      * @return Returns the username of the user currently borrowing (can be empty).
      */
     public String getBorrower() {

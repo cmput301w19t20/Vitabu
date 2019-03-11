@@ -55,58 +55,128 @@ public class Notification {
 
     }
 
+    /**
+     * The getter for the notification's ID
+     *
+     * @return the notification's ID
+     */
     public String getNotificationid() {
         return notificationid;
     }
 
+    /**
+     * The setter for the notification's ID
+     *
+     * @param notificationid the notification's ID
+     */
     public void setNotificationid(String notificationid) {
         this.notificationid = notificationid;
     }
 
+    /**
+     * The getter for the notification owner's username
+     *
+     * @return the notification owner's username.
+     */
     public String getUserName() {
         return userName;
     }
 
+    /**
+     * The setter for the notification owner's username
+     *
+     * @param userName the notification owner's username
+     */
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    /**
+     * The getter for the notification's date
+     *
+     * @return the notification's date
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * The setter for the notification's date
+     *
+     * @param date the notification's date
+     */
     public void setDate(Date date) {
         this.date = date;
     }
 
+    /**
+     * The getter for the title of the book pertaining to this notification
+     *
+     * @return the title of the book pertaining to this notification.
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * The setter for the title of the book pertaining to this notification
+     *
+     * @param title the title of the book pertaining to this notification
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * The getter for the message in the notification.
+     *
+     * @return the message in the notification.
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * The setter for the message in the notification.
+     *
+     * @param message the message in the notification
+     */
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * The getter for the type of notification.
+     *
+     * @return the type of notification
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * The setter for the type of notification
+     *
+     * @param type the type of notification
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * The getter for the seen flag in the notification
+     *
+     * @return the value of the seen flag
+     */
     public boolean isSeen() {
         return seen;
     }
 
+    /**
+     * The setter for the seen flag in the notification
+     *
+     * @param seen the value of the seen flag
+     */
     public void setSeen(boolean seen) {
         this.seen = seen;
     }

@@ -35,6 +35,16 @@ public class Review {
 
     }
 
+    /**
+     * This the constructor that instantiates the Review object with the specific provided parameters.
+     *
+     * @param ownerName the username of the Owner of the book
+     * @param borrowerName the username of the borrower of the book
+     * @param rating the rating of the review being given.
+     * @param body the body of the review.
+     * @param reviewFrom the reviewer's username
+     * @param reviewTo the username of the recipient of the review
+     */
     public Review(String ownerName, String borrowerName, int rating, String body, String reviewFrom, String reviewTo) {
         this.ownerName = ownerName;
         this.borrowerName = borrowerName;
@@ -46,38 +56,83 @@ public class Review {
         this.reviewTo = reviewTo;
     }
 
+    /**
+     * The getter for the review ID
+     *
+     * @return the review ID
+     */
     public String getReviewid() {
         return reviewid;
     }
 
+    /**
+     * The setter for the review ID
+     *
+     * @param reviewid the review ID
+     */
     public void setReviewid(String reviewid) {
         this.reviewid = reviewid;
     }
 
+    /**
+     * The getter for the username of the Owner of the book
+     *
+     * @return the username of the Owner of the book
+     */
     public String getOwnerName() {
         return ownerName;
     }
 
+    /**
+     * The setter for the username of the Owner of the book
+     *
+     * @param ownerName the username of the Owner of the book
+     */
     public void setOwnerName(String ownerName) {
         this.ownerName = ownerName;
     }
 
+    /**
+     * The getter for the username of the borrower of the book
+     *
+     * @return the username of the borrower of the book
+     */
     public String getBorrowerName() {
         return borrowerName;
     }
 
+    /**
+     * The setter for the username of the borrower of the book
+     *
+     * @param borrowerName the username of the borrower of the book
+     */
     public void setBorrowerName(String borrowerName) {
         this.borrowerName = borrowerName;
     }
 
+    /**
+     * The getter for the date when the review was created
+     *
+     * @return the date when the review was created
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * The setter for the date when the review was created
+     *
+     * @param date the date when the review was created
+     */
     public void setDate(Date date) {
         this.date = date;
     }
 
+    /**
+     * The getter for the rating of the review being given.
+     *
+     * @returnthe rating of the review being given.
+     */
     public int getRating() {
         return rating;
     }
@@ -97,26 +152,56 @@ public class Review {
         this.rating = rating;
     }
 
+    /**
+     * The getter for the body of the review.
+     *
+     * @return the body of the review.
+     */
     public String getBody() {
         return body;
     }
 
+    /**
+     * The setter for the body of the review.
+     *
+     * @param body the body of the review.
+     */
     public void setBody(String body) {
         this.body = body;
     }
 
+    /**
+     * The getter for the reviewer's username
+     *
+     * @return the reviewer's username
+     */
     public String getReviewFrom() {
         return reviewFrom;
     }
 
+    /**
+     * The setter for the reviewer's username
+     *
+     * @param reviewFrom the reviewer's username
+     */
     public void setReviewFrom(String reviewFrom) {
         this.reviewFrom = reviewFrom;
     }
 
+    /**
+     * The getter for the username of the recipient of the review
+     *
+     * @return the username of the recipient of the review
+     */
     public String getReviewTo() {
         return reviewTo;
     }
 
+    /**
+     * The setter for the username of the recipient of the review
+     *
+     * @param reviewTo the username of the recipient of the review
+     */
     public void setReviewTo(String reviewTo) {
         this.reviewTo = reviewTo;
     }
