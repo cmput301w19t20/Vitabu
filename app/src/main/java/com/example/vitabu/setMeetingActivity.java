@@ -46,7 +46,7 @@ public class setMeetingActivity extends AppCompatActivity implements DatePickerD
 
         // Get Intent.
         Intent intent = getIntent();
-        String message = intent.getStringExtra("BorrowRecord");
+        String message = intent.getStringExtra(MainActivity.BORROWRECORD_MESSAGE);
         Gson gson = new Gson();
         borrowRecord = gson.fromJson(message, BorrowRecord.class);
 
