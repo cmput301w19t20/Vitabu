@@ -1,3 +1,9 @@
+/*
+ * This file was intended to contain the Book Request Activity before we switched to fragments. See
+ * bookRequestsFragment for completed version.
+ *
+ * THIS FILE IS DEPRECATED!
+ */
 package com.example.vitabu;
 
 import android.content.Intent;

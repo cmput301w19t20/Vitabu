@@ -1,3 +1,7 @@
+/*
+ * This file contains the book status fragment implementation.
+ */
+
 package com.example.vitabu;
 
 import android.support.v4.app.Fragment;
@@ -36,6 +40,18 @@ public class bookStatusFragment extends Fragment implements AdapterView.OnItemSe
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // TODO: filter books according to status selected
+        switch (position) {
+            case 0:
+                //books array with status: available
+            case 1:
+                //books array with status: requested
+            case 2:
+                //books array with status: accepted
+                break;
+            case 3:
+                //books array with status: borrowed
+                break;
+        }
     }
 
     @Override

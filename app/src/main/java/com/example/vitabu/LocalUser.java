@@ -1,3 +1,11 @@
+/*
+ * This file contains the class of the LocalUser that lets us keep track of which user is currently
+ * signed in and all the data pertaining to it.
+ *
+ * Author: Owen Randall
+ * Version: 1.2
+ * Outstanding Issues: Deal with potential null pointer exceptions in getJoinDate().
+ */
 package com.example.vitabu;
 
 import android.content.Context;
@@ -27,29 +35,39 @@ import java.util.UUID;
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 /**
- * @version 1.0
- * An object encapsulating all the attributes and information pertaining to a user.
+ * An object encapsulating all the attributes and information pertaining to the current user using the app.
+ *
+ * @version 1.2
+ * @author Owen Randall
  */
 public class LocalUser extends UserAbstract {
     private String logTag = "User object";
 
 
     /**
-     * @deprecated
      * Constructor for use when reconstructing already created user.
+     *
+     * @deprecated
      */
     public LocalUser(FirebaseUser user){
         super();
         // TODO Pull All other data from database.
     }
 
+    /**
+     * The default constructor that may be used by the Firebase Database.
+     */
     public LocalUser(){
         super();
-
     }
 
     /**
-     * Constructor for use when creating a new user.
+     * The constructor that may be used when creating the LocalUser with specific parameters.
+     *
+     * @param location the general location of the user.
+     * @param userName the username of the user
+     * @param email the email with which the user signed up
+     * @param user an instance of a Firebase Authentication user.
      */
     public LocalUser(Location location, String userName, String email, FirebaseUser user) {
         this.location = location;
@@ -63,17 +81,26 @@ public class LocalUser extends UserAbstract {
     }
 
 
+    /**
+     * This is a getter for the username from the Firebase Authentication server.
+     *
+     * @return the username of the current Firebase user.
+     */
     public String getUserName() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         return auth.getCurrentUser().getDisplayName();
-
-        //return firebaseUser.getDisplayName();
     }
+
 
     public void setUserName(String userName){
         this.userName = userName;
     }
 
+    /**
+     * This is a getter for the UserID from the Firebase Authentication server.
+     *
+     * @return the UserID of the current Firebase user.
+     */
     public String getUserid() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         return auth.getCurrentUser().getUid();
@@ -107,6 +134,11 @@ public class LocalUser extends UserAbstract {
         this.ownerRating = ownerRating;
     }
 
+    /**
+     * This is a getter for the date when the user created their account.
+     *
+     * @return the date when the user registered.
+     */
     public Date getJoinDate() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
@@ -118,6 +150,12 @@ public class LocalUser extends UserAbstract {
         this.joinDate = joinDate;
     }
 
+    /**
+     * This is a getter for the email that the user registered with. We get the email from the Firebase
+     * Authentication user.
+     *
+     * @return the email with which the user registered.
+     */
     public String getEmail() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
@@ -146,6 +184,11 @@ public class LocalUser extends UserAbstract {
         this.booksBorrowed = booksBorrowed;
     }
 
+    /**
+     * This converts this class to JSON and returns it.
+     *
+     * @return the JSON string representing this class.
+     */
     public String toJson(){
         Gson gson = new Gson();
         return gson.toJson(this);
