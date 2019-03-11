@@ -1,3 +1,11 @@
+/*
+ * This file contains the fragment that has the logic and UI of showing the notifications to the user.
+ *
+ * Author: Jacob Paton
+ * Version: 1.2
+ * Outstanding Issues: Implement the requests listing and accepting.
+ */
+
 package com.example.vitabu;
 
 import android.os.Bundle;

@@ -1,3 +1,13 @@
+/*
+ * This file contains the ISBN scanning activity. It uses the Ancdroid Camera API and Google's Barcode
+ * scanner API to scan an ISBN off the back of the book and pass it back through an Intent back to the
+ * previous screen.
+ *
+ * Author: Ayooluwa Oladosu
+ * Version: 1.2
+ * Outstanding Issues: Does not work with some phones, the camera looks funny when tilting the phone.
+ */
+
 package com.example.vitabu;
 
 /*

@@ -1,3 +1,11 @@
+/*
+ * This file contains the LogIn information to authenticate a user or register a new user. From there
+ * it invokes the main business logic of the rest of the app.
+ *
+ * Author: Tristan Carlson
+ * Version: 1.6
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import android.content.Intent;

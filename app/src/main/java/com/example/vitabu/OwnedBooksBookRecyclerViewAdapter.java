@@ -1,3 +1,11 @@
+/*
+ * This file contains the adapter for the OwnedBooksBookRecyclerView. This adapter provides the UI and
+ * functionality to the recycler view to display the owned books correctly.
+ *
+ * Author: Owen Randall
+ * Version: 1.2
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import android.content.Context;
