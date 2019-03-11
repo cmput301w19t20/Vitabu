@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 
-public class WriteReview extends AppCompatActivity {
+public class WriteReviewActivity extends AppCompatActivity {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance(); //The realtime database handle
     private DatabaseReference myRef = database.getReference(); //The reference to the database handle
@@ -74,7 +74,7 @@ public class WriteReview extends AppCompatActivity {
                         String body = review_message.getText().toString();
                         Review review = new Review(ownerName, borrowerName, rating, body, reviewFrom, reviewTo);
                         writeReview(review);
-                        Toast.makeText(WriteReview.this, R.string.write_review_success, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WriteReviewActivity.this, R.string.write_review_success, Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 }

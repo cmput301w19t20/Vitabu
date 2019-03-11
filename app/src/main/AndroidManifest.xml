@@ -40,7 +40,7 @@
         <activity android:name=".registerActivity" />
         <activity android:name=".userReviewActivity" />
         <activity android:name=".ISBNActivity" />
-        <activity android:name=".WriteReview"></activity>
+        <activity android:name=".WriteReviewActivity"></activity>
     </application>
 
 </manifest>
