@@ -44,7 +44,7 @@ public class userReviewActivity extends AppCompatActivity {
         String message = intent.getStringExtra(MainActivity.USER_MESSAGE);
         Gson gson = new Gson();
         user = gson.fromJson(message, User.class);
-        type = intent.getStringExtra(userProfileActivity.REVIEW_TYPE);
+        type = intent.getStringExtra(MainActivity.REVIEW_TYPE);
         getReviewList();
 
         //create recycler view

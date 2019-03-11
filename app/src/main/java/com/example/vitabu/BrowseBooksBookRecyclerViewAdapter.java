@@ -1,3 +1,12 @@
+/*
+ * This file contains the BrowseBooksBookRecyclerView adapter that implements the functionality behind
+ * the recyclerView.
+ *
+ * Author: Jacob Paton
+ * Version: 1.0
+ * Outstanding Issues: ---
+ */
+
 package com.example.vitabu;
 
 import android.content.Context;

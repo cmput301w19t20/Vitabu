@@ -26,7 +26,6 @@ import com.google.gson.Gson;
 
 public class userProfileActivity extends AppCompatActivity {
     User user;
-    public static final String REVIEW_TYPE = "owner";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +79,7 @@ public class userProfileActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         String message = gson.toJson(user);
                         intent.putExtra(MainActivity.USER_MESSAGE, message);
-                        intent.putExtra(REVIEW_TYPE, "borrower");
+                        intent.putExtra(MainActivity.REVIEW_TYPE, "borrower");
                         startActivity(intent);
                     }
                 }
@@ -95,7 +94,7 @@ public class userProfileActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         String message = gson.toJson(user);
                         intent.putExtra(MainActivity.USER_MESSAGE, message);
-                        intent.putExtra(REVIEW_TYPE, "owner");
+                        intent.putExtra(MainActivity.REVIEW_TYPE, "owner");
                         startActivity(intent);
                     }
                 }
