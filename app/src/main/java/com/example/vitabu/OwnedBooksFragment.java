@@ -109,6 +109,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
+                        books = new ArrayList<>();
                         Log.d("Count1 ", "" + snapshot.getChildrenCount());
                         for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                             Book b = postSnapshot.getValue(Book.class);
@@ -142,6 +143,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         Log.d("Count2 ", "" + snapshot.getChildrenCount());
+                        bookids = new ArrayList<>();
                         for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                             if((boolean)postSnapshot.child("approved").getValue()) {
                                 addBookid((String) postSnapshot.child("bookid").getValue());
@@ -168,10 +170,16 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Book b = dataSnapshot.getValue(Book.class);
-//                            addBook(b);
+                            if(bookids.size() == 0){
+                                String bid = b.getBookid();
+                                for(Book book: books){
+                                    if(book.getBookid().equals(bid)){
+                                        books.remove(book);
+                                    }
+                                }
+                            }
                             books.add(b);
                             removeBookid(b.getBookid());
-                            recyclerViewAdapter.notifyDataSetChanged();
                         }
 
                         @Override
@@ -184,6 +192,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
                 Log.d("OWNED_BOOKS_FRAGMENT", "Missing bookid " + e.getMessage());
             }
         }
+        newAdapter();
     }
 
     private void removeBookid(String id){
