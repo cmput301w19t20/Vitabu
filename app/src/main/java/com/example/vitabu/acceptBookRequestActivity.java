@@ -60,7 +60,7 @@ public class acceptBookRequestActivity extends AppCompatActivity implements book
 
     acceptBookRequestsRecyclerViewAdapter recyclerViewAdapter;
     private String userName;
-    private ArrayList<BorrowRecord> records;
+    private ArrayList<BorrowRecord> records = new ArrayList<>();
     private ArrayList<String> recordids;
     String message;
     Book book;
@@ -72,8 +72,6 @@ public class acceptBookRequestActivity extends AppCompatActivity implements book
 
         records = new ArrayList<>();
 
-        
-
         //receive the book
         Intent intent = getIntent();
         message = intent.getStringExtra(MainActivity.BOOK_MESSAGE);
@@ -84,6 +82,17 @@ public class acceptBookRequestActivity extends AppCompatActivity implements book
         TextView bookTitle = (TextView) findViewById(R.id.book_requests_book_name);
         String bTitle = "pending requests for: " + book.getTitle();
         bookTitle.setText(bTitle); // will get title from intent passed
+        TextView viewRequesterProfile = (TextView) findViewById(R.id.accept_book_view_requester_profile);
+        viewRequesterProfile.setText("view profile");
+
+        // onclicklistener view profile, sends user to requester's profile
+        viewRequesterProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // go to userProfile activity
+
+            }
+        });
 
         // set up the recycler view
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.book_requests_list);
