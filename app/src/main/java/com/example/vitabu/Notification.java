@@ -1,11 +1,22 @@
+/*
+ * This file contains the model class for the Notification object. It is used to create Notifications
+ * and put them into the Firebase database. It is used to display a notification about an event to
+ * the user.
+ *
+ * Author: Owen Randall
+ * Version: 1.0
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import java.util.Date;
 import java.util.UUID;
 
 /**
- * @version 1.0
  * A Notification object specific to a user that should show up in their notifications
+ *
+ * @author Owen Randall
+ * @version 1.0
  */
 public class Notification {
     private Date date;
@@ -16,6 +27,15 @@ public class Notification {
     private String userName;
     private String notificationid;
 
+    /**
+     * This is the constructor that is used to instantiate the Notification object with all the necessary
+     * and provided parameters.
+     *
+     * @param title the title of the book about which the notification is being created.
+     * @param message a message that is to be displayed in the notification.
+     * @param type a type of the notification.
+     * @param userName the username which needs to be notified.
+     */
     public Notification(String title, String message, String type, String userName) {
         this.notificationid = UUID.randomUUID().toString();
         this.date = new Date();
@@ -26,6 +46,10 @@ public class Notification {
         this.userName = userName;
     }
 
+    /**
+     * This is the empty default constructor that is necessary for Firebase Database. We also use it
+     * when building up the class using the setters alone.
+     */
     public Notification(){
         notificationid = UUID.randomUUID().toString();
 

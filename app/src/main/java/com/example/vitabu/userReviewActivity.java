@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,6 +32,7 @@ public class userReviewActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager LayoutManager;
     private TextView emptyText;
     User user;
+    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +44,8 @@ public class userReviewActivity extends AppCompatActivity {
         String message = intent.getStringExtra(MainActivity.USER_MESSAGE);
         Gson gson = new Gson();
         user = gson.fromJson(message, User.class);
+        type = intent.getStringExtra(MainActivity.REVIEW_TYPE);
         getReviewList();
-
-        //Review t = new Review("Owner name", "borrow name", 10, "This is a generic review");
-        //reviewList.add(t);
 
         //create recycler view
         recyclerView = (RecyclerView) findViewById(R.id.user_review_recyclerView);     // capture recycler view
@@ -53,18 +53,13 @@ public class userReviewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(LayoutManager);
         adapter = new CustomAdapter(reviewList);                                        // create adapter
         recyclerView.setAdapter(adapter);                                               // set adapter to view
-
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
         // show no data textView if array list is empty
         emptyText = (TextView) findViewById(R.id.user_review_no_data);
-        emptyText.setVisibility(View.VISIBLE);
-        /*
-        if (reviewList.size() == 0){
-            Log.e("empty", "It was seen as empty " + Integer.toString(reviewList.size()));
-            recyclerView.setVisibility(View.GONE);
+        if (reviewList.size() == 0) {
             emptyText.setVisibility(View.VISIBLE);
         }
-        */
     }
 
     // class that creates the array adapter to display reviews
@@ -168,10 +163,22 @@ public class userReviewActivity extends AppCompatActivity {
 
         for (DataSnapshot subSnapshot: dataSnapshot.getChildren()){
             Review review = subSnapshot.getValue(Review.class);
-            reviewList.add(review);
-            Log.e("review added", "Added a review");
-            if (emptyText != null) {
-                emptyText.setVisibility(View.GONE);
+            String userName = user.getUserName();
+
+            if (type.equals("owner") && userName.equals(review.getOwnerName())) {
+                // get only owner reviews
+                reviewList.add(review);
+                if (emptyText != null) {
+                    emptyText.setVisibility(View.GONE);
+                }
+            }
+
+            if (type.equals("borrower") && userName.equals(review.getBorrowerName())) {
+                // get only borrower reviews
+                reviewList.add(review);
+                if (emptyText != null) {
+                    emptyText.setVisibility(View.GONE);
+                }
             }
         }
         adapter.notifyDataSetChanged();

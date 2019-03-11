@@ -1,3 +1,11 @@
+/*
+ * This file contains the fragment that has the logic and UI of showing the notifications to the user.
+ *
+ * Author: Jacob Paton
+ * Version: 1.2
+ * Outstanding Issues: Implement the requests listing and accepting.
+ */
+
 package com.example.vitabu;
 
 import android.os.Bundle;
@@ -9,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseError;
@@ -28,6 +37,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
     NotificationsRecyclerViewAdapter adapter;
     ArrayList<Notification> notifications;
     private boolean wait = true;
+    private TextView emptyText;
 
     private void addNotification(Notification n){
         notifications.add(n);
@@ -71,6 +81,9 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                     Notification n = postSnapshot.getValue(Notification.class);
                     addNotification(n);
+                    if (emptyText != null) {
+                        emptyText.setVisibility(View.GONE);
+                    }
                 }
                 nextStep(fragmentView);
             }
@@ -93,6 +106,12 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         adapter.notifyDataSetChanged();
+
+        // show no data textView if array list is empty
+        emptyText = (TextView) fragmentView.findViewById(R.id.notification_no_data);
+        if (notifications.size() == 0) {
+            emptyText.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

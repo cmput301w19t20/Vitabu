@@ -42,6 +42,7 @@
         <activity android:name=".ISBNActivity" />
         <activity android:name=".WriteReview" />
         <activity android:name=".acceptBookRequestActivity"></activity>
+        <activity android:name=".editProfileActivity"></activity>
     </application>
 
 </manifest>

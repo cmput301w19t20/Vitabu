@@ -1,5 +1,9 @@
 /*
  * This file contains the book status fragment implementation.
+ *
+ * Author: Jacob Paton
+ * Version: 1.0
+ * Outstanding Issues: ---
  */
 
 package com.example.vitabu;
