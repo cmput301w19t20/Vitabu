@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 public class NotificationTest {
 
     // test Notification class
-    Notification notif = new Notification("Book Requested", "Your book has been requested", "Request", "VitabuUser");
+    Notification notif = new Notification("Book Requested", "Your book has been requested", "Request", "VitabuUser", "123");
 
     @Test
     public void NotificationTitle_isCorrect() {
@@ -40,4 +40,10 @@ public class NotificationTest {
         notif.setSeen(true);
         assertEquals(true, notif.isSeen());
     }
+
+    @Test
+    public void NotificationBorrowRecordId_isCorrect() {
+        assertEquals("123", notif.getBorrowRecordId());
+    }
+
 }

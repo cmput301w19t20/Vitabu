@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 public class BorrowRecordTest {
 
     // test Borrow Record
-    Book book = new Book("Vitabu", "Vitabu Inc", "123456789", "available", "owner name", "This book was good");
+    Book book = new Book("Vitabu", "Vitabu Inc", "123456789", "available", "owner name", "This book was good", "Vitabu Borrower");
     Date date = new Date();
     User user = new User("Vitabu User", date, "Vitabu@gmail.com");
     User user2 = new User("Vitabu User2", date, "Vitabu2@gmail.com");

@@ -1,3 +1,10 @@
+/*
+ * This file contains the activity that sets the meeting between the owner and the borrower.
+ *
+ * Author: Tristan Carlson
+ * Version: 1.0
+ * Outstanding Issues: This file has no database connectivity yet.
+ */
 package com.example.vitabu;
 
 import android.app.DatePickerDialog;
@@ -46,7 +53,7 @@ public class setMeetingActivity extends AppCompatActivity implements DatePickerD
 
         // Get Intent.
         Intent intent = getIntent();
-        String message = intent.getStringExtra("BorrowRecord");
+        String message = intent.getStringExtra(MainActivity.BORROWRECORD_MESSAGE);
         Gson gson = new Gson();
         borrowRecord = gson.fromJson(message, BorrowRecord.class);
 

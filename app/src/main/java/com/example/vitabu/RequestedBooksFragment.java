@@ -1,3 +1,11 @@
+/*
+ * This file contains the fragment that has the logic and UI of showing the books requested by the user.
+ *
+ * Author: Jacob Paton
+ * Version: 1.2
+ * Outstanding Issues: ---
+ */
+
 package com.example.vitabu;
 
 import android.content.Intent;

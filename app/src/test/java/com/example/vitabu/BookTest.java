@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 public class BookTest {
 
     // test book class
-    Book book = new Book("Vitabu", "Vitabu Inc", "123456789", "available", "owner name", "This book was good");
+    Book book = new Book("Vitabu", "Vitabu Inc", "123456789", "available", "owner name", "This book was good", "Vitabu Borrower");
 
     @Test
     public void bookTitle_isCorrect() {
@@ -65,5 +65,13 @@ public class BookTest {
         assertEquals("This book was good", book.getDescription());
         book.setDescription("This book wasn't good");
         assertEquals("This book wasn't good", book.getDescription());
+    }
+
+    @Test
+    public void bookBorrower_isCorrect() {
+        // tests getters and setters
+        assertEquals("Vitabu Borrower", book.getBorrower());
+        book.setTitle("Vitabu Borrower2");
+        assertEquals("Vitabu Borrower2", book.getBorrower());
     }
 }

@@ -1,6 +1,16 @@
+/*
+ * This file contains the fragment that has the logic and UI of showing the notifications to the user.
+ *
+ * Author: Jacob Paton
+ * Version: 1.2
+ * Outstanding Issues: Implement the requests listing and accepting.
+ */
+
 package com.example.vitabu;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -108,8 +119,77 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
 
     @Override
     public void onItemClick(View view, int position) {
-//        TODO: Opens book info activity
-        Toast.makeText(this.getActivity(), "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        Notification curNotification = notifications.get(position);
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+
+        if (curNotification.getType().equals("request")) {
+            myRef.child("borrowrecords").child(curNotification.getBorrowRecordId()).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            getBook(dataSnapshot.getValue(BorrowRecord.class));
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    }
+            );
+        }
+        if (curNotification.getType().equals("acccept")){
+            myRef.child("borrowrecords").child(curNotification.getBorrowRecordId()).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            startViewMeetingLocationActivity(dataSnapshot.getValue(BorrowRecord.class));
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    }
+            );
+        }
+
+
+    }
+
+    public  void startViewMeetingLocationActivity(BorrowRecord borrowRecord){
+        // TODO Launch viewMeetingLocationActivity.
+//        Intent intent = new Intent(this, viewMeetingLocationActivity.class);
+//        Gson gson = new Gson();
+//        intent.putExtra(MainActivity.BOOK_MESSAGE, gson.toJson(book));
+//        startActivity(intent);
+    }
+
+    public void getBook(BorrowRecord borrowRecord){
+//        Book book = MainActivity.getBookFromDatabase(borrowRecord.getBookid());
+        // Get Book fom database.
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+
+        myRef.child("books").child(borrowRecord.getBookid()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        startAcceptBookRequestActivity(dataSnapshot.getValue(Book.class));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                }
+        );
+
+    }
+
+    public void startAcceptBookRequestActivity(Book book){
+        // TODO launch acceptBookRequestActivity.
+        Intent intent = new Intent(this.getContext(), acceptBookRequestActivity.class);
+        Gson gson = new Gson();
+        intent.putExtra(MainActivity.BOOK_MESSAGE, gson.toJson(book));
+        startActivity(intent);
     }
 
 }
