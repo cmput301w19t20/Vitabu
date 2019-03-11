@@ -15,8 +15,9 @@ public class Notification {
     private boolean seen;
     private String userName;
     private String notificationid;
+    private String borrowRecordId;
 
-    public Notification(String title, String message, String type, String userName) {
+    public Notification(String title, String message, String type, String userName, String borrowRecordId) {
         this.notificationid = UUID.randomUUID().toString();
         this.date = new Date();
         this.title = title;
@@ -24,6 +25,7 @@ public class Notification {
         this.type = type;
         this.seen = false;
         this.userName = userName;
+        this.borrowRecordId = borrowRecordId;
     }
 
     public Notification(){
@@ -37,6 +39,14 @@ public class Notification {
 
     public void setNotificationid(String notificationid) {
         this.notificationid = notificationid;
+    }
+
+    public String getBorrowRecordId(){
+        return borrowRecordId;
+    }
+
+    public void setBorrowRecordId(String borrowRecordId){
+        this.borrowRecordId = borrowRecordId;
     }
 
     public String getUserName() {
@@ -76,6 +86,9 @@ public class Notification {
     }
 
     public void setType(String type) {
+        if(! type.equals("request") && ! type.equals("accept") && ! type.equals("dropoff") && ! type.equals("return")  && ! type.equals("pickup") && ! type.equals("review")) {
+            throw new IllegalArgumentException("Type must be one of the following: request, accept, dropoff, return, pickup, review");
+        }
         this.type = type;
     }
 
