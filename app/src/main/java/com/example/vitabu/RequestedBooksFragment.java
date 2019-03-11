@@ -39,6 +39,9 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
     FirebaseDatabase database;
     DatabaseReference myRef;
     DataSnapshot curSnapshot;
+    boolean initialDataUpdateNeeded = true;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         auth = FirebaseAuth.getInstance();
@@ -48,7 +51,7 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
         // Since we have predetermined the items for the drop down status menu,
         // will use a string array containing the status items -- located in the resource file
         Spinner spinner = (Spinner) fragmentView.findViewById(R.id.requested_books_status_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(),
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(),
                 R.array.requested_books_status_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -65,7 +68,7 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
 //        }
 
         // set up the RecyclerView
-        RecyclerView recyclerView = fragmentView.findViewById(R.id.requested_books_list);
+        final RecyclerView recyclerView = fragmentView.findViewById(R.id.requested_books_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         recyclerViewAdapter = new RequestedBooksBookRecyclerViewAdapter(this.getActivity(), books);
         recyclerViewAdapter.setClickListener(this);
@@ -82,7 +85,10 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Log.d(logTag, "Read Borrow records from database.");
                         curSnapshot = dataSnapshot;
-                        updateBorrowRecords();
+                        if (initialDataUpdateNeeded){
+                            updateBorrowRecords();
+                            initialDataUpdateNeeded = false;
+                        }
                     }
 
                     @Override
@@ -95,6 +101,7 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
 
         return fragmentView;
     }
+
 
 
     public void updateBorrowRecords(){
@@ -127,6 +134,7 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
                             else{
                                 Log.d(logTag, "Uhh Tried to fetch book from database that does not exist...");
                             }
+                            recyclerViewAdapter.notifyDataSetChanged();
                         }
 
                         @Override
@@ -135,8 +143,6 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
                         }
                     });
         }
-
-
 
     }
 
@@ -154,7 +160,6 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
         if (id == 0) {
             accepted_filter = false;
         }
-
         updateBorrowRecords();
     }
 
