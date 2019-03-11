@@ -56,7 +56,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class acceptBookRequestActivity extends AppCompatActivity implements bookRequestsRecyclerViewAdapter.ItemClickListener {
+public class acceptBookRequestActivity extends AppCompatActivity implements acceptBookRequestsRecyclerViewAdapter.ItemClickListener {
 
     acceptBookRequestsRecyclerViewAdapter recyclerViewAdapter;
     private String userName;
@@ -64,12 +64,14 @@ public class acceptBookRequestActivity extends AppCompatActivity implements book
     private ArrayList<String> recordids;
     String message;
     Book book;
+    private boolean onCreate;
+    private acceptBookRequestActivity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_book_request);
-
+        onCreate = true;
         records = new ArrayList<>();
 
         //receive the book
@@ -82,23 +84,19 @@ public class acceptBookRequestActivity extends AppCompatActivity implements book
         TextView bookTitle = (TextView) findViewById(R.id.book_requests_book_name);
         String bTitle = "pending requests for: " + book.getTitle();
         bookTitle.setText(bTitle); // will get title from intent passed
-        TextView viewRequesterProfile = (TextView) findViewById(R.id.accept_book_view_requester_profile);
-        viewRequesterProfile.setText("view profile");
+        //TextView viewRequesterProfile = (TextView) findViewById(R.id.accept_book_view_requester_profile);
+        //viewRequesterProfile.setText("view profile");
 
         // onclicklistener view profile, sends user to requester's profile
-        viewRequesterProfile.setOnClickListener(new View.OnClickListener() {
+        /*viewRequesterProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // go to userProfile activity
 
             }
-        });
+        });*/
 
-        // set up the recycler view
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.book_requests_list);
-        acceptBookRequestsRecyclerViewAdapter recyclerAdapter = new acceptBookRequestsRecyclerViewAdapter(this, records);
-        recyclerView.setAdapter(recyclerAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        newAdapter();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
@@ -108,25 +106,92 @@ public class acceptBookRequestActivity extends AppCompatActivity implements book
         String bookMessage = intent.getStringExtra(MainActivity.BOOK_MESSAGE);
         Book book = gson.fromJson(bookMessage, Book.class);
         final String bookid = book.getBookid();
+        Log.d("PULLING", "FROM DATABASE");
         myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        records = new ArrayList<>();
-                        Log.d("Count1 ", "" + snapshot.getChildrenCount());
-                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                            String bid = (String)postSnapshot.child("bookid").getValue();
-                            if(bid.equals(bookid)){
-                                records.add(new BorrowRecord(userName, (String)postSnapshot.child("borrowerName").getValue(), bookid));
+                        if(onCreate) {
+                            records = new ArrayList<>();
+                            Log.d("Count1 ", "" + snapshot.getChildrenCount());
+                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                String bid = (String) postSnapshot.child("bookid").getValue();
+                                if (bid.equals(bookid)) {
+                                    records.add(new BorrowRecord(userName, (String) postSnapshot.child("borrowerName").getValue(), bookid));
+                                }
                             }
+                            Log.d("RECORDS", "" + records.size());
+                            newAdapter();
                         }
-                        recyclerViewAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onCancelled(DatabaseError e) {
                     }
                 });
+    }
+
+    private void newAdapter(){
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.book_requests_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        context = this;
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        Log.d("CLICKED", "CLICKED");
+                        Toast.makeText(acceptBookRequestActivity.this, "You clicked " + recyclerViewAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+                        BorrowRecord record = recyclerViewAdapter.getItem(position);
+                        record.setApproved(true);
+                        record.setRecordid(UUID.randomUUID().toString());
+                        recordids = new ArrayList<>();
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference();
+                        final String bookid = record.getBookid();
+                        onCreate = true;
+                        myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addValueEventListener(
+                                new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        if(onCreate) {
+                                            onCreate = false;
+                                            Log.d("Count1 ", "" + snapshot.getChildrenCount());
+                                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                                String bid = (String) postSnapshot.child("bookid").getValue();
+                                                if (bid.equals(bookid)) {
+                                                    recordids.add(postSnapshot.getKey());
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError e) {
+                                    }
+                                });
+                        Notification n = new Notification("Your book request has been accepted",
+                                                            "", "accept", record.getBorrowerName(),
+                                                            record.getRecordid());
+                        myRef.child("notifications").child(n.getNotificationid()).setValue(n);
+                        for(String id: recordids){
+                            myRef.child("borrowrecords").child(id).removeValue();
+                        }
+                        myRef.child("borrowrecords").child(record.getRecordid()).setValue(record);
+                        Intent intent = new Intent(context, setMeetingActivity.class);
+                        Gson gson = new Gson();
+                        intent.putExtra(MainActivity.BORROWRECORD_MESSAGE, gson.toJson(record));
+                        startActivity(intent);
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
+        recyclerViewAdapter = new acceptBookRequestsRecyclerViewAdapter(this, records);
+        recyclerViewAdapter.setRecyclerView(recyclerView);
+        recyclerViewAdapter.setUserName(userName);
+        recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
     }
 
     @Override
@@ -139,15 +204,19 @@ public class acceptBookRequestActivity extends AppCompatActivity implements book
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
         final String bookid = record.getBookid();
+        onCreate = true;
         myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        Log.d("Count1 ", "" + snapshot.getChildrenCount());
-                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                            String bid = (String)postSnapshot.child("bookid").getValue();
-                            if(bid.equals(bookid)){
-                                recordids.add(postSnapshot.getKey());
+                        if(onCreate) {
+                            onCreate = false;
+                            Log.d("Count1 ", "" + snapshot.getChildrenCount());
+                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                String bid = (String) postSnapshot.child("bookid").getValue();
+                                if (bid.equals(bookid)) {
+                                    recordids.add(postSnapshot.getKey());
+                                }
                             }
                         }
                     }

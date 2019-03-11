@@ -43,27 +43,91 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class acceptBookRequestsRecyclerViewAdapter extends RecyclerView.Adapter<acceptBookRequestsRecyclerViewAdapter.ViewHolder> {
 
     private List<BorrowRecord> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private RecyclerView recyclerView;
+    private boolean onCreate;
+    private String userName;
+    private ArrayList<String> recordids;
+    private Context context;
 
     // data is passed into the constructor
     acceptBookRequestsRecyclerViewAdapter(Context context, List<BorrowRecord> data) {
         this.mInflater = LayoutInflater.from(context);
+        this.context = context;
         this.mData = data;
+    }
+
+    public void setRecyclerView(RecyclerView r){
+        this.recyclerView = r;
+    }
+
+    public void setUserName(String userName){
+        this.userName = userName;
     }
 
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.content_book_requests, parent, false);
-        return new acceptBookRequestsRecyclerViewAdapter.ViewHolder(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("CLICKED", "CLICKED");
+//                int position = recyclerView.getChildLayoutPosition(v);
+//                BorrowRecord record = getItem(position);
+//                record.setApproved(true);
+//                record.setRecordid(UUID.randomUUID().toString());
+//                FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                DatabaseReference myRef = database.getReference();
+//                final String bookid = record.getBookid();
+//                onCreate = true;
+//                recordids = new ArrayList<>();
+//                myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addValueEventListener(
+//                        new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot snapshot) {
+//                                if(onCreate) {
+//                                    onCreate = false;
+//                                    Log.d("Count1 ", "" + snapshot.getChildrenCount());
+//                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+//                                        String bid = (String) postSnapshot.child("bookid").getValue();
+//                                        if (bid.equals(bookid)) {
+//                                            recordids.add(postSnapshot.getKey());
+//                                        }
+//                                    }
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError e) {
+//                            }
+//                        });
+//                for(String id: recordids){
+//                    myRef.child("borrowrecords").child(id).removeValue();
+//                }
+//                myRef.child("borrowrecords").child(record.getRecordid()).setValue(record);
+//                Intent intent = new Intent(context, setMeetingActivity.class);
+//                Gson gson = new Gson();
+//                intent.putExtra(MainActivity.BORROWRECORD_MESSAGE, gson.toJson(record));
+//                context.startActivity(intent);
+            }
+        });
+        return new ViewHolder(view);
     }
 
     // get the borrower username from the borrowrecord and set to textview
@@ -103,7 +167,7 @@ public class acceptBookRequestsRecyclerViewAdapter extends RecyclerView.Adapter<
     }
 
     // allows clicks events to be caught
-    void setClickListener(acceptBookRequestsRecyclerViewAdapter.ItemClickListener itemClickListener) {
+    void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 

@@ -63,6 +63,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
     ArrayList<Notification> notifications;
     private boolean wait = true;
     private TextView emptyText;
+    private boolean onCreate;
 
     private void addNotification(Notification n){
         notifications.add(n);
@@ -71,7 +72,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View fragmentView = inflater.inflate(R.layout.fragment_notifications, container, false);
-
+        onCreate = true;
         // data to populate the RecyclerView with
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
@@ -98,19 +99,22 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
             myRef.child("notifications").child(UUID.randomUUID().toString()).setValue(notification);
         }*/
 
-        myRef.child("notifications").orderByChild("userName").equalTo(userName).addValueEventListener(
+        myRef.child("notifications").orderByChild("userName").equalTo(userName).addListenerForSingleValueEvent(
                 new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.d("Count " ,""+snapshot.getChildrenCount());
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    Notification n = postSnapshot.getValue(Notification.class);
-                    addNotification(n);
-                    if (emptyText != null) {
-                        emptyText.setVisibility(View.GONE);
+                if(onCreate) {
+                    Log.d("Count ", "" + snapshot.getChildrenCount());
+                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        Notification n = postSnapshot.getValue(Notification.class);
+                        addNotification(n);
+                        if (emptyText != null) {
+                            emptyText.setVisibility(View.GONE);
+                        }
                     }
+                    onCreate = false;
+                    nextStep(fragmentView);
                 }
-                nextStep(fragmentView);
             }
             @Override
             public void onCancelled(DatabaseError e) {
