@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -53,18 +54,12 @@ public class userReviewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(LayoutManager);
         adapter = new CustomAdapter(reviewList);                                        // create adapter
         recyclerView.setAdapter(adapter);                                               // set adapter to view
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
 
         // show no data textView if array list is empty
         emptyText = (TextView) findViewById(R.id.user_review_no_data);
         emptyText.setVisibility(View.VISIBLE);
-        /*
-        if (reviewList.size() == 0){
-            Log.e("empty", "It was seen as empty " + Integer.toString(reviewList.size()));
-            recyclerView.setVisibility(View.GONE);
-            emptyText.setVisibility(View.VISIBLE);
-        }
-        */
     }
 
     // class that creates the array adapter to display reviews
@@ -169,7 +164,6 @@ public class userReviewActivity extends AppCompatActivity {
         for (DataSnapshot subSnapshot: dataSnapshot.getChildren()){
             Review review = subSnapshot.getValue(Review.class);
             reviewList.add(review);
-            Log.e("review added", "Added a review");
             if (emptyText != null) {
                 emptyText.setVisibility(View.GONE);
             }

@@ -111,6 +111,13 @@
     <string name="isbn_barcode_success">Detector Setup</string>
     <string name="isbn_no_ISBN_fail">No ISBN detected</string>
 
+    <!--WriteReviewActivity strings-->
+    <string name="write_review_of_name">Review of: %1$s</string>
+    <string name="write_review_hint">Write a review here</string>
+    <string name="write_review_rating">Rating:</string>
+    <string name="write_review_submit">Submit Review</string>
+    <string name="write_review_success">Review Submitted</string>
+
     <string name="title_activity_book_status_owner">bookStatusOwnerActivity</string>
     <string name="book_status_borrower_book_title">title</string>
     <string name="book_status_borrower_book_author">author</string>
