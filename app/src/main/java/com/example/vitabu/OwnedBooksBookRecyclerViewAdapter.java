@@ -26,7 +26,7 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
     // inflates the layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.browse_books_book, parent, false);
+        View view = mInflater.inflate(R.layout.owned_books_book, parent, false);
         return new ViewHolder(view);
     }
 
@@ -37,15 +37,24 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
         String title = book.getTitle();
         String author = book.getAuthor();
         String status = book.getStatus();
+        String borrower = book.getBorrower();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
         String userName = firebaseUser.getDisplayName();
-        if(!book.getOwnerName().equals(userName)){
+
+        if (!book.getOwnerName().equals(userName)){
             status = "borrowing";
         }
+
+        if (borrower == null){
+            borrower = "None.";
+        }
+
         holder.title.setText(title);
         holder.author.setText(author);
         holder.status.setText(status);
+        holder.borrower.setText(borrower);
+
     }
 
     // Returns total number of rows
@@ -57,13 +66,14 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title, author, status;
+        TextView title, author, status, borrower;
 
         ViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.browse_books_book_title);
-            author = itemView.findViewById(R.id.browse_books_book_author);
-            status = itemView.findViewById(R.id.browse_books_book_status);
+            title = itemView.findViewById(R.id.owned_books_book_title);
+            author = itemView.findViewById(R.id.owned_books_book_author);
+            status = itemView.findViewById(R.id.owned_books_book_status);
+            borrower = itemView.findViewById(R.id.owned_books_book_borrower);
             itemView.setOnClickListener(this);
         }
 

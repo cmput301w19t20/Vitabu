@@ -19,6 +19,10 @@
     <string name="browse_books_bottom_nav_menu_add_book">Add Book</string>
     <string name="browse_books_bottom_nav_menu_notifications">Notifications</string>
     <string name="browse_books_bottom_nav_menu_owned_books">My Books</string>
+    <string name="browse_books_book_title">Title: </string>
+    <string name="browse_books_book_author">Author: </string>
+    <string name="browse_books_book_status">Status: </string>
+    <string name="browse_books_book_borrower">Borrower: </string>
 
     <!--Owned Book Fragment Strings-->
     <string name="owned_books_title">My Books</string>
