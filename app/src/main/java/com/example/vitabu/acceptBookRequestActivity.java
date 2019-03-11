@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+<<<<<<< Updated upstream
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +21,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+=======
+>>>>>>> Stashed changes
 import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
@@ -34,15 +37,26 @@ public class acceptBookRequestActivity extends AppCompatActivity implements book
     private String userName;
     private ArrayList<BorrowRecord> records;
     private ArrayList<String> recordids;
+    String message;
+    Book book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_book_request);
-        // when intent is passed,
 
+        records = new ArrayList<>();
+
+        //receive the book
+        Intent intent = getIntent();
+        message = intent.getStringExtra(MainActivity.BOOK_MESSAGE);
+        Gson gson = new Gson();
+        book = gson.fromJson(message, Book.class);
+
+        // set heading for current book being looked at
         TextView bookTitle = (TextView) findViewById(R.id.book_requests_book_name);
-        bookTitle.setText("Book Title Here"); // will get title from intent passed
+        String bTitle = "pending requests for: " + book.getTitle();
+        bookTitle.setText(bTitle); // will get title from intent passed
 
         // set up the recycler view
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.book_requests_list);
