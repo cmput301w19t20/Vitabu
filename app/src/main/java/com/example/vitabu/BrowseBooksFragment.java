@@ -88,7 +88,7 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
         Log.d(logTag, "Got Books snapshot!");
         for (DataSnapshot subSnapshot: snapshot.getChildren()){
             curBook = subSnapshot.getValue(Book.class);
-            if (curBook.getOwnerName().equals(curUser.getUserName()) ){
+            if (curBook.getOwnerName().equals(curUser.getUserName()) || (! curBook.getStatus().equals("available") && ! curBook.getStatus().equals("requested"))){
                 continue;
             }
             curBookIndex = books.indexOf(curBook);
