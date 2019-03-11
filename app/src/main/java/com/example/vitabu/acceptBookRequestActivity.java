@@ -59,29 +59,43 @@ import java.util.UUID;
 public class acceptBookRequestActivity extends AppCompatActivity implements bookRequestsRecyclerViewAdapter.ItemClickListener {
 
     acceptBookRequestsRecyclerViewAdapter recyclerViewAdapter;
-    RecyclerView recyclerView = findViewById(R.id.book_requests_list);
     private String userName;
     private ArrayList<BorrowRecord> records;
     private ArrayList<String> recordids;
+    String message;
+    Book book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_book_request);
 
+        records = new ArrayList<>();
 
+        
+
+        //receive the book
+        Intent intent = getIntent();
+        message = intent.getStringExtra(MainActivity.BOOK_MESSAGE);
+        Gson gson = new Gson();
+        book = gson.fromJson(message, Book.class);
+
+        // set heading for current book being looked at
         TextView bookTitle = (TextView) findViewById(R.id.book_requests_book_name);
-        bookTitle.setText("Book Title Here"); // will get title from intent passed
+        String bTitle = "pending requests for: " + book.getTitle();
+        bookTitle.setText(bTitle); // will get title from intent passed
 
-        // set up recycler view here
+        // set up the recycler view
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.book_requests_list);
+        acceptBookRequestsRecyclerViewAdapter recyclerAdapter = new acceptBookRequestsRecyclerViewAdapter(this, records);
+        recyclerView.setAdapter(recyclerAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
         userName = firebaseUser.getDisplayName();
-        Gson gson = new Gson();
-        Intent intent = getIntent();
         String bookMessage = intent.getStringExtra(MainActivity.BOOK_MESSAGE);
         Book book = gson.fromJson(bookMessage, Book.class);
         final String bookid = book.getBookid();

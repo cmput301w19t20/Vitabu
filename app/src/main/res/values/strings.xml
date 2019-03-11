@@ -167,4 +167,5 @@
     <string name="return_book_button">Return Book</string>
     <string name="return_book_book_desc" />
     <string name="return_book_info_view_goodreads_page">View Goodreads Page</string>
+    <string name="accept_book_view_requester_profile">view profile</string>
 </resources>
