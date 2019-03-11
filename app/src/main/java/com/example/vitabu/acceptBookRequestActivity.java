@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< Updated upstream
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,8 +20,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-=======
->>>>>>> Stashed changes
 import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
@@ -33,7 +30,6 @@ import java.util.UUID;
 public class acceptBookRequestActivity extends AppCompatActivity implements bookRequestsRecyclerViewAdapter.ItemClickListener {
 
     acceptBookRequestsRecyclerViewAdapter recyclerViewAdapter;
-    RecyclerView recyclerView = findViewById(R.id.book_requests_list);
     private String userName;
     private ArrayList<BorrowRecord> records;
     private ArrayList<String> recordids;
@@ -46,6 +42,8 @@ public class acceptBookRequestActivity extends AppCompatActivity implements book
         setContentView(R.layout.activity_accept_book_request);
 
         records = new ArrayList<>();
+
+        
 
         //receive the book
         Intent intent = getIntent();
@@ -69,8 +67,6 @@ public class acceptBookRequestActivity extends AppCompatActivity implements book
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
         userName = firebaseUser.getDisplayName();
-        Gson gson = new Gson();
-        Intent intent = getIntent();
         String bookMessage = intent.getStringExtra(MainActivity.BOOK_MESSAGE);
         Book book = gson.fromJson(bookMessage, Book.class);
         final String bookid = book.getBookid();
