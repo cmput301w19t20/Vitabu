@@ -67,11 +67,6 @@ public class browseBooksActivity extends AppCompatActivity {
         message = intent.getStringExtra("LocalUser");
         Gson gson = new Gson();
         curUser = gson.fromJson(message, LocalUser.class);
-//        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-//        Gson gson = new Gson();
-//        IntentJson passed = (IntentJson) gson.fromJson(message, IntentJson.class);
-//        curUser = (LocalUser) passed.getUser();
-//>>>>>>> c604f0d0db2e55b7e0521a3669ce754fefe12931
 
         // Get fragment manager (for switching fragments)
         fragmentManager = getSupportFragmentManager();

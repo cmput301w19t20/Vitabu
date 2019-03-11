@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -44,27 +45,19 @@ public class userReviewActivity extends AppCompatActivity {
         user = gson.fromJson(message, User.class);
         getReviewList();
 
-        //Review t = new Review("Owner name", "borrow name", 10, "This is a generic review");
-        //reviewList.add(t);
-
         //create recycler view
         recyclerView = (RecyclerView) findViewById(R.id.user_review_recyclerView);     // capture recycler view
         LayoutManager = new LinearLayoutManager(this);                          // use linear layout and set it
         recyclerView.setLayoutManager(LayoutManager);
         adapter = new CustomAdapter(reviewList);                                        // create adapter
         recyclerView.setAdapter(adapter);                                               // set adapter to view
-
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
         // show no data textView if array list is empty
         emptyText = (TextView) findViewById(R.id.user_review_no_data);
-        emptyText.setVisibility(View.VISIBLE);
-        /*
-        if (reviewList.size() == 0){
-            Log.e("empty", "It was seen as empty " + Integer.toString(reviewList.size()));
-            recyclerView.setVisibility(View.GONE);
+        if (reviewList.size() == 0) {
             emptyText.setVisibility(View.VISIBLE);
         }
-        */
     }
 
     // class that creates the array adapter to display reviews
@@ -169,7 +162,6 @@ public class userReviewActivity extends AppCompatActivity {
         for (DataSnapshot subSnapshot: dataSnapshot.getChildren()){
             Review review = subSnapshot.getValue(Review.class);
             reviewList.add(review);
-            Log.e("review added", "Added a review");
             if (emptyText != null) {
                 emptyText.setVisibility(View.GONE);
             }

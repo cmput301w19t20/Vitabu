@@ -1,3 +1,11 @@
+/*
+ * This file contains the fragment that has the logic and UI for displaying and dealing with browsing
+ * all the books that have not yet been accepted or borrowed.
+ *
+ * Author: Jacob Paton
+ * Version: 1.5
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import android.content.Intent;
@@ -88,7 +96,7 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
         Log.d(logTag, "Got Books snapshot!");
         for (DataSnapshot subSnapshot: snapshot.getChildren()){
             curBook = subSnapshot.getValue(Book.class);
-            if (curBook.getOwnerName().equals(curUser.getUserName()) ){
+            if (curBook.getOwnerName().equals(curUser.getUserName()) || (! curBook.getStatus().equals("available") && ! curBook.getStatus().equals("requested"))){
                 continue;
             }
             curBookIndex = books.indexOf(curBook);

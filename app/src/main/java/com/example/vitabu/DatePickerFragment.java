@@ -1,3 +1,10 @@
+/*
+ * This file contains the Date Picker fragment that is used by the setMeetingActivity.
+ *
+ * Author: Tristan Carlson
+ * Version: 1.0
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import android.app.Activity;

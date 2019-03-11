@@ -20,23 +20,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class VitabuUnitTest {
 
-
-    //Test IntenJson class
-    /*@Test
-    public void intentJsonTest() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = auth.getCurrentUser();
-        LocalUser user = new LocalUser(firebaseUser);
-        IntentJson p = new IntentJson(user);
-        String msg = p.toJson();
-        String tag = "JSON testing";
-        Log.d(tag, msg);
-        Gson gson = new Gson();
-        p = gson.fromJson(msg, IntentJson.class);
-        //Log.d(tag, p);
-
-    }*/
-
     // test book class
     Book book = new Book("Vitabu", "Vitabu Inc", "123456789", "available", "owner name", "This book was good");
 
