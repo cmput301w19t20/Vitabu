@@ -64,7 +64,7 @@
         app:layout_constraintTop_toBottomOf="@+id/write_review_ratingBar" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/write_review_submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"

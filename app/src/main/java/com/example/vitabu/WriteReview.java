@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,56 +33,48 @@ public class WriteReview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_review);
 
-        /*
+
         // get borrowRecord
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.BORROWRECORD_MESSAGE);
         Gson gson = new Gson();
         final BorrowRecord record = gson.fromJson(message, BorrowRecord.class);
-        */
         final String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
 
+        // determine who is the reviewer
+        final String ownerName = record.getOwnerName();
+        final String borrowerName = record.getBorrowerName();
+        final String reviewFrom, reviewTo;
+        if (ownerName.equals(userName)){
+            reviewFrom = ownerName;
+            reviewTo = borrowerName;
+        }
+        else{
+            reviewFrom = borrowerName;
+            reviewTo = ownerName;
+        }
 
         // populate textViews
         String format = getResources().getString(R.string.write_review_of_name);
-        //message = String.format(format, userName);
-        String message = String.format(format, "Temp");
+        message = String.format(format, reviewTo);
         final TextView reviewed = (TextView) findViewById(R.id.write_review_of_name);
         reviewed.setText(message);
 
-        final BorrowRecord record = new BorrowRecord("Temp", "Temp", "123");
-
         // create on click listener for submit review button
-        Button button = (Button) findViewById(R.id.user_profile_review_button);
+        Button button = (Button) findViewById(R.id.write_review_submit_button);
         button.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         // get fields for making a review object
-                        String ownerName = record.getOwnerName();
-                        String borrowerName = record.getBorrowerName();
-                        String reviewFrom, reviewTo;
-
-                        reviewFrom = borrowerName;
-                        reviewTo = ownerName;
-
-                        /*
-                        if (ownerName.equals(userName)){
-                            reviewFrom = ownerName;
-                            reviewTo = borrowerName;
-                        }
-                        else{
-                            reviewFrom = borrowerName;
-                            reviewTo = ownerName;
-                        }
-                        */
-
                         RatingBar ratingBar = (RatingBar) findViewById(R.id.write_review_ratingBar);
                         int rating = Math.round(ratingBar.getRating());
                         EditText review_message = (EditText) findViewById(R.id.write_review_body);
                         String body = review_message.getText().toString();
                         Review review = new Review(ownerName, borrowerName, rating, body, reviewFrom, reviewTo);
                         writeReview(review);
+                        Toast.makeText(WriteReview.this, R.string.write_review_success, Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 }

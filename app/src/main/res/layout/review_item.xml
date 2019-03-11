@@ -30,9 +30,8 @@
         android:layout_width="78dp"
         android:layout_height="61dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="13dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="18dp"
         android:text="@string/review_item_rating"
         android:textAlignment="center"
         android:textColor="@android:color/black"
@@ -46,5 +45,6 @@
         android:layout_below="@+id/review_item_date"
         android:singleLine="false"
         android:text="@string/review_item_body"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 </RelativeLayout>

@@ -182,9 +182,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startBrowseBooksActivity(){
-        //Intent intent = new Intent(this, browseBooksActivity.class);
-        //intent.putExtra(MainActivity.LOCALUSER_MESSAGE, localUser.toJson());
-        Intent intent = new Intent(this, WriteReview.class);
+        Intent intent = new Intent(this, browseBooksActivity.class);
+        intent.putExtra(MainActivity.LOCALUSER_MESSAGE, localUser.toJson());
         startActivity(intent);
         firebaseUser = null;
     }
