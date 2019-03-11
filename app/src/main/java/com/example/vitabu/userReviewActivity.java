@@ -32,6 +32,7 @@ public class userReviewActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager LayoutManager;
     private TextView emptyText;
     User user;
+    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class userReviewActivity extends AppCompatActivity {
         String message = intent.getStringExtra(MainActivity.USER_MESSAGE);
         Gson gson = new Gson();
         user = gson.fromJson(message, User.class);
+        type = intent.getStringExtra(userProfileActivity.REVIEW_TYPE);
         getReviewList();
 
         //create recycler view
@@ -161,9 +163,22 @@ public class userReviewActivity extends AppCompatActivity {
 
         for (DataSnapshot subSnapshot: dataSnapshot.getChildren()){
             Review review = subSnapshot.getValue(Review.class);
-            reviewList.add(review);
-            if (emptyText != null) {
-                emptyText.setVisibility(View.GONE);
+            String userName = user.getUserName();
+
+            if (type.equals("owner") && userName.equals(review.getOwnerName())) {
+                // get only owner reviews
+                reviewList.add(review);
+                if (emptyText != null) {
+                    emptyText.setVisibility(View.GONE);
+                }
+            }
+
+            if (type.equals("borrower") && userName.equals(review.getBorrowerName())) {
+                // get only borrower reviews
+                reviewList.add(review);
+                if (emptyText != null) {
+                    emptyText.setVisibility(View.GONE);
+                }
             }
         }
         adapter.notifyDataSetChanged();
