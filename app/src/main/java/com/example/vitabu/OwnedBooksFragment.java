@@ -37,7 +37,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragmentView = inflater.inflate(R.layout.fragment_owned_books, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_owned_books, container, false);
 
         // Since we have predetermined the items for the drop down status menu,
         // will use a string array containing the status items -- located in the resource file
