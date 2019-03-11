@@ -6,6 +6,7 @@
     <!--Edit Profile Activity Strings-->
     <string name="appbar_profile">My Profile</string>
     <string name="edit_profile_save_button">Save</string>
+    <string name="user_profile_review_button">See User Reviews</string>
 
     <!--Login Activity Strings-->
     <string name="login_login_button_text">Login</string>
@@ -19,6 +20,10 @@
     <string name="browse_books_bottom_nav_menu_add_book">Add Book</string>
     <string name="browse_books_bottom_nav_menu_notifications">Notifications</string>
     <string name="browse_books_bottom_nav_menu_owned_books">My Books</string>
+    <string name="browse_books_book_title">Title: </string>
+    <string name="browse_books_book_author">Author: </string>
+    <string name="browse_books_book_status">Status: </string>
+    <string name="browse_books_book_borrower">Borrower: </string>
 
     <!--Owned Book Fragment Strings-->
     <string name="owned_books_title">My Books</string>
@@ -100,7 +105,8 @@
     <string name="book_status_requests_title">Requests</string>
     <string name="user_profile_books_borrowed">Number of Books Borrowed: %1$d</string>
     <string name="user_profile_books_owned">Number of Books Owned: %1$d</string>
-    <string name="user_profile_review_button">See User Reviews</string>
+    <string name="user_profile_owner_review_button">See Owner Reviews</string>
+    <string name="user_profile_borrower_review_button">See Borrower Reviews</string>
 
     <!--Review Item XML Strings-->
     <string name="review_item_borrowname">borrower_name</string>
@@ -153,4 +159,12 @@
     <string name="requested_books_book_title">title</string>
     <string name="requested_books_book_comment">comment</string>
     <string name="requested_books_book_owner">owner</string>
+    <string name="return_book_title">title</string>
+    <string name="return_book_author">author</string>
+    <string name="return_book_view_owner_button">View Owner</string>
+    <string name="return_book_ISNBtitle">ISBN:</string>
+    <string name="return_book_isbn">1234567890</string>
+    <string name="return_book_button">Return Book</string>
+    <string name="return_book_book_desc" />
+    <string name="return_book_info_view_goodreads_page">View Goodreads Page</string>
 </resources>
