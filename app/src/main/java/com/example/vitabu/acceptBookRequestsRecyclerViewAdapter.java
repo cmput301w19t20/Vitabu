@@ -18,11 +18,6 @@ import java.util.List;
 
 public class acceptBookRequestsRecyclerViewAdapter extends RecyclerView.Adapter<acceptBookRequestsRecyclerViewAdapter.ViewHolder> {
 
-    /**
-     * This adapter is not yet ready for use. Need to consult with logic team to decide on
-     * object that will be passed as data to the recycler.
-     */
-
     private List<BorrowRecord> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
@@ -46,8 +41,6 @@ public class acceptBookRequestsRecyclerViewAdapter extends RecyclerView.Adapter<
         BorrowRecord book = mData.get(position);
         String requester = book.getBorrowerName();
         holder.requester.setText(requester);
-        holder.accept.setText("accept");
-        holder.decline.setText("decline");
     }
 
     // Returns total number of rows
@@ -60,24 +53,11 @@ public class acceptBookRequestsRecyclerViewAdapter extends RecyclerView.Adapter<
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView requester;
-        Button accept, decline;
 
         ViewHolder(View itemView) {
             super(itemView);
             requester = itemView.findViewById(R.id.book_requests_requester_username);
             itemView.setOnClickListener(this);
-            // accept button
-            accept.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
-            decline.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // delete request from database
-                }
-            });
         }
 
         @Override
