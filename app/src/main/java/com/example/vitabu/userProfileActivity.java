@@ -1,3 +1,10 @@
+/*
+ * This file contains the UserProfile Activity which displays a User's profile to the screen.
+ *
+ * Author: Ayooluwa Oladosu
+ * Version: 1.3
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 /*
 References:

@@ -1,3 +1,6 @@
+/*
+ * This file contains the UserAbstract object that the User and LocalUser classes extend.
+ */
 package com.example.vitabu;
 
 import java.util.Date;
