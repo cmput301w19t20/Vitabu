@@ -68,8 +68,6 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
     public void onItemClick(View view, int position) {
 //        TODO: Opens book info activity
         //on item click user will be prompted to view book owner profile
-//        Intent intent = new Intent(this.getActivity(), bookRequestsActivity.class);
-//        startActivity(intent);
         Toast.makeText(this.getActivity(), "You clicked " + recyclerViewAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
 }
