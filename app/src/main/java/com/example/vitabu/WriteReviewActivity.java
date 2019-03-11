@@ -1,3 +1,10 @@
+/*
+ * This file contains the function which will write the reviews for the different users.
+ *
+ * Author: Ayooluwa Oladosu
+ * Version: 1.0
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import android.content.Intent;

@@ -1,3 +1,11 @@
+/*
+ * This file contains the user reviews activity which displays all the reviews pertaining to the user.
+ *
+ * Author: Ayooluwa Oladosu
+ * Version: 1.2
+ * Outstanding Issues: ---
+ */
+
 package com.example.vitabu;
 
 import android.content.Intent;

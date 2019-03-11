@@ -1,3 +1,10 @@
+/*
+ * This file contains the activity that sets the meeting between the owner and the borrower.
+ *
+ * Author: Tristan Carlson
+ * Version: 1.0
+ * Outstanding Issues: This file has no database connectivity yet.
+ */
 package com.example.vitabu;
 
 import android.app.DatePickerDialog;
