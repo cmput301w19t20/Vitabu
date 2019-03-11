@@ -153,7 +153,7 @@ public class Review {
     /**
      * The getter for the rating of the review being given.
      *
-     * @returnthe rating of the review being given.
+     * @return the rating of the review being given.
      */
     public int getRating() {
         return rating;

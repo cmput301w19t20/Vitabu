@@ -97,7 +97,7 @@ public class BorrowRecord {
     /**
      * The getter for the owner's email.
      *
-     * @return
+     * @return the owner's email
      */
     public String getOwnerEmail(){return ownerEmail;}
 
@@ -233,7 +233,7 @@ public class BorrowRecord {
     /**
      * The getter for the pickup location.
      *
-     * @return
+     * @return the pickup location
      */
     public Location getPickUpLocation() {
         return pickUpLocation;

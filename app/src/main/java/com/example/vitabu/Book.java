@@ -195,8 +195,9 @@ public class Book {
     }
 
     /**
+     * The getter for the description of the book.
      *
-     * @return
+     * @return the description of the book.
      */
     public String getDescription() {
         return description;
