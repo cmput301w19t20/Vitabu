@@ -1,16 +1,19 @@
 package com.example.vitabu;
 
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.runner.RunWith;
 
 import java.util.Date;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 
+@RunWith(AndroidJUnit4.class)
 public class SearchTest extends ActivityTestRule<MainActivity> {
     private Solo solo;
     private Date date;
