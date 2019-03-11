@@ -65,10 +65,10 @@
     <TextView
         android:id="@+id/user_profile_books_borrowed"
         android:layout_width="216dp"
-        android:layout_height="26dp"
+        android:layout_height="23dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="36dp"
         android:text="@string/user_profile_books_borrowed"
         android:textAlignment="center"
         android:textColor="@android:color/black"
@@ -79,16 +79,16 @@
     <TextView
         android:id="@+id/user_profile_books_owned"
         android:layout_width="198dp"
-        android:layout_height="29dp"
+        android:layout_height="23dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
         android:text="@string/user_profile_books_owned"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_profile_books_borrowed" />
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_borrower_review_button" />
 
     <TextView
         android:id="@+id/user_profile_owner_rating"
@@ -120,7 +120,7 @@
         android:id="@+id/user_profile_joined_on"
         android:layout_width="194dp"
         android:layout_height="38dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/user_profile_joined_on"
@@ -143,17 +143,28 @@
         app:layout_constraintTop_toBottomOf="@+id/user_profile_username" />
 
     <Button
-        android:id="@+id/user_profile_review_button"
+        android:id="@+id/user_profile_owner_review_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/user_profile_review_button"
+        android:text="@string/user_profile_owner_review_button"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_profile_books_owned" />
+
+    <Button
+        android:id="@+id/user_profile_borrower_review_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_profile_borrower_review_button"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_books_borrowed" />
 
     <TextView
         android:id="@+id/textView"

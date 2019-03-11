@@ -6,6 +6,7 @@
     <!--Edit Profile Activity Strings-->
     <string name="appbar_profile">My Profile</string>
     <string name="edit_profile_save_button">Save</string>
+    <string name="user_profile_review_button">See User Reviews</string>
 
     <!--Login Activity Strings-->
     <string name="login_login_button_text">Login</string>
@@ -104,7 +105,8 @@
     <string name="book_status_requests_title">Requests</string>
     <string name="user_profile_books_borrowed">Number of Books Borrowed: %1$d</string>
     <string name="user_profile_books_owned">Number of Books Owned: %1$d</string>
-    <string name="user_profile_review_button">See User Reviews</string>
+    <string name="user_profile_owner_review_button">See Owner Reviews</string>
+    <string name="user_profile_borrower_review_button">See Borrower Reviews</string>
 
     <!--Review Item XML Strings-->
     <string name="review_item_borrowname">borrower_name</string>

@@ -7,7 +7,6 @@ Shane Conder & Lauren Darcey. "Android SDK Quick Tip: Formatting Resource String
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -26,7 +25,6 @@ import com.google.gson.Gson;
  */
 
 public class userProfileActivity extends AppCompatActivity {
-    User owner;
     User user;
 
     @Override
@@ -72,8 +70,8 @@ public class userProfileActivity extends AppCompatActivity {
 
 
         // create on click listener for see user reviews button
-        Button reviewsButton = (Button) findViewById(R.id.user_profile_review_button);
-        reviewsButton.setOnClickListener(
+        Button buttonBorrower = (Button) findViewById(R.id.user_profile_borrower_review_button);
+        buttonBorrower.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -81,6 +79,22 @@ public class userProfileActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         String message = gson.toJson(user);
                         intent.putExtra(MainActivity.USER_MESSAGE, message);
+                        intent.putExtra(MainActivity.REVIEW_TYPE, "borrower");
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        Button buttonOwner = (Button) findViewById(R.id.user_profile_owner_review_button);
+        buttonOwner.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(userProfileActivity.this, userReviewActivity.class);
+                        Gson gson = new Gson();
+                        String message = gson.toJson(user);
+                        intent.putExtra(MainActivity.USER_MESSAGE, message);
+                        intent.putExtra(MainActivity.REVIEW_TYPE, "owner");
                         startActivity(intent);
                     }
                 }

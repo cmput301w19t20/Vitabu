@@ -81,8 +81,8 @@ public class editProfileActivity extends AppCompatActivity {
 
 
         // create on click listener for see user reviews button
-        Button reviewsButton = (Button) findViewById(R.id.edit_profile_review_button);
-        reviewsButton.setOnClickListener(
+        Button buttonBorrower = (Button) findViewById(R.id.edit_profile_borrower_review_button);
+        buttonBorrower.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -90,6 +90,22 @@ public class editProfileActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         String message = gson.toJson(user);
                         intent.putExtra(MainActivity.USER_MESSAGE, message);
+                        intent.putExtra(MainActivity.REVIEW_TYPE, "borrower");
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        Button buttonOwner = (Button) findViewById(R.id.edit_profile_owner_review_button);
+        buttonOwner.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(editProfileActivity.this, userReviewActivity.class);
+                        Gson gson = new Gson();
+                        String message = gson.toJson(user);
+                        intent.putExtra(MainActivity.USER_MESSAGE, message);
+                        intent.putExtra(MainActivity.REVIEW_TYPE, "owner");
                         startActivity(intent);
                     }
                 }

@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String LOCALUSER_MESSAGE = "LocalUser";
     public static final String BORROWRECORD_MESSAGE = "BorrowRecord";
     public static final String USER_MESSAGE = "User";
+    public static final String REVIEW_TYPE = "type";
     private LocalUser localUser;
     private FirebaseUser firebaseUser;
     private boolean uiUpdated = false;
