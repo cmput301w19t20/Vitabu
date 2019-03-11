@@ -45,7 +45,8 @@
             android:label="@string/title_activity_book_status_owner" />
         <activity android:name=".bookStatusBorrowerActivity" />
         <activity android:name=".ISBNActivity" />
-        <activity android:name=".WriteReview"></activity>
+        <activity android:name=".WriteReview" />
+        <activity android:name=".editProfileActivity"></activity>
     </application>
 
 </manifest>
