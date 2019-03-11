@@ -159,4 +159,12 @@
     <string name="requested_books_book_title">title</string>
     <string name="requested_books_book_comment">comment</string>
     <string name="requested_books_book_owner">owner</string>
+    <string name="return_book_title">title</string>
+    <string name="return_book_author">author</string>
+    <string name="return_book_view_owner_button">View Owner</string>
+    <string name="return_book_ISNBtitle">ISBN:</string>
+    <string name="return_book_isbn">1234567890</string>
+    <string name="return_book_button">Return Book</string>
+    <string name="return_book_book_desc" />
+    <string name="return_book_info_view_goodreads_page">View Goodreads Page</string>
 </resources>
