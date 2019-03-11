@@ -3,6 +3,10 @@
     <string name="app_name">Vitabu</string>
     <string name="action_settings">Settings</string>
 
+    <!--Edit Profile Activity Strings-->
+    <string name="appbar_profile">My Profile</string>
+    <string name="edit_profile_save_button">Save</string>
+
     <!--Login Activity Strings-->
     <string name="login_login_button_text">Login</string>
     <string name="login_register_button_text">Register</string>

@@ -72,8 +72,8 @@ public class userProfileActivity extends AppCompatActivity {
 
 
         // create on click listener for see user reviews button
-        Button button = (Button) findViewById(R.id.user_profile_review_button);
-        button.setOnClickListener(
+        Button reviewsButton = (Button) findViewById(R.id.user_profile_review_button);
+        reviewsButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
