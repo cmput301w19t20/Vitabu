@@ -56,123 +56,135 @@ import java.util.UUID;
 
 public class acceptBookRequestsRecyclerViewAdapter extends RecyclerView.Adapter<acceptBookRequestsRecyclerViewAdapter.ViewHolder> {
 
-    private List<BorrowRecord> mData;
-    private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
-    private RecyclerView recyclerView;
-    private boolean onCreate;
-    private String userName;
-    private ArrayList<String> recordids;
+    private ArrayList<BorrowRecord> mData;
+    private OnItemClickListener mClickListener;
     private Context context;
 
-    // data is passed into the constructor
-    acceptBookRequestsRecyclerViewAdapter(Context context, List<BorrowRecord> data) {
-        this.mInflater = LayoutInflater.from(context);
-        this.context = context;
-        this.mData = data;
+    // activity will have to implement these interface methods for an onclick event inside a row
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+        void onUsernameClick(int position);
+        void onAcceptButtonClick(int position);
     }
 
-    public void setRecyclerView(RecyclerView r){
-        this.recyclerView = r;
+    // set up the click listener
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mClickListener = listener;
     }
 
-    public void setUserName(String userName){
-        this.userName = userName;
+    // viewholder class declaration
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView requester;
+        public Button acceptButton;
+
+        // constructor
+        public ViewHolder(View itemView, final OnItemClickListener listener) {
+            super(itemView);
+            requester = itemView.findViewById(R.id.book_requests_requester_username);
+            acceptButton = itemView.findViewById(R.id.book_request_accept_button);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
+            requester.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onUsernameClick(position);
+                        }
+                    }
+                }
+            });
+
+            acceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onAcceptButtonClick(position);
+                        }
+                    }
+                }
+            });
+        }
     }
 
-    // inflates the row layout from xml when needed
+    // set the data list to the recycler view
+    public acceptBookRequestsRecyclerViewAdapter(ArrayList<BorrowRecord> data) {
+        mData = data;
+    }
+
+    // helper method for returning row id of list item clicked
+    BorrowRecord getItem(int id) { return mData.get(id); }
+
+    // getter method to access context of adapter
+    Context getContext() {return context;}
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.content_book_requests, parent, false);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("CLICKED", "CLICKED");
-//                int position = recyclerView.getChildLayoutPosition(v);
-//                BorrowRecord record = getItem(position);
-//                record.setApproved(true);
-//                record.setRecordid(UUID.randomUUID().toString());
-//                FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                DatabaseReference myRef = database.getReference();
-//                final String bookid = record.getBookid();
-//                onCreate = true;
-//                recordids = new ArrayList<>();
-//                myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addValueEventListener(
-//                        new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot snapshot) {
-//                                if(onCreate) {
-//                                    onCreate = false;
-//                                    Log.d("Count1 ", "" + snapshot.getChildrenCount());
-//                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-//                                        String bid = (String) postSnapshot.child("bookid").getValue();
-//                                        if (bid.equals(bookid)) {
-//                                            recordids.add(postSnapshot.getKey());
-//                                        }
-//                                    }
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError e) {
-//                            }
-//                        });
-//                for(String id: recordids){
-//                    myRef.child("borrowrecords").child(id).removeValue();
-//                }
-//                myRef.child("borrowrecords").child(record.getRecordid()).setValue(record);
-//                Intent intent = new Intent(context, setMeetingActivity.class);
-//                Gson gson = new Gson();
-//                intent.putExtra(MainActivity.BORROWRECORD_MESSAGE, gson.toJson(record));
-//                context.startActivity(intent);
-            }
-        });
-        return new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.content_book_requests, parent, false);
+        context = parent.getContext();
+
+        return new ViewHolder(view, mClickListener);
     }
 
-    // get the borrower username from the borrowrecord and set to textview
     @Override
-    public void onBindViewHolder(acceptBookRequestsRecyclerViewAdapter.ViewHolder holder, int position) {
-        BorrowRecord book = mData.get(position);
-        String requester = book.getBorrowerName();
-        holder.requester.setText(requester);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        BorrowRecord record = mData.get(position);
+        holder.requester.setText(record.getBorrowerName());
     }
 
-    // Returns total number of rows
     @Override
     public int getItemCount() {
         return mData.size();
     }
 
 
-    // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView requester;
 
-        ViewHolder(View itemView) {
-            super(itemView);
-            requester = itemView.findViewById(R.id.book_requests_requester_username);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-        }
-    }
-
-    // convenience method for getting data at click position
-    BorrowRecord getItem(int id) {
-        return mData.get(id);
-    }
-
-    // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
