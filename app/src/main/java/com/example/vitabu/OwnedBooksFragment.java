@@ -282,6 +282,5 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         String message = gson.toJson(recyclerViewAdapter.getItem(position));
         intent.putExtra(MainActivity.BOOK_MESSAGE, message);
         startActivity(intent);
-        newAdapter();
     }
 }
