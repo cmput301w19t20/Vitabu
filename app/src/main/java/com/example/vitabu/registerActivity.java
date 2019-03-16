@@ -71,6 +71,7 @@ public class registerActivity extends AppCompatActivity {
     private String logTag = "registerActivity";
     private FirebaseDatabase database = FirebaseDatabase.getInstance(); //The realtime database handle
     private DatabaseReference myRef = database.getReference(); //The reference to the database handle
+    private Database databaseSingleton = Database.getInstance();
 
     /**
      * This function deals with creating the registerActivity when it is called.
@@ -98,8 +99,6 @@ public class registerActivity extends AppCompatActivity {
         final EditText username = (EditText) findViewById(R.id.register_username);
         final EditText email = (EditText) findViewById(R.id.register_email);
         final EditText password = (EditText) findViewById(R.id.register_password);
-        //final EditText country = (EditText) findViewById(R.id.register_reenter_password);
-        //final EditText province = (EditText) findViewById(R.id.register_province);
         final EditText city = (EditText) findViewById(R.id.register_city);
         final EditText reenter_password = (EditText) findViewById(R.id.register_reenter_password);
 
@@ -121,17 +120,6 @@ public class registerActivity extends AppCompatActivity {
             return;
         }
 
-//        //Checks that the country field was filled with anything at all.
-//        if(country.getText().toString().length() < 1){
-//            Toast.makeText(getApplicationContext(), "Please, provide a country.", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-
-//        //Checks that the province field is filled with anything at all.
-//        if(province.getText().toString().length() < 1){
-//            Toast.makeText(getApplicationContext(), "Please, provide a province..", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
 
         if(!reenter_password.getText().toString().equals(password.getText().toString())){
             Toast.makeText(getApplicationContext(), "Please, type in the same password in both the Password and Re-enter Password fields.", Toast.LENGTH_SHORT).show();
@@ -145,42 +133,36 @@ public class registerActivity extends AppCompatActivity {
             return;
         }
 
-        //Fills in the location object that is required to create a user object later on.
-        //location.setCountry(country.getText().toString());
-        //location.setProvinceOrState(province.getText().toString());
         location.setCity(city.getText().toString());
 
         //Grabs the string representation of the username provided so far.
-        String strUsername = username.getText().toString();
+        final String strUsername = username.getText().toString();
 
         // Check if username alredy exists.
-        myRef.child("usernames").child(strUsername).addListenerForSingleValueEvent(new ValueEventListener() {
+        Runnable fail = new Runnable() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                Log.d(logTag, "Got username " + username + " Data from the database");
-                if (snapshot.exists()){
-                    //Notifies the user that the username is already taken.
-                    Log.d(logTag, username + " taken");
-                    Toast.makeText(getApplicationContext(), "Username Is taken.", Toast.LENGTH_LONG).show();
-
-                }
-                else{
-                    Log.d(logTag, username + " not taken");
-                    // Create new user.
-                    signUp(location, username.getText().toString(), email.getText().toString(), password.getText().toString());
-                }
+            public void run() {
+                usernameTaken(strUsername);
             }
+        };
+
+        Runnable success = new Runnable() {
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d(logTag, "Database Error", databaseError.toException());
+            public void run() {
+                signUp(location, username.getText().toString(), email.getText().toString(), password.getText().toString());
             }
-        });
+        };
 
+        databaseSingleton.checkUsernameAvailability(success, fail, strUsername);
+    }
 
+    public void usernameTaken(String username){
+        Log.d(logTag, username + " taken");
+        Toast.makeText(getApplicationContext(), "Username Is taken.", Toast.LENGTH_LONG).show();
     }
 
     /**
-     * This class attempts to register a user with the provided information. It will close this
+     * This method attempts to register a user with the provided information. It will close this
      * activity upon success or let the user know that it did not work upon failed registration.
      *
      * @author Tristan Carlson
@@ -192,84 +174,42 @@ public class registerActivity extends AppCompatActivity {
     public void signUp(final Location location, final String userName, final String email, final String password){
         // Attempt to create user.
         Log.d(logTag, "In signup");
+        Runnable success = new Runnable() {
+                @Override
+                public void run() {
+                    signUpSuccess();
+                }
+        };
 
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(logTag, "Successfully created user with email: " + email);
-
-                        usr = new LocalUser(location, userName, email, auth.getCurrentUser());
-
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(userName)
-                                .build();
-
-                        auth.getCurrentUser().updateProfile(profileUpdates)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d(logTag, "User profile updated.");
-                                            writeUserToDatabase();
-                                            Toast.makeText(getApplicationContext(), "User Successfully registered, please sign in now.", Toast.LENGTH_LONG).show();
-                                            Intent intent = new Intent();
-                                            setResult(RESULT_OK, intent);
-                                            finish();
-                                        }
-                                        else{
-                                            Log.d(logTag, "User Profile update Failed.  This is bad.");
-                                        }
-                                    }
-                                });
-
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // If sign in fails, display a message to the user.
-                        Log.w(logTag, "Failed to create user with email: " + email, e);
-                        Toast.makeText(getApplicationContext(), "That email has been taken.",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+        Runnable fail = new Runnable() {
+            @Override
+            public void run() {
+                signUpFail();
+            }
+        };
+        databaseSingleton.createUser(success, fail, email, password, userName, location);
 
 
     }
 
-    private void writeUserToDatabase(){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        myRef.child("users").child(usr.getUserName()).setValue(usr)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(logTag, "Successfully wrote user to database.");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(logTag, "Failed to write User to database", e);
-                    }
-                });
-        myRef.child("usernames").child(usr.getUserName()).setValue(usr.getUserid())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(logTag, "Successfully wrote username to database.");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(logTag, "Failed to write Username to database", e);
-                    }
-                });
-
+    public void signUpFail(){
+        Log.d(logTag, "in Callback fail");
+        Log.w(logTag, "Failed to create user with email: ");
+        Toast.makeText(getApplicationContext(), "That email has been taken.",
+                Toast.LENGTH_SHORT).show();
     }
+
+    public void signUpSuccess(){
+        Log.d(logTag, "in Callback success");
+        Toast.makeText(getApplicationContext(), "User Successfully registered, please sign in now.", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    public void test(){
+        Log.d(logTag, "It worked!");
+    }
+
 
 }

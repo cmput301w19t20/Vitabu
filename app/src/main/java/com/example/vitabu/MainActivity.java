@@ -217,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(MainActivity.LOCALUSER_MESSAGE, localUser.toJson());
         startActivity(intent);
         firebaseUser = null;
+
     }
 
 }
