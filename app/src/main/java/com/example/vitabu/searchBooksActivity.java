@@ -33,6 +33,8 @@ package com.example.vitabu;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 
 public class searchBooksActivity extends AppCompatActivity {
 
@@ -40,5 +42,16 @@ public class searchBooksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_books);
+    }
+
+    public void Search (View v){
+        // Get Info from search fields.
+        String author = ((EditText) findViewById(R.id.search_books_author_edittext)).getText().toString();
+        String title = ((EditText) findViewById(R.id.search_books_title_edittext)).getText().toString();
+        String isbn = ((EditText) findViewById(R.id.search_books_isbn_edittext)).getText().toString();
+        String kwords = ((EditText) findViewById(R.id.search_books_keywords_edittext)).getText().toString();
+
+        // Get
+
     }
 }
