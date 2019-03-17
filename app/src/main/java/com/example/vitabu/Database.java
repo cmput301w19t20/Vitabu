@@ -14,6 +14,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 /**
  * Singleton Class to encapsulate all logic for interacting with the database. All methods in this
  * class that are NOT constructors will take 2 Runnable objects as their first 2 arguments.
@@ -50,6 +52,7 @@ public class Database {
     private FirebaseDatabase database;
     private DatabaseReference rootReference;
     private static final Database ourInstance = new Database();
+    private ArrayList<Book> searchBooksReturnValue;
 
     /**
      * Method to get reference to the singleton object.
@@ -200,7 +203,65 @@ public class Database {
 
     }
 
+    public void searchBooks(final Runnable successCallback, final Runnable failCallback, final String author, final String title, final String isbn, final String kwords){
+        final ArrayList<Book> bookList = new ArrayList<>();
+        String initialSearchValue = "";
+        String initialSearchField = "";
+        if (! author.equals("")){
+            initialSearchValue = author;
+            initialSearchField = "author";
+        }else if (! title.equals("")){
+            initialSearchValue = title;
+            initialSearchField = "title";
+        }
+        else if (! isbn.equals("")){
+            initialSearchValue = isbn;
+            initialSearchField = "isbn";
+        }
+        else if (! kwords.equals("")){
+            initialSearchValue = kwords;
+            initialSearchField = "description";
+        }
+        Log.d(logTag, initialSearchValue);
 
+        rootReference.child("books").orderByChild(initialSearchField).equalTo(initialSearchValue).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Log.d(logTag, dataSnapshot.toString());
+                        for (DataSnapshot subSnapshot : dataSnapshot.getChildren()) {
+
+                            Book curBook = subSnapshot.getValue(Book.class);
+                            Log.d(logTag, curBook.getBookid());
+                            if ((title.equals("") || curBook.getTitle().equals(title)) &&
+                                    (author.equals("") || curBook.getAuthor().equals(author)) &&
+                                    (isbn.equals("") || curBook.getISBN().equals(isbn)) &&
+                                    (kwords.equals("") || curBook.getDescription().contains(kwords) )&&
+                                    (author.equals("") || curBook.getAuthor().equals(author))
+                            ) {
+                                bookList.add(curBook);
+                            }
+
+                        }
+                        searchBooksReturnValue = bookList;
+                        successCallback.run();
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d(logTag, "Uhh Failed to get books from database...", databaseError.toException());
+                        failCallback.run();
+                    }
+                });
+
+
+    }
+
+    public ArrayList<Book> getSearchBooksReturnValue(){
+        return searchBooksReturnValue;
+    }
 
 
 }
