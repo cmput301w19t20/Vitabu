@@ -29,11 +29,18 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package com.example.vitabu;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,6 +52,15 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,18 +70,17 @@ import com.google.gson.Gson;
 
 import java.util.Date;
 
-public class setMeetingActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
+public class setMeetingActivity extends FragmentActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, OnMapReadyCallback {
     BorrowRecord borrowRecord;
     Date date = new Date();
-    boolean timeset = false;
-    boolean dateset = false;
-    String email;
-    String phone;
-    String notes;
-    Button timeButton;
-    Button dateButton;
-    String logTag = "set Meeting Activity";
+    boolean timeset = false, dateset = false;
+    String email, phone, notes;
+    Button timeButton, dateButton;
+    String logTag = "Set Meeting Activity";
     FirebaseAuth auth;
+    private GoogleMap mMap;
+    private static final int REQUEST_FINE_LOCATION_PERMISSION = 100;
+    private Marker mMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +97,14 @@ public class setMeetingActivity extends AppCompatActivity implements DatePickerD
         timeButton = (Button) findViewById(R.id.set_meeting_set_time_button);
         dateButton = (Button) findViewById(R.id.set_meeting_set_date_button);
 
+        MapFragment mapFragment = (MapFragment) getFragmentManager() .findFragmentById(R.id.set_meeting_map);
+        mapFragment.getMapAsync(this);
     }
 
 
 
     /**
-     * checks User's entrered data is valid and submits.
+     * Checks User's entered data is valid and submits.
      */
     public void continuePressed(View v){
 
@@ -108,9 +125,14 @@ public class setMeetingActivity extends AppCompatActivity implements DatePickerD
 
         if (! timeset || ! dateset){
             Toast.makeText(getApplicationContext(), "Please enter a time and a date.", Toast.LENGTH_LONG).show();
+            return;
         }
 
-        // TODO Add check for google maps.
+        if (mMarker == null) {
+            Toast.makeText(this, "Click on the map to add a meeting location.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         borrowRecord.setDateBorrowed(date);
         borrowRecord.setOwnerEmail(email);
         borrowRecord.setOwnerPhoneNumber(phone);
@@ -176,7 +198,6 @@ public class setMeetingActivity extends AppCompatActivity implements DatePickerD
 
     }
 
-
     /**
      * Called when date has been set useing dateFragment.  Gets the date from the fragment and
      * updates the date button to display new date, and sets the date in the newEntry object.
@@ -196,5 +217,54 @@ public class setMeetingActivity extends AppCompatActivity implements DatePickerD
 
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
 
+//        Get location permissions if they haven't been given yet.
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_FINE_LOCATION_PERMISSION);
+        }
+
+//        Add my location button and display user on map.
+        mMap.setMyLocationEnabled(true);
+
+//        Move map to user's current location and zoom.
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        android.location.Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (location != null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12.0f));
+        } else {
+            Toast.makeText(this, "Error getting location.", Toast.LENGTH_SHORT).show();
+        }
+
+//        Set clicking on the map to add/move the marker to that location.
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+//                If the marker has already been set, remove it.
+                if (mMarker != null) {
+                    mMarker.remove();
+                }
+//                Create new marker.
+                mMarker = mMap.addMarker(new MarkerOptions().position(latLng).title("Meeting Location"));
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_FINE_LOCATION_PERMISSION) {
+            if (permissions.length == 1 &&
+                    permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
+            } else {
+                // Permission was denied. Display an error message and exit.
+                Toast.makeText(this, "Need location permission to set meeting.", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_CANCELED, new Intent());
+                finish();
+            }
+        }
+    }
 }

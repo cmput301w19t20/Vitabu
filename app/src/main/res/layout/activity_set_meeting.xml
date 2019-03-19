@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:onClick="showTimePickerDialog"
         android:text="@string/set_meeting_set_time_button_text"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,19 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:onClick="showDatePickerDialog"
         android:text="@string/set_meeting_set_date_button_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/set_meeting_google_maps_place_holder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:text="Google maps goes here"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -44,77 +36,69 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/set_meeting_email_hint"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/set_meeting_google_maps_place_holder" />
+        app:layout_constraintBottom_toTopOf="@+id/set_meeting_phone"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/set_meeting_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/set_meeting_phone_hint"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/set_meeting_email_textview" />
+        app:layout_constraintBottom_toTopOf="@+id/set_meeting_notes_textview"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/set_meeting_notes_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/set_meeting_notes_hint"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/set_meeting_phone" />
+        app:layout_constraintBottom_toTopOf="@+id/set_meeting_confirm_button"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/set_meeting_phone_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:inputType="phone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/set_meeting_phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/set_meeting_phone"
-        app:layout_constraintTop_toBottomOf="@+id/set_meeting_email_edittext" />
+        app:layout_constraintStart_toEndOf="@+id/set_meeting_phone" />
 
     <EditText
         android:id="@+id/set_meeting_email_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="180dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/set_meeting_phone_edittext"
+        app:layout_constraintBaseline_toBaselineOf="@+id/set_meeting_email_textview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/set_meeting_email_textview"
-        app:layout_constraintTop_toBottomOf="@+id/set_meeting_google_maps_place_holder" />
+        app:layout_constraintStart_toEndOf="@+id/set_meeting_email_textview" />
 
     <EditText
         android:id="@+id/set_meeting_notes_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/set_meeting_notes_textview"
-        app:layout_constraintTop_toBottomOf="@+id/set_meeting_phone_edittext" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/set_meeting_notes_textview"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/set_meeting_confirm_button"
@@ -126,5 +110,18 @@
         android:text="@string/set_meting_confirm_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <fragment
+        android:id="@+id/set_meeting_map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/set_meeting_email_edittext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_meeting_set_date_button" />
+
 
 </android.support.constraint.ConstraintLayout>
