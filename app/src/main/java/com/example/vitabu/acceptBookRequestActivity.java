@@ -69,6 +69,7 @@ public class acceptBookRequestActivity extends AppCompatActivity {
     final String logTag = "acceptBookRequest";
     private ArrayList<BorrowRecord> records = new ArrayList<>();
     private ArrayList<String> recordids;
+    private Database databaseWrapper = Database.getInstance();
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
@@ -95,13 +96,32 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         FirebaseUser firebaseUser = auth.getCurrentUser();
         userName = firebaseUser.getDisplayName();
 
-        createRequestersList(bookid); // populate the records list with current borrow records
         buildRecyclerView(); // initialize the recyclerview
+        createRequestersList(bookid); // populate the records list with current borrow records
 
     }
 
     public void createRequestersList(final String bookid) {
+        // HI! I pulled your logic into the Database.java file.  The success Runnable will be called
+        // When the borrowRecords are retrieved from firebase.  The List Adapter still doesnt show
+        // the items, but I tested it, and the proper BorrowRecords are getting back here from the wrapper...
+        // -Tristan
+        Runnable fail = new Runnable() {
+            @Override
+            public void run() {
+            }
+        };
 
+        Runnable success = new Runnable() {
+            @Override
+            public void run() {
+                records = databaseWrapper.getFindBorrowRecordsByBookidReturnValue();
+                mAdapter.notifyDataSetChanged();
+            }
+        };
+        databaseWrapper.findBorrowRecordsByBookid(success, fail, bookid);
+
+/*
         Log.d("PULLING", "FROM DATABASE");
         myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addValueEventListener(
                 new ValueEventListener() {
@@ -122,7 +142,8 @@ public class acceptBookRequestActivity extends AppCompatActivity {
                     }
                 });
 
-//        mAdapter.notifyDataSetChanged();
+        //        mAdapter.notifyDataSetChanged();
+*/
     }
 
     public void buildRecyclerView() {
@@ -181,6 +202,23 @@ public class acceptBookRequestActivity extends AppCompatActivity {
 
     public void viewRequesterProfile(String requester, int position) {
         Toast.makeText(acceptBookRequestActivity.this, "View user " + mAdapter.getItem(position) + "'s profile?", Toast.LENGTH_SHORT).show();
+        // I also pulled This logic into the Database.java class.  Same deal as above -Tristan.
+        Runnable fail = new Runnable() {
+            @Override
+            public void run() {
+            }
+        };
+
+        Runnable success = new Runnable() {
+            @Override
+            public void run() {
+                goToUserProfileActivity(databaseWrapper.getFetchUserReturnValue());
+            }
+        };
+
+        databaseWrapper.fetchUser(success, fail, requester);
+
+        /*
         // Get Owner from database. When done launch goToUserProfileActivity()
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
@@ -197,45 +235,52 @@ public class acceptBookRequestActivity extends AppCompatActivity {
                     }
                 }
         );
+        */
     }
 
     public void acceptBookRequest(int position) {
         Toast.makeText(acceptBookRequestActivity.this, "You would like to accept the request at row: " + position, Toast.LENGTH_SHORT).show();
-        BorrowRecord record = mAdapter.getItem(position);
+        final BorrowRecord record = mAdapter.getItem(position);
         record.setApproved(true);
-        record.setRecordid(UUID.randomUUID().toString());
-        recordids = new ArrayList<>();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addValueEventListener(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        Log.d("Count1 ", "" + snapshot.getChildrenCount());
-                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                            String bid = (String) postSnapshot.child("bookid").getValue();
-                            if (bid.equals(bookid)) {
-                                recordids.add(postSnapshot.getKey());
-                            }
-                        }
-                    }
+        //record.setRecordid(UUID.randomUUID().toString());
+//        recordids = new ArrayList<>();
 
-                    @Override
-                    public void onCancelled(DatabaseError e) {
-                    }
-                });
-        for(String id: recordids){
-            myRef.child("borrowrecords").child(id).removeValue();
-        }
 
+
+        databaseWrapper.acceptBorrowRequest(null, null, record);
+
+
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference();
+//        myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addValueEventListener(
+//                new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot snapshot) {
+//                        Log.d("Count1 ", "" + snapshot.getChildrenCount());
+//                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+//                            String bid = (String) postSnapshot.child("bookid").getValue();
+//                            if (bid.equals(bookid)) {
+//                                recordids.add(postSnapshot.getKey());
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError e) {
+//                    }
+//                });
+//        for(String id: recordids){
+//            myRef.child("borrowrecords").child(id).removeValue();
+//        }
+//
         goToSetMeetingActivity(record);
     }
 
-    //TODO: remove the borrow record from the database when user declines request
     public void declineBookRequest(int position) {
         records.remove(position);
         mAdapter.notifyItemRemoved(position);
         mAdapter.notifyDataSetChanged();
+        databaseWrapper.denyBorrowRequest(null, null, records.get(position));
     }
 
     public void goToUserProfileActivity(User owner) {
@@ -245,7 +290,7 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //TODO: delete all remaining book requests from database, update recyclerview
+    //TODO: update recyclerview
     public void goToSetMeetingActivity(BorrowRecord record) {
         Intent intent = new Intent(this, setMeetingActivity.class);
         Gson gson = new Gson();
