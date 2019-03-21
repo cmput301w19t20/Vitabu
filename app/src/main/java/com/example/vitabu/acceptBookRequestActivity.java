@@ -96,7 +96,6 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         FirebaseUser firebaseUser = auth.getCurrentUser();
         userName = firebaseUser.getDisplayName();
 
-        buildRecyclerView(); // initialize the recyclerview
         createRequestersList(bookid); // populate the records list with current borrow records
 
     }
@@ -116,14 +115,20 @@ public class acceptBookRequestActivity extends AppCompatActivity {
             @Override
             public void run() {
                 records = databaseWrapper.getFindBorrowRecordsByBookidReturnValue();
-                mAdapter.notifyDataSetChanged();
+                for(BorrowRecord record: records){
+                    if(record.isApproved()) {
+                        records.remove(record);
+                        Log.d("REMOVING", record.getRecordid());
+                    }
+                }
+                buildRecyclerView(); // initialize the recyclerview
             }
         };
         databaseWrapper.findBorrowRecordsByBookid(success, fail, bookid);
 
 /*
         Log.d("PULLING", "FROM DATABASE");
-        myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addValueEventListener(
+        myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -135,6 +140,7 @@ public class acceptBookRequestActivity extends AppCompatActivity {
                             }
                         }
                         Log.d("RECORDS", "" + records.size());
+                        buildRecyclerView(); // initialize the recyclerview
                     }
 
                     @Override
@@ -297,5 +303,5 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         intent.putExtra(MainActivity.BORROWRECORD_MESSAGE, gson.toJson(record));
         startActivity(intent);
     }
-
+//s
 }
