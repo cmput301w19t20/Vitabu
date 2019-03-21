@@ -9,12 +9,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 import com.google.gson.Gson;
 
 public class returnBookActivity extends AppCompatActivity {
 
     String returnedISBN; // scanned book isbn
     Book book;
+    String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +40,7 @@ public class returnBookActivity extends AppCompatActivity {
         author.setText(book.getAuthor());
         TextView ISBN = (TextView) findViewById(R.id.return_book_isbn_input);
         ISBN.setText(book.getISBN());
-
-
-        // TODO: change header dependent on book return or accepting a book return
-//        title.setText("Accept Return");
-
-        //TODO: change return button text depending on returning a book or accepting a book return
         Button returnBookButton = (Button) findViewById(R.id.return_book_isbn_scan_button);
-        returnBookButton.setText("accept return");
-
         // when return book button is clicked, user is sent to ISBNActivity to scan ISBN
         returnBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,9 +48,21 @@ public class returnBookActivity extends AppCompatActivity {
                 onScanISBNClick(v);
                 // method call to handle database implementation of book return
                 completeBookReturnTransaction();
-                goToMyBooksActivity();
             }
         });
+
+        Database database = Database.getInstance();
+        userName = database.getCurUserName();
+
+        if(bookOwner == userName){
+            TextView header = (TextView) findViewById(R.id.return_book_header);
+            header.setText("Accept return");
+            returnBookButton.setText("Accept return");
+        }else{
+            TextView header = (TextView) findViewById(R.id.return_book_header);
+            header.setText("Return book");
+            returnBookButton.setText("Return book");
+        }
     }
 
     // send to ISBNScan Activity
@@ -80,11 +89,32 @@ public class returnBookActivity extends AppCompatActivity {
     }
 
     public void completeBookReturnTransaction() {
-        // database implementation here
+        if(returnedISBN == book.getISBN()){
+            Database database = Database.getInstance();
+            Runnable onSuccess = new Runnable() {
+                @Override
+                public void run() {
+                    deleteBorrowRecord();
+                }
+            };
+            database.queryDatabase(onSuccess, database.getRootReference().child("borrowrecords"),
+                                    "bookid", book.getBookid());
+        }else{
+            Toast.makeText(returnBookActivity.this, "Wrong ISBN please try again", Toast.LENGTH_SHORT).show();
+        }
     }
 
-
-    public void goToMyBooksActivity() {
-
+    public void deleteBorrowRecord(){
+        Database database = Database.getInstance();
+        DatabaseReference ref = database.getRootReference();
+        BorrowRecord b = new BorrowRecord();
+        for(DataSnapshot snap : database.getQueryResult()){
+            b = snap.getValue(BorrowRecord.class);
+        }
+        ref.child("borrowrecords").child(b.getRecordid()).removeValue();
+        ref.child("books").child(book.getBookid()).child("borrower").setValue("");
+        ref.child("books").child(book.getBookid()).child("status").setValue("available");
+        Intent intent = new Intent(this, browseBooksActivity.class);
+        startActivity(intent);
     }
 }

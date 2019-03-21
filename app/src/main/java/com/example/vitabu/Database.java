@@ -7,6 +7,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,6 +54,7 @@ public class Database {
     private DatabaseReference rootReference;
     private static final Database ourInstance = new Database();
     private ArrayList<Book> searchBooksReturnValue;
+    private Iterable<DataSnapshot> queryResult;
 
     /**
      * Method to get reference to the singleton object.
@@ -69,6 +71,16 @@ public class Database {
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         rootReference = database.getReference();
+    }
+
+    /**
+     * Returns the username of the current user
+     * @return the userName of the current user
+     */
+    public String getCurUserName(){
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+        String userName = firebaseUser.getDisplayName();
+        return userName;
     }
 
     /**
@@ -230,7 +242,6 @@ public class Database {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Log.d(logTag, dataSnapshot.toString());
                         for (DataSnapshot subSnapshot : dataSnapshot.getChildren()) {
-
                             Book curBook = subSnapshot.getValue(Book.class);
                             Log.d(logTag, curBook.getBookid());
                             if ((title.equals("") || curBook.getTitle().equals(title)) &&
@@ -263,6 +274,37 @@ public class Database {
         return searchBooksReturnValue;
     }
 
+    /**
+     * Queries the database for snapshots matching the query
+     * @param reference the reference being queried
+     * @param orderBy the attribute being queried
+     * @param equalTo the value to be matched
+     * @return the result of the query
+     */
+    public void queryDatabase(final Runnable successCallback, DatabaseReference reference, final String orderBy, final String equalTo){
+        reference.orderByChild(orderBy).equalTo(equalTo).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        queryResult = dataSnapshot.getChildren();
+                        successCallback.run();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d(logTag, "Query failiure " + orderBy + " " + equalTo, databaseError.toException());
+                    }
+                }
+        );
+    }
+
+    public Iterable<DataSnapshot> getQueryResult() {
+        return queryResult;
+    }
+
+    public DatabaseReference getRootReference() {
+        return rootReference;
+    }
 
 }
 
