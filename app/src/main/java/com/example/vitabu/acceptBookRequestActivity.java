@@ -298,5 +298,5 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         intent.putExtra(MainActivity.BORROWRECORD_MESSAGE, gson.toJson(record));
         startActivity(intent);
     }
-
+//s
 }
