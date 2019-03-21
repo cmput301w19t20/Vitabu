@@ -115,6 +115,12 @@ public class acceptBookRequestActivity extends AppCompatActivity {
             @Override
             public void run() {
                 records = databaseWrapper.getFindBorrowRecordsByBookidReturnValue();
+                for(BorrowRecord record: records){
+                    if(record.isApproved()) {
+                        records.remove(record);
+                        Log.d("REMOVING", record.getRecordid());
+                    }
+                }
                 buildRecyclerView(); // initialize the recyclerview
             }
         };

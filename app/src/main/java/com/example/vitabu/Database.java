@@ -317,7 +317,7 @@ public class Database {
      */
     public void findBorrowRecordsByBookid(final Runnable successCallback, final Runnable failCallback, final String bookid) {
         getBorrowRecordsByBookidReturnValue = new ArrayList<>();
-        rootReference.child("borrowrecords").orderByChild("bookid").equalTo(bookid).addValueEventListener(
+        rootReference.child("borrowrecords").orderByChild("bookid").equalTo(bookid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -395,7 +395,7 @@ public class Database {
     public void acceptBorrowRequest(final Runnable successCallback, final Runnable failCallback, final BorrowRecord record){
         // update accepted borrowRecord in database.
         rootReference.child("borrowrecords").child(record.getRecordid()).setValue(record);
-
+        Log.d("ACCEPTING", "BORROW REQUEST");
         // Delete all other not accepted requests for the same book and user from the database.
         rootReference.child("borrowrecords").orderByChild("ownerName").equalTo(record.getOwnerName()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -407,7 +407,7 @@ public class Database {
                             String curRecordId = (String) subSnapshot.child("recordid").getValue();
                             if (curbookid.equals(record.getBookid()) && ! curRecordApproved && ! curRecordId.equals(record.getRecordid())) {
                                 // Delete current record from the database.
-                                Log.d(logTag, "Removing borrow record "+ subSnapshot.getKey());
+                                Log.d("$$ REMOVING $$", "Removing borrow record "+ subSnapshot.getKey());
                                 rootReference.child("borrowrecords").child(subSnapshot.getKey()).removeValue();
                             }
                         }
