@@ -274,34 +274,6 @@ public class Database {
         return searchBooksReturnValue;
     }
 
-    /**
-     * Queries the database for snapshots matching the query
-     * @param reference the reference being queried
-     * @param orderBy the attribute being queried
-     * @param equalTo the value to be matched
-     * @return the result of the query
-     */
-    public void queryDatabase(final Runnable successCallback, DatabaseReference reference, final String orderBy, final String equalTo){
-        reference.orderByChild(orderBy).equalTo(equalTo).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        queryResult = dataSnapshot.getChildren();
-                        successCallback.run();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d(logTag, "Query failiure " + orderBy + " " + equalTo, databaseError.toException());
-                    }
-                }
-        );
-    }
-
-    public Iterable<DataSnapshot> getQueryResult() {
-        return queryResult;
-    }
-
     public DatabaseReference getRootReference() {
         return rootReference;
     }
