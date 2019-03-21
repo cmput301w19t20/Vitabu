@@ -96,14 +96,13 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         userName = firebaseUser.getDisplayName();
 
         createRequestersList(bookid); // populate the records list with current borrow records
-        buildRecyclerView(); // initialize the recyclerview
 
     }
 
     public void createRequestersList(final String bookid) {
 
         Log.d("PULLING", "FROM DATABASE");
-        myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addValueEventListener(
+        myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -115,6 +114,7 @@ public class acceptBookRequestActivity extends AppCompatActivity {
                             }
                         }
                         Log.d("RECORDS", "" + records.size());
+                        buildRecyclerView(); // initialize the recyclerview
                     }
 
                     @Override
