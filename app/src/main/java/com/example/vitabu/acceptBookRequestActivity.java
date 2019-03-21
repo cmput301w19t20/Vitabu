@@ -96,7 +96,6 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         FirebaseUser firebaseUser = auth.getCurrentUser();
         userName = firebaseUser.getDisplayName();
 
-        buildRecyclerView(); // initialize the recyclerview
         createRequestersList(bookid); // populate the records list with current borrow records
 
     }
@@ -116,7 +115,7 @@ public class acceptBookRequestActivity extends AppCompatActivity {
             @Override
             public void run() {
                 records = databaseWrapper.getFindBorrowRecordsByBookidReturnValue();
-                mAdapter.notifyDataSetChanged();
+                buildRecyclerView(); // initialize the recyclerview
             }
         };
         databaseWrapper.findBorrowRecordsByBookid(success, fail, bookid);

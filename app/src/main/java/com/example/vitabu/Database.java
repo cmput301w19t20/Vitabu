@@ -123,6 +123,10 @@ public class Database {
                 });
     }
 
+    public String getCurUserName(){
+        return auth.getCurrentUser().getDisplayName();
+    }
+
     /**
      *
      * @param successCallback Runnable to call on success.
@@ -474,6 +478,10 @@ public class Database {
 
     public Iterable<DataSnapshot> getQueryResult() {
         return queryResult;
+    }
+
+    public DatabaseReference getRootReference(){
+        return rootReference;
     }
 
 }
