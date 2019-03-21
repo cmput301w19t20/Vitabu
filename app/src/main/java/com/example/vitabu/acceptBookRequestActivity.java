@@ -114,12 +114,17 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         Runnable success = new Runnable() {
             @Override
             public void run() {
+                Log.d("RUNNING", "RUNNING");
                 records = databaseWrapper.getFindBorrowRecordsByBookidReturnValue();
+                ArrayList<BorrowRecord> recordCopy = new ArrayList<>();
                 for(BorrowRecord record: records){
                     if(record.isApproved()) {
-                        records.remove(record);
+                        recordCopy.add(record);
                         Log.d("REMOVING", record.getRecordid());
                     }
+                }
+                for(BorrowRecord record: recordCopy){
+                    records.remove(record);
                 }
                 buildRecyclerView(); // initialize the recyclerview
             }
@@ -279,6 +284,7 @@ public class acceptBookRequestActivity extends AppCompatActivity {
 //            myRef.child("borrowrecords").child(id).removeValue();
 //        }
 //
+        createRequestersList(bookid);
         goToSetMeetingActivity(record);
     }
 
@@ -295,6 +301,8 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         intent.putExtra(MainActivity.USER_MESSAGE, gson.toJson(owner));
         startActivity(intent);
     }
+
+
 
     //TODO: update recyclerview
     public void goToSetMeetingActivity(BorrowRecord record) {
