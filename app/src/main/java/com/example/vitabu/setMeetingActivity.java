@@ -217,6 +217,7 @@ public class setMeetingActivity extends FragmentActivity implements DatePickerDi
 
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
