@@ -97,7 +97,7 @@ public class setMeetingActivity extends FragmentActivity implements DatePickerDi
         timeButton = (Button) findViewById(R.id.set_meeting_set_time_button);
         dateButton = (Button) findViewById(R.id.set_meeting_set_date_button);
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager() .findFragmentById(R.id.set_meeting_map);
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.set_meeting_map);
         mapFragment.getMapAsync(this);
     }
 
@@ -133,6 +133,7 @@ public class setMeetingActivity extends FragmentActivity implements DatePickerDi
             return;
         }
 
+        borrowRecord.setPickUpLocation(mMarker.getPosition());
         borrowRecord.setDateBorrowed(date);
         borrowRecord.setOwnerEmail(email);
         borrowRecord.setOwnerPhoneNumber(phone);
