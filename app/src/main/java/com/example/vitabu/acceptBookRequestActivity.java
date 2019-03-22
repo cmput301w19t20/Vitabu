@@ -96,7 +96,6 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         FirebaseUser firebaseUser = auth.getCurrentUser();
         userName = firebaseUser.getDisplayName();
 
-        buildRecyclerView(); // initialize the recyclerview
         createRequestersList(bookid); // populate the records list with current borrow records
 
     }
@@ -115,15 +114,26 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         Runnable success = new Runnable() {
             @Override
             public void run() {
+                Log.d("RUNNING", "RUNNING");
                 records = databaseWrapper.getFindBorrowRecordsByBookidReturnValue();
-                mAdapter.notifyDataSetChanged();
+                ArrayList<BorrowRecord> recordCopy = new ArrayList<>();
+                for(BorrowRecord record: records){
+                    if(record.isApproved()) {
+                        recordCopy.add(record);
+                        Log.d("REMOVING", record.getRecordid());
+                    }
+                }
+                for(BorrowRecord record: recordCopy){
+                    records.remove(record);
+                }
+                buildRecyclerView(); // initialize the recyclerview
             }
         };
         databaseWrapper.findBorrowRecordsByBookid(success, fail, bookid);
 
 /*
         Log.d("PULLING", "FROM DATABASE");
-        myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addValueEventListener(
+        myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -135,6 +145,7 @@ public class acceptBookRequestActivity extends AppCompatActivity {
                             }
                         }
                         Log.d("RECORDS", "" + records.size());
+                        buildRecyclerView(); // initialize the recyclerview
                     }
 
                     @Override
@@ -273,6 +284,7 @@ public class acceptBookRequestActivity extends AppCompatActivity {
 //            myRef.child("borrowrecords").child(id).removeValue();
 //        }
 //
+        createRequestersList(bookid);
         goToSetMeetingActivity(record);
     }
 
@@ -290,6 +302,8 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+
     //TODO: update recyclerview
     public void goToSetMeetingActivity(BorrowRecord record) {
         Intent intent = new Intent(this, setMeetingActivity.class);
@@ -297,5 +311,5 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         intent.putExtra(MainActivity.BORROWRECORD_MESSAGE, gson.toJson(record));
         startActivity(intent);
     }
-
+//s
 }

@@ -86,6 +86,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static android.app.Activity.RESULT_CANCELED;
+
 
 public class ISBNActivity extends AppCompatActivity{
 
