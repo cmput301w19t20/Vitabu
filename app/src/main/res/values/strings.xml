@@ -178,4 +178,17 @@
     <string name="return_book_isbn_text">ISBN:</string>
     <string name="return_book_isbn_input">(field will be autopopulated)</string>
     <string name="return_book_isbn_scan_button">return book</string>
+    <string name="search_books_book_title_text">Title</string>
+    <string name="search_books_book_author_text">Author</string>
+    <string name="search_books_book_status">available</string>
+    <string name="search_books_book_status_text">Status:</string>
+    <string name="search_book_text">displaying search results for:</string>
+    <string name="search_results_title_text">Title:</string>
+    <string name="search_results_title">Book Title</string>
+    <string name="search_results_author_text">Author:</string>
+    <string name="search_results_author">Author Name</string>
+    <string name="search_results_isbn_text">ISBN:</string>
+    <string name="search_results_isbn">0123456789</string>
+    <string name="search_results_keywords_text">Keywords:</string>
+    <string name="search_results_keywords">keywords list here</string>
 </resources>
