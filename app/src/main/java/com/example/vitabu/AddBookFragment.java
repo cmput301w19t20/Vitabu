@@ -35,10 +35,16 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.example.vitabu;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +63,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -73,6 +80,7 @@ public class AddBookFragment extends Fragment {
     Button addImageButton;
     FirebaseAuth auth;
     private final String logTag = "AddBookFragment";
+    private static final int REQUEST_CAMERA_PERMISSION = 200;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance(); //The realtime database handle
     private DatabaseReference myRef = database.getReference(); //The reference to the database handle
@@ -146,9 +154,17 @@ public class AddBookFragment extends Fragment {
                 String text = data.getStringExtra("ISBN_number");
 //                Toast.makeText(this.getActivity(), text, Toast.LENGTH_SHORT).show();
                 isbnText.setText(text);
-
             }
         }
+        if (requestCode == 2 && resultCode == RESULT_OK) {
+            // get image from picture
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //imageView.setImageBitmap(imageBitmap);
+            // image here
+            Toast.makeText(this.getActivity(), "You took a photo.", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     /**
@@ -273,6 +289,26 @@ public class AddBookFragment extends Fragment {
      * @param view the view where this fragment resides.
      */
     public void onAddImageClick(View view){
-        Toast.makeText(this.getActivity(), "You clicked on Add Image button. This feature is not yet implemented.", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this.getActivity(), "You clicked on Add Image button. This feature is not yet implemented.", Toast.LENGTH_SHORT).show();
+        if (this.getActivity() != null) {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this.getActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                return;
+            }
+            if (takePictureIntent.resolveActivity(this.getActivity().getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, 2);
+            }
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                Toast.makeText(this.getActivity(), "Need camera permission to take photo", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
