@@ -421,6 +421,8 @@ public class Database {
                             failCallback.run();
                     }
                 });
+        //Change the book status to accepted
+        rootReference.child("books").child(record.getBookid()).child("status").setValue("accepted");
 
     }
 

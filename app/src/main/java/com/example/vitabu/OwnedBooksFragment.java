@@ -172,10 +172,14 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
                                     if (bookids.size() == 0) {
                                         String bid = b.getBookid();
                                         bookids.add(bid);
+                                        ArrayList<Book> copy = new ArrayList<>();
                                         for (Book book : books) {
                                             if (book.getBookid().equals(bid)) {
-                                                books.remove(book);
+                                                copy.add(book);
                                             }
+                                        }
+                                        for (Book book: copy){
+                                            books.remove(book);
                                         }
                                     }
                                     books.add(b);
@@ -284,11 +288,27 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
 //        startActivity(intent);
 
         Toast.makeText(this.getActivity(), "You clicked " + recyclerViewAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this.getContext(), returnBookActivity.class);
-        Log.d("fragment launch", recyclerViewAdapter.getItem(position).getTitle());
+        Book book = recyclerViewAdapter.getItem(position);
         Gson gson = new Gson();
-        String message = gson.toJson(recyclerViewAdapter.getItem(position));
-        intent.putExtra(MainActivity.BOOK_MESSAGE, message);
+        Intent intent = new Intent();
+        if(book.getStatus().equals("available")) {
+            intent = new Intent(this.getContext(), bookEditActivity.class);
+            String message = gson.toJson(book);
+            intent.putExtra(MainActivity.BOOK_MESSAGE, message);
+        }else if(book.getStatus().equals("requested")){
+            intent = new Intent(this.getContext(), acceptBookRequestActivity.class);
+            String message = gson.toJson(book);
+            intent.putExtra(MainActivity.BOOK_MESSAGE, message);
+        }else if(book.getStatus().equals("accepted")) {
+            //TODO: change activity to the new tradeoff activity
+            intent = new Intent(this.getContext(), acceptBookRequestActivity.class);
+            String message = gson.toJson(book);
+            intent.putExtra(MainActivity.BOOK_MESSAGE, message);
+        }else if(book.getStatus().equals("borrowed")) {
+            intent = new Intent(this.getContext(), returnBookActivity.class);
+            String message = gson.toJson(book);
+            intent.putExtra(MainActivity.BOOK_MESSAGE, message);
+        }
         startActivity(intent);
     }
 }
