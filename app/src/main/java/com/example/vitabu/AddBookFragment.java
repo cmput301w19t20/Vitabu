@@ -35,16 +35,24 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.example.vitabu;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -57,6 +65,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -73,9 +82,12 @@ public class AddBookFragment extends Fragment {
     Button addImageButton;
     FirebaseAuth auth;
     private final String logTag = "AddBookFragment";
+    private static final int REQUEST_CAMERA_PERMISSION = 200;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance(); //The realtime database handle
     private DatabaseReference myRef = database.getReference(); //The reference to the database handle
+
+    View root;
 
 
     /**
@@ -90,7 +102,7 @@ public class AddBookFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_add_book, container, false);
-
+        root = rootView;
         auth = FirebaseAuth.getInstance();
 
         // This part simply creates an onClick listener to deal with the Scan ISBN button
@@ -123,6 +135,10 @@ public class AddBookFragment extends Fragment {
         //This just gets a handle on the isbnText to be used by the onActivityResult method
         isbnText = (EditText) rootView.findViewById(R.id.add_book_isbn_input);
 
+        // hide image preview until user adds a photo
+        ImageView imageView = (ImageView) root.findViewById(R.id.add_book_pic);
+        imageView.setVisibility(View.GONE);
+
         return rootView;
     }
 
@@ -146,9 +162,20 @@ public class AddBookFragment extends Fragment {
                 String text = data.getStringExtra("ISBN_number");
 //                Toast.makeText(this.getActivity(), text, Toast.LENGTH_SHORT).show();
                 isbnText.setText(text);
-
             }
         }
+        if (requestCode == 2 && resultCode == RESULT_OK) {
+            // get image from picture intent and display preview
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            TextView textView = (TextView) root.findViewById(R.id.add_book_add_image_text);
+            textView.setVisibility(View.GONE);
+            ImageView imageView = (ImageView) root.findViewById(R.id.add_book_pic);
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageBitmap(imageBitmap);
+            Toast.makeText(this.getActivity(), "You took a photo.", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     /**
@@ -273,6 +300,26 @@ public class AddBookFragment extends Fragment {
      * @param view the view where this fragment resides.
      */
     public void onAddImageClick(View view){
-        Toast.makeText(this.getActivity(), "You clicked on Add Image button. This feature is not yet implemented.", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this.getActivity(), "You clicked on Add Image button. This feature is not yet implemented.", Toast.LENGTH_SHORT).show();
+        if (this.getActivity() != null) {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this.getActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                return;
+            }
+            if (takePictureIntent.resolveActivity(this.getActivity().getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, 2);
+            }
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                Toast.makeText(this.getActivity(), "Need camera permission to take photo", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

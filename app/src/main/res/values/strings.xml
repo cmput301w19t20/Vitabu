@@ -150,6 +150,10 @@
     <string name="book_requests_requester_username">username</string>
     <string name="book_info_isbn">123567890</string>
 
+    <!--Edit Book Fragment Strings-->
+    <string name="edit_book_delete">Delete Image</string>
+    <string name="edit_book_add">Add Image</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="requested_books_requests_title">Requests</string>
@@ -168,4 +172,27 @@
     <string name="return_book_book_desc" />
     <string name="return_book_info_view_goodreads_page">View Goodreads Page</string>
     <string name="accept_book_view_requester_profile">view profile</string>
+    <string name="book_request_accept_button">accept</string>
+    <string name="book_requests_view_profile">view profile</string>
+    <string name="return_book_header">Return Book</string>
+    <string name="return_book_title_text">Title:</string>
+    <string name="return_book_title_input">(field will be autopopulated)</string>
+    <string name="return_book_author_text">Author:</string>
+    <string name="return_book_author_input">(field will be autopopulated)</string>
+    <string name="return_book_isbn_text">ISBN:</string>
+    <string name="return_book_isbn_input">(field will be autopopulated)</string>
+    <string name="return_book_isbn_scan_button">return book</string>
+    <string name="search_books_book_title_text">Title</string>
+    <string name="search_books_book_author_text">Author</string>
+    <string name="search_books_book_status">available</string>
+    <string name="search_books_book_status_text">Status:</string>
+    <string name="search_book_text">displaying search results for:</string>
+    <string name="search_results_title_text">Title:</string>
+    <string name="search_results_title">Book Title</string>
+    <string name="search_results_author_text">Author:</string>
+    <string name="search_results_author">Author Name</string>
+    <string name="search_results_isbn_text">ISBN:</string>
+    <string name="search_results_isbn">0123456789</string>
+    <string name="search_results_keywords_text">Keywords:</string>
+    <string name="search_results_keywords">keywords list here</string>
 </resources>

@@ -99,43 +99,6 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         FirebaseUser firebaseUser = auth.getCurrentUser();
         userName = firebaseUser.getDisplayName();
 
-        /*Book book;
-        for (int i = 0; i < 5; i++) {
-            book = new Book("USER-AVAILABLE" + Integer.toString(i), "Author", "1234", "available", "owen", "description");
-            book.setBookid(UUID.randomUUID().toString());
-            myRef.child("books").child(book.getBookid()).setValue(book);
-        }
-        for (int i = 0; i < 5; i++) {
-            book = new Book("USER-ACCEPTED" + Integer.toString(i), "Author", "1234", "accepted", "owen", "description");
-            book.setBookid(UUID.randomUUID().toString());
-            myRef.child("books").child(book.getBookid()).setValue(book);
-        }
-        for (int i = 0; i < 5; i++) {
-            book = new Book("USER-REQUESTED" + Integer.toString(i), "Author", "1234", "requested", "owen", "description");
-            book.setBookid(UUID.randomUUID().toString());
-            myRef.child("books").child(book.getBookid()).setValue(book);
-        }
-        for (int i = 0; i < 5; i++) {
-            book = new Book("USER-BORROWED" + Integer.toString(i), "Author", "1234", "borrowed", "owen", "description");
-            book.setBookid(UUID.randomUUID().toString());
-            myRef.child("books").child(book.getBookid()).setValue(book);
-        }
-        for (int i = 0; i < 5; i++) {
-            book = new Book("----NOT-USER----" + Integer.toString(i), "Author", "1234", "available", "notOwen", "description");
-            book.setBookid(UUID.randomUUID().toString());
-            myRef.child("books").child(book.getBookid()).setValue(book);
-        }
-        for (int i = 0; i < 5; i++) {
-            Book book = new Book("USER-BORROWING" + Integer.toString(i), "Author", "1234", "borrowed", "notOwen", "description");
-            book.setBookid(UUID.randomUUID().toString());
-            BorrowRecord rec = new BorrowRecord("notOwen", "owen", book.getBookid());
-            rec.setApproved(true);
-            rec.setRecordid(UUID.randomUUID().toString());
-            myRef.child("books").child(book.getBookid()).setValue(book);
-            myRef.child("borrowrecords").child(rec.getRecordid()).setValue(rec);
-        }*/
-
-
         // pull all books that user owns
         myRef.child("books").orderByChild("ownerName").equalTo(userName).addValueEventListener(
                 new ValueEventListener() {
@@ -251,7 +214,6 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // TODO: filter books according to status selected
         switch (position) {
             case 0:
                 orderBy("available");
@@ -307,19 +269,26 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        // do nothing for now ..
+        // do nothing for now...
     }
 
     @Override
     public void onItemClick(View view, int position) {
 //        TODO: Opens book info activity
+//        Toast.makeText(this.getActivity(), "You clicked " + recyclerViewAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+//        Intent intent = new Intent(this.getContext(), bookEditActivity.class);
+//        Log.d("fragment launch", recyclerViewAdapter.getItem(position).getTitle());
+//        Gson gson = new Gson();
+//        String message = gson.toJson(recyclerViewAdapter.getItem(position));
+//        intent.putExtra(MainActivity.BOOK_MESSAGE, message);
+//        startActivity(intent);
+
         Toast.makeText(this.getActivity(), "You clicked " + recyclerViewAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this.getContext(), bookInfoActivity.class);
+        Intent intent = new Intent(this.getContext(), returnBookActivity.class);
         Log.d("fragment launch", recyclerViewAdapter.getItem(position).getTitle());
         Gson gson = new Gson();
         String message = gson.toJson(recyclerViewAdapter.getItem(position));
         intent.putExtra(MainActivity.BOOK_MESSAGE, message);
         startActivity(intent);
-
     }
 }

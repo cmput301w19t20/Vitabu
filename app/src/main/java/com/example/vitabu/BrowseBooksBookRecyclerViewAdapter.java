@@ -68,6 +68,9 @@ public class BrowseBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Bro
             String title = book.getTitle();
             String author = book.getAuthor();
             String status = book.getStatus();
+
+            if (status.equals("requested")) status = "available";
+
             holder.title.setText(title);
             holder.author.setText(author);
             holder.status.setText(status);

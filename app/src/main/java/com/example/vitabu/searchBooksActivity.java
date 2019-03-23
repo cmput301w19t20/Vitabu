@@ -33,12 +33,54 @@ package com.example.vitabu;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class searchBooksActivity extends AppCompatActivity {
-
+    Database database = Database.getInstance();
+    private ArrayList<Book> searchResults;
+    private String logTag = "Search Books Activity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_books);
+    }
+
+
+    public void search (View v){
+        Log.d(logTag, "In search");
+        // Get Info from search fields.
+        String author = ((EditText) findViewById(R.id.search_books_author_edittext)).getText().toString();
+        String title = ((EditText) findViewById(R.id.search_books_title_edittext)).getText().toString();
+        String isbn = ((EditText) findViewById(R.id.search_books_isbn_edittext)).getText().toString();
+        String kwords = ((EditText) findViewById(R.id.search_books_keywords_edittext)).getText().toString();
+
+        Runnable success = new Runnable() {
+            @Override
+            public void run() {
+                searchResults = database.getSearchBooksReturnValue();
+                showSearchResults();
+            }
+        };
+
+        Runnable fail = new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), "Search failed.", Toast.LENGTH_LONG).show();
+            }
+        };
+        // Get search results.
+        database.searchBooks(success, fail, author, title, isbn, kwords);
+    }
+
+    private void showSearchResults(){
+        Log.d(logTag, "In search results.");
+        for(Book book : searchResults ){
+            Log.d(logTag, book.getBookid());
+        }
     }
 }
