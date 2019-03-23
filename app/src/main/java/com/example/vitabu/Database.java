@@ -31,22 +31,22 @@ import java.util.ArrayList;
  *
  * An example of how to convert methods to a Runnable is shown below.
  * {@code
-          public void testMethod(String arg1, int arg2){
-              Log.d("TEST", "In callback function. arg1 = " + arg1 + " arg2 = " + arg2);
-          }
+public void testMethod(String arg1, int arg2){
+Log.d("TEST", "In callback function. arg1 = " + arg1 + " arg2 = " + arg2);
+}
 
-          ...
+...
 
-          public void someMethod(){
-              Runnable testRunnable = new Runnable() {
-                   @Override
-                   public void run() {
-                       testMethod(arg1, arg2);
-                   }
-               };
-               Database database = Database.getInstance()
-               database.testCallback(testRunnable);
-           }
+public void someMethod(){
+Runnable testRunnable = new Runnable() {
+@Override
+public void run() {
+testMethod(arg1, arg2);
+}
+};
+Database database = Database.getInstance()
+database.testCallback(testRunnable);
+}
 }
  *
  *
@@ -63,6 +63,7 @@ public class Database {
     private ArrayList<Book> searchBooksReturnValue;
     private ArrayList<BorrowRecord> getBorrowRecordsByBookidReturnValue;
     private User fetchUserReturnValue;
+    private Iterable<DataSnapshot> queryResult;
 
     // TODO Move all other database accesses to this class.
 
@@ -120,6 +121,10 @@ public class Database {
                         failCallback.run();
                     }
                 });
+    }
+
+    public String getCurUserName(){
+        return auth.getCurrentUser().getDisplayName();
     }
 
     /**
@@ -194,7 +199,7 @@ public class Database {
      * @param username String username to be checked.
      */
     public void checkUsernameAvailability(final Runnable successCallback, final Runnable failCallback, final String username){
-            rootReference.child("usernames").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+        rootReference.child("usernames").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Log.d(logTag, "Got username " + username + " Data from the database");
@@ -312,7 +317,7 @@ public class Database {
      */
     public void findBorrowRecordsByBookid(final Runnable successCallback, final Runnable failCallback, final String bookid) {
         getBorrowRecordsByBookidReturnValue = new ArrayList<>();
-        rootReference.child("borrowrecords").orderByChild("bookid").equalTo(bookid).addValueEventListener(
+        rootReference.child("borrowrecords").orderByChild("bookid").equalTo(bookid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -390,7 +395,7 @@ public class Database {
     public void acceptBorrowRequest(final Runnable successCallback, final Runnable failCallback, final BorrowRecord record){
         // update accepted borrowRecord in database.
         rootReference.child("borrowrecords").child(record.getRecordid()).setValue(record);
-
+        Log.d("ACCEPTING", "BORROW REQUEST");
         // Delete all other not accepted requests for the same book and user from the database.
         rootReference.child("borrowrecords").orderByChild("ownerName").equalTo(record.getOwnerName()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -402,7 +407,7 @@ public class Database {
                             String curRecordId = (String) subSnapshot.child("recordid").getValue();
                             if (curbookid.equals(record.getBookid()) && ! curRecordApproved && ! curRecordId.equals(record.getRecordid())) {
                                 // Delete current record from the database.
-                                Log.d(logTag, "Removing borrow record "+ subSnapshot.getKey());
+                                Log.d("$$ REMOVING $$", "Removing borrow record "+ subSnapshot.getKey());
                                 rootReference.child("borrowrecords").child(subSnapshot.getKey()).removeValue();
                             }
                         }
@@ -416,6 +421,8 @@ public class Database {
                             failCallback.run();
                     }
                 });
+        //Change the book status to accepted
+        rootReference.child("books").child(record.getBookid()).child("status").setValue("accepted");
 
     }
 
@@ -445,6 +452,38 @@ public class Database {
         });
 
         // TODO Remove notification from database as well!
+    }
+
+    /**
+     * Queries the database for snapshots matching the query
+     * @param reference the reference being queried
+     * @param orderBy the attribute being queried
+     * @param equalTo the value to be matched
+     * @return the result of the query
+     */
+    public void queryDatabase(final Runnable successCallback, DatabaseReference reference, final String orderBy, final String equalTo){
+        reference.orderByChild(orderBy).equalTo(equalTo).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        queryResult = dataSnapshot.getChildren();
+                        successCallback.run();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d(logTag, "Query failiure " + orderBy + " " + equalTo, databaseError.toException());
+                    }
+                }
+        );
+    }
+
+    public Iterable<DataSnapshot> getQueryResult() {
+        return queryResult;
+    }
+
+    public DatabaseReference getRootReference(){
+        return rootReference;
     }
 
 }

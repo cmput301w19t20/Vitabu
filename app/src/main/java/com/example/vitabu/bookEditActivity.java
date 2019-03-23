@@ -1,13 +1,20 @@
 package com.example.vitabu;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +48,7 @@ public class bookEditActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference myRef;
     FirebaseAuth auth;
+    private static final int REQUEST_CAMERA_PERMISSION = 200;
 
     /**
      * This method is run when the screen is created. It will get the provided book from the invoking
@@ -89,9 +97,10 @@ public class bookEditActivity extends AppCompatActivity {
      * @param view the view in which this method is invoked.
      * @author Arseniy Kouzmenkov
      */
-    public void onGoodreadsClick(View view){
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.goodreads.com/book/isbn/" + book.getISBN()));
-        startActivity(intent);
+    public void onISBNClick(View view){
+        // scan the isbn
+        Intent intent = new Intent(this, ISBNActivity.class);
+        startActivityForResult(intent, 1);
     }
 
 
@@ -211,5 +220,49 @@ public class bookEditActivity extends AppCompatActivity {
 //                        Log.d(logTag, "Failed to write User to database", e);
 //                    }
 //                });
+    }
+
+    public void onClickDeleteImage(View view){
+        // handle deleting an image
+        ImageView imageView = (ImageView) findViewById(R.id.book_edit_picture);
+        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.ic_launcher);
+        imageView.setImageBitmap(bitmap);
+
+    }
+
+    public void onClickAddImage(View view){
+        // handle adding a new image
+        // start intent and request permissions
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+            return;
+        }
+        if (takePictureIntent.resolveActivity(this.getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, 2);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data); //Gets the handle on the onActivityResult from
+        // the class containing the original return result.
+        // Check which request we're responding to
+        if (requestCode == 1) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                String text = data.getStringExtra("ISBN_number");
+                EditText isbnText = findViewById(R.id.book_edit_isbn);
+                isbnText.setText(text);
+            }
+        }
+        if (requestCode == 2 && resultCode == RESULT_OK) {
+            // get image from picture intent and display preview
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ImageView imageView = (ImageView) findViewById(R.id.book_edit_picture);
+            imageView.setImageBitmap(imageBitmap);
+        }
+
     }
 }

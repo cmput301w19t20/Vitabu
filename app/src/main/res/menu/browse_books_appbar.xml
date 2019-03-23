@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/browse_books_appbar_search"
-        android:title="@string/search_books_title" />
+        android:icon="@drawable/search_icon"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/browse_books_appbar_profile"
-        android:title="@string/appbar_profile" />
+        android:icon="@drawable/profile"
+        app:showAsAction="ifRoom" />
 </menu>
