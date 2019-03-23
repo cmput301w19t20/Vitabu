@@ -2,26 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/browse_books_bottom_nav_menu_owned_books"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/library_book"
         android:title="@string/browse_books_bottom_nav_menu_owned_books" />
 
     <item
         android:id="@+id/browse_books_bottom_nav_menu_requests"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/book_request"
         android:title="@string/browse_books_bottom_nav_menu_requests" />
 
     <item
         android:id="@+id/browse_books_bottom_nav_menu_browse"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/book"
         android:title="@string/browse_books_bottom_nav_menu_browse" />
 
     <item
         android:id="@+id/browse_books_bottom_nav_menu_add_book"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/add_book"
         android:title="@string/browse_books_bottom_nav_menu_add_book" />
 
     <item
         android:id="@+id/browse_books_bottom_nav_menu_notifications"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/notification_bell"
         android:title="@string/browse_books_bottom_nav_menu_notifications" />
 </menu>
