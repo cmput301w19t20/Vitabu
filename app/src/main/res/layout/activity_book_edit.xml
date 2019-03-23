@@ -53,19 +53,20 @@
         android:id="@+id/book_edit_view_owner_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:onClick="onClickViewOwner"
         android:text="@string/book_info_view_owner_button_text"
         android:textAllCaps="false"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/book_edit_picture"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.145" />
 
     <EditText
         android:id="@+id/book_edit_isbn"
@@ -97,11 +98,11 @@
         android:id="@+id/book_edit_view_goodreads_page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:onClick="onGoodreadsClick"
-        android:text="@string/book_info_view_goodreads_page"
+        android:onClick="onISBNClick"
+        android:text="@string/add_book_isbn_button"
         android:textAllCaps="false"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -122,4 +123,26 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/book_edit_add_image"
+        android:layout_width="117dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="16dp"
+        android:onClick="onClickAddImage"
+        android:text="@string/edit_book_add"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/book_edit_picture" />
+
+    <Button
+        android:id="@+id/book_edit_delete_image"
+        android:layout_width="117dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="16dp"
+        android:onClick="onClickDeleteImage"
+        android:text="@string/edit_book_delete"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/book_edit_add_image" />
 </android.support.constraint.ConstraintLayout>

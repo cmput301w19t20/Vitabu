@@ -51,6 +51,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -85,6 +87,8 @@ public class AddBookFragment extends Fragment {
     private FirebaseDatabase database = FirebaseDatabase.getInstance(); //The realtime database handle
     private DatabaseReference myRef = database.getReference(); //The reference to the database handle
 
+    View root;
+
 
     /**
      * This function initializes the view when the user clicks on the Add Book button in the bottom
@@ -98,7 +102,7 @@ public class AddBookFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_add_book, container, false);
-
+        root = rootView;
         auth = FirebaseAuth.getInstance();
 
         // This part simply creates an onClick listener to deal with the Scan ISBN button
@@ -131,6 +135,10 @@ public class AddBookFragment extends Fragment {
         //This just gets a handle on the isbnText to be used by the onActivityResult method
         isbnText = (EditText) rootView.findViewById(R.id.add_book_isbn_input);
 
+        // hide image preview until user adds a photo
+        ImageView imageView = (ImageView) root.findViewById(R.id.add_book_pic);
+        imageView.setVisibility(View.GONE);
+
         return rootView;
     }
 
@@ -157,11 +165,14 @@ public class AddBookFragment extends Fragment {
             }
         }
         if (requestCode == 2 && resultCode == RESULT_OK) {
-            // get image from picture
+            // get image from picture intent and display preview
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //imageView.setImageBitmap(imageBitmap);
-            // image here
+            TextView textView = (TextView) root.findViewById(R.id.add_book_add_image_text);
+            textView.setVisibility(View.GONE);
+            ImageView imageView = (ImageView) root.findViewById(R.id.add_book_pic);
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageBitmap(imageBitmap);
             Toast.makeText(this.getActivity(), "You took a photo.", Toast.LENGTH_LONG).show();
         }
 
