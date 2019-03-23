@@ -1,3 +1,33 @@
+/*
+Vitabu is an Open Source application available under the Apache (Version 2.0) License.
+
+Copyright 2019 Arseniy Kouzmenkov, Owen Randall, Ayooluwa Oladosu, Tristan Carlson, Jacob Paton,
+Katherine Richards
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial
+portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * This file contains the LogIn information to authenticate a user or register a new user. From there
+ * it invokes the main business logic of the rest of the app.
+ *
+ * Author: Tristan Carlson
+ * Version: 1.6
+ * Outstanding Issues: ---
+ */
 package com.example.vitabu;
 
 import android.content.Intent;
@@ -25,8 +55,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +68,16 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private String logTag = "MainActivity";
-    public static final String EXTRA_MESSAGE = "com.example.vitabu.MESSAGE";
+    public static final String BOOK_MESSAGE = "Book";
+    public static final String LOCALUSER_MESSAGE = "LocalUser";
+    public static final String BORROWRECORD_MESSAGE = "BorrowRecord";
+    public static final String USER_MESSAGE = "User";
+    public static final String REVIEW_TYPE = "type";
+    private LocalUser localUser;
+    private FirebaseUser firebaseUser;
+    private boolean uiUpdated = false;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +87,30 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Initialize firebase auth.
         auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+        // Initialize firebase database.
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
     }
 
     @Override
     protected void onStart(){
         super.onStart();
-        //FirebaseUser user = auth.getCurrentUser();
+        if (firebaseUser != null && ! uiUpdated){
+            Toast.makeText(MainActivity.this, "Auto-Sign in for " + firebaseUser.getDisplayName() + " in progress.", Toast.LENGTH_SHORT).show();
+        }
         // Check if already signed in.
-//        if (user != null) {
-//            Log.i(logTag, "Signed in as: " + user.toString());
-//            updateUI(user);
-//        }
+        if (firebaseUser != null) {
+            //Log.i(logTag, "Already Authenticated! Signed in as: " + firebaseUser.getDisplayName());
+            updateUI();
+        }
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        uiUpdated = false;
     }
 
     @Override
@@ -87,16 +143,15 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(logTag, "Successfully signed in with email: " + email);
-                            FirebaseUser user = auth.getCurrentUser();
-                            updateUI(user);
-                            Intent intent = new Intent(getApplicationContext(), browseBooksActivity.class);
-                            startActivity(intent);
+                            firebaseUser = auth.getCurrentUser();
+                            localUser = new LocalUser();
+                            updateUI();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(logTag, "Failed to sign in with email: " + email, task.getException());
                             Toast.makeText(MainActivity.this, "Sign In failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
                     }
                 });
@@ -104,51 +159,64 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    /**
-     * Signs a firebase user out.
-     */
-    public void signOut(){
-        FirebaseUser usr = auth.getCurrentUser();
-        if (usr == null){
-            return;
-        }
-        Log.i("AuthActivity", "Signing out user : " + usr.toString());
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Log.i("AuthActivity", "Signed out user successfully!");
-                        updateUI(null);
-                    }
-                });
-    }
-
-
     public void onPressLogin(View view) {
-
+//        Intent intent = new Intent(this, browseBooksActivity.class);
+//        startActivity(intent);
         // TODO: Validate login details. If valid email/password combo, proceed, otherwise alert user to incorrect login.
         String email = ((TextView) findViewById(R.id.login_email)).getText().toString();
         String password = ((TextView) findViewById(R.id.login_password)).getText().toString();
+        if (email.length() < 1 || password.length() < 1){
+            Toast.makeText(MainActivity.this, "The email and password fields cannot be empty.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         signIn(email, password);
-        // TODO Launch UI B activity.
+
     }
 
     public void onPressRegister(View view) {
-        //signUp();
+        // Start register activity.
         Intent intent = new Intent(this, registerActivity.class);
         startActivity(intent);
-        // Firebase user now created.
-        // TODO start activity to finish creating profile. ie. username, picture, default location etc.
     }
 
-    public void updateUI(FirebaseUser user){
-        if (user == null) {
+    public void updateUI(){
+        if (firebaseUser == null) {
             // No user signed in.
+            Log.d(logTag, "Update ui: No user signed in.");
             return;
         }
+
+        if (uiUpdated){
+            return;
+        }
+
+        uiUpdated = true;
+
+
         // TODO Update ui here with newly signed in users info.
-        Intent intent = new Intent(this, browseBooksActivity.class);
-        startActivity(intent);
+        String userName = firebaseUser.getDisplayName();
+        myRef.child("users").child(userName).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        localUser = (dataSnapshot.getValue(LocalUser.class));
+                        Log.d(logTag, "Retrived User account " + localUser.getUserName() + " from Database");
+                        startBrowseBooksActivity();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d(logTag, "Cancelled");
+                    }
+                }
+        );
     }
+
+    public void startBrowseBooksActivity(){
+        Intent intent = new Intent(this, browseBooksActivity.class);
+        intent.putExtra(MainActivity.LOCALUSER_MESSAGE, localUser.toJson());
+        startActivity(intent);
+        firebaseUser = null;
+    }
+
 }

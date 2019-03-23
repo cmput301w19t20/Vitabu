@@ -1,4 +1,26 @@
 /*
+Vitabu is an Open Source application available under the Apache (Version 2.0) License.
+
+Copyright 2019 Arseniy Kouzmenkov, Owen Randall, Ayooluwa Oladosu, Tristan Carlson, Jacob Paton,
+Katherine Richards
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial
+portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*
  * This file deals with the functionality of registering a new user. It grabs all the input from
  * the user to fill out the model classes. It then checks if the username is taken, if the email
  * is already linked to some user and does not let a person register in that case.
@@ -27,15 +49,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.json.JSONObject;
 
 /**
  * This class deals with everything pertaining to new user registration to Vitabu.
@@ -47,7 +66,7 @@ import org.json.JSONObject;
 public class registerActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;  //The firebase authorization handle.
-    private User usr;  //The user object handle.
+    private LocalUser usr;  //The user object handle.
     private Location location = new Location(); //Handle on the location object.
     private String logTag = "registerActivity";
     private FirebaseDatabase database = FirebaseDatabase.getInstance(); //The realtime database handle
@@ -79,9 +98,10 @@ public class registerActivity extends AppCompatActivity {
         final EditText username = (EditText) findViewById(R.id.register_username);
         final EditText email = (EditText) findViewById(R.id.register_email);
         final EditText password = (EditText) findViewById(R.id.register_password);
-        final EditText country = (EditText) findViewById(R.id.register_country);
-        final EditText province = (EditText) findViewById(R.id.register_province);
+        //final EditText country = (EditText) findViewById(R.id.register_reenter_password);
+        //final EditText province = (EditText) findViewById(R.id.register_province);
         final EditText city = (EditText) findViewById(R.id.register_city);
+        final EditText reenter_password = (EditText) findViewById(R.id.register_reenter_password);
 
         //Checks that the user has provided any username at all.
         if(username.getText().toString().length() < 1){
@@ -97,20 +117,26 @@ public class registerActivity extends AppCompatActivity {
 
         //Checks that the password is at least 8 characters in length.
         if(password.getText().toString().length() < 8){
-            Toast.makeText(getApplicationContext(), "Please, provide a password that is more than 8 characters long.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Please, provide a password that is at least 8 characters long.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        //Checks that the country field was filled with anything at all.
-        if(country.getText().toString().length() < 1){
-            Toast.makeText(getApplicationContext(), "Please, provide a country.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        //Checks that the country field was filled with anything at all.
+//        if(country.getText().toString().length() < 1){
+//            Toast.makeText(getApplicationContext(), "Please, provide a country.", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
-        //Checks that the province field is filled with anything at all.
-        if(province.getText().toString().length() < 1){
-            Toast.makeText(getApplicationContext(), "Please, provide a province..", Toast.LENGTH_SHORT).show();
+//        //Checks that the province field is filled with anything at all.
+//        if(province.getText().toString().length() < 1){
+//            Toast.makeText(getApplicationContext(), "Please, provide a province..", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+
+        if(!reenter_password.getText().toString().equals(password.getText().toString())){
+            Toast.makeText(getApplicationContext(), "Please, type in the same password in both the Password and Re-enter Password fields.", Toast.LENGTH_SHORT).show();
             return;
+
         }
 
         //Checks that the city field is filled with anything at all.
@@ -120,8 +146,8 @@ public class registerActivity extends AppCompatActivity {
         }
 
         //Fills in the location object that is required to create a user object later on.
-        location.setCountry(country.getText().toString());
-        location.setProvinceOrState(province.getText().toString());
+        //location.setCountry(country.getText().toString());
+        //location.setProvinceOrState(province.getText().toString());
         location.setCity(city.getText().toString());
 
         //Grabs the string representation of the username provided so far.
@@ -131,15 +157,15 @@ public class registerActivity extends AppCompatActivity {
         myRef.child("usernames").child(strUsername).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.d(logTag, "got data");
+                Log.d(logTag, "Got username " + username + " Data from the database");
                 if (snapshot.exists()){
                     //Notifies the user that the username is already taken.
-                    Log.d(logTag, "uname taken");
+                    Log.d(logTag, username + " taken");
                     Toast.makeText(getApplicationContext(), "Username Is taken.", Toast.LENGTH_LONG).show();
 
                 }
                 else{
-                    Log.d(logTag, "uname not taken");
+                    Log.d(logTag, username + " not taken");
                     // Create new user.
                     signUp(location, username.getText().toString(), email.getText().toString(), password.getText().toString());
                 }
@@ -166,34 +192,39 @@ public class registerActivity extends AppCompatActivity {
     public void signUp(final Location location, final String userName, final String email, final String password){
         // Attempt to create user.
         Log.d(logTag, "In signup");
+
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(logTag, "Successfully created user with email: " + email);
-                        usr = new User(location, auth.getCurrentUser());
 
-                        // TODO Deal with failed user account update.
+                        usr = new LocalUser(location, userName, email, auth.getCurrentUser());
+
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(userName)
                                 .build();
 
-                        usr.getFireBaseUser().updateProfile(profileUpdates)
+                        auth.getCurrentUser().updateProfile(profileUpdates)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Log.d(logTag, "User profile updated.");
-                                            usr.writeToDatabase();
+                                            writeUserToDatabase();
+                                            Toast.makeText(getApplicationContext(), "User Successfully registered, please sign in now.", Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent();
+                                            setResult(RESULT_OK, intent);
+                                            finish();
+                                        }
+                                        else{
+                                            Log.d(logTag, "User Profile update Failed.  This is bad.");
                                         }
                                     }
                                 });
 
-                        Toast.makeText(getApplicationContext(), "User Successfully registered, please sign in now.", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
-                        finish();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -205,5 +236,40 @@ public class registerActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
     }
+
+    private void writeUserToDatabase(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        myRef.child("users").child(usr.getUserName()).setValue(usr)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(logTag, "Successfully wrote user to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(logTag, "Failed to write User to database", e);
+                    }
+                });
+        myRef.child("usernames").child(usr.getUserName()).setValue(usr.getUserid())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(logTag, "Successfully wrote username to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(logTag, "Failed to write Username to database", e);
+                    }
+                });
+
+    }
+
 }

@@ -14,11 +14,31 @@
         android:layout_marginEnd="16dp" />
 
     <TextView
-        android:id="@+id/browse_books_book_title"
+        android:id="@+id/browse_books_book_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
+        android:text="@string/browse_books_book_title"
         android:layout_toEndOf="@+id/browse_books_book_image"
+        android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:id="@+id/browse_books_book_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_alignStart="@id/browse_books_book_status"
+        android:layout_toEndOf="@+id/browse_books_book_title_text"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/browse_books_book_author_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/browse_books_book_author"
+        android:layout_toEndOf="@+id/browse_books_book_image"
+        android:layout_below="@+id/browse_books_book_title_text"
         android:layout_marginEnd="16dp" />
 
     <TextView
@@ -26,17 +46,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:layout_toEndOf="@+id/browse_books_book_image"
+        android:layout_alignStart="@id/browse_books_book_status"
+        android:layout_toEndOf="@+id/browse_books_book_author_text"
         android:layout_below="@+id/browse_books_book_title"
         android:layout_marginEnd="16dp" />
 
     <TextView
-        android:id="@+id/browse_books_book_comments"
+        android:id="@+id/browse_books_book_status_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
+        android:text="@string/browse_books_book_status"
         android:layout_toEndOf="@+id/browse_books_book_image"
-        android:layout_below="@+id/browse_books_book_author"
+        android:layout_below="@+id/browse_books_book_author_text"
         android:layout_marginEnd="16dp" />
 
+    <TextView
+        android:id="@+id/browse_books_book_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_toEndOf="@+id/browse_books_book_status_text"
+        android:layout_below="@+id/browse_books_book_author"
+        android:layout_marginEnd="16dp" />
 </RelativeLayout>

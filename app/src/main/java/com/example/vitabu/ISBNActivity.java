@@ -1,3 +1,35 @@
+/*
+Vitabu is an Open Source application available under the Apache (Version 2.0) License.
+
+Copyright 2019 Arseniy Kouzmenkov, Owen Randall, Ayooluwa Oladosu, Tristan Carlson, Jacob Paton,
+Katherine Richards
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial
+portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * This file contains the ISBN scanning activity. It uses the Ancdroid Camera API and Google's Barcode
+ * scanner API to scan an ISBN off the back of the book and pass it back through an Intent back to the
+ * previous screen.
+ *
+ * Author: Ayooluwa Oladosu
+ * Version: 1.2
+ * Outstanding Issues: Does not work with some phones, the camera looks funny when tilting the phone.
+ */
+
 package com.example.vitabu;
 
 /*
@@ -371,7 +403,7 @@ public class ISBNActivity extends AppCompatActivity{
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 // end activity
-                Toast.makeText(ISBNActivity.this, "Need Camera permission to scan ISBN", Toast.LENGTH_LONG).show();
+                Toast.makeText(ISBNActivity.this, "Need camera permission to scan ISBN", Toast.LENGTH_LONG).show();
                 setResult(RESULT_CANCELED, new Intent());
                 finish();
             }
