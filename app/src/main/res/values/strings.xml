@@ -150,6 +150,10 @@
     <string name="book_requests_requester_username">username</string>
     <string name="book_info_isbn">123567890</string>
 
+    <!--Edit Book Fragment Strings-->
+    <string name="edit_book_delete">Delete Image</string>
+    <string name="edit_book_add">Add Image</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="requested_books_requests_title">Requests</string>

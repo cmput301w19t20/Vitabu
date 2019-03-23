@@ -30,6 +30,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package com.example.vitabu;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -45,7 +47,7 @@ public class BorrowRecord {
     private String borrowerName;
     private String bookid;
     private Date dateBorrowed;
-    private Location pickUpLocation;
+    private LatLng pickUpLocation;
     private boolean approved;
     private String recordid;
     private String ownerPhoneNumber;
@@ -235,7 +237,7 @@ public class BorrowRecord {
      *
      * @return the pickup location
      */
-    public Location getPickUpLocation() {
+    public LatLng getPickUpLocation() {
         return pickUpLocation;
     }
 
@@ -244,7 +246,7 @@ public class BorrowRecord {
      *
      * @param pickUpLocation the pickup location.
      */
-    public void setPickUpLocation(Location pickUpLocation) {
+    public void setPickUpLocation(LatLng pickUpLocation) {
         this.pickUpLocation = pickUpLocation;
     }
 }
