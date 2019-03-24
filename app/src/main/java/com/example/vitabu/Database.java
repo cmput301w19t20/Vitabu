@@ -20,8 +20,8 @@ import java.util.ArrayList;
 /**
  * Singleton Class to encapsulate all logic for interacting with the database.
  *
- * All methods in this
- * class that are NOT constructors will take 2 Runnable objects as their first 2 arguments.
+ * All methods in this class that are NOT constructors or getters will take
+ * two Runnable objects as their first two arguments.
  * These arguments will be the success and fail callbacks respectively.  All methods should be able
  * to handle null being passed as callbacks without throwing an exception.
  *
@@ -255,6 +255,11 @@ public class Database {
         else if (! kwords.equals("")){
             initialSearchValue = kwords;
             initialSearchField = "description";
+        }
+        else{
+            // No search parameters were passed.  Call failcallback.
+            failCallback.run();
+            return;
         }
         Log.d(logTag, initialSearchValue);
 
