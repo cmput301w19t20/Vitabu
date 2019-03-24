@@ -195,4 +195,12 @@
     <string name="search_results_isbn">0123456789</string>
     <string name="search_results_keywords_text">Keywords:</string>
     <string name="search_results_keywords">keywords list here</string>
+    <string name="accept_book_header">Accept Book</string>
+    <string name="accept_book_title_text">Title:</string>
+    <string name="accept_book_title_input">autopopulate field w/ title</string>
+    <string name="accept_book_author_text">Author:</string>
+    <string name="accept_book_author_input">autopopulate field w/ author</string>
+    <string name="accept_book_isbn_text">ISBN:</string>
+    <string name="accept_book_isbn_input">autopopulate field w/ isbn</string>
+    <string name="accept_book_isbn_scan_button">accept book</string>
 </resources>
