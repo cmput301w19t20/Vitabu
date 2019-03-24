@@ -77,7 +77,6 @@ public class searchBookResultsActivity extends AppCompatActivity {
         // set up the recycler view
         mRecyclerView = findViewById(R.id.search_results_list);
         mLayoutManager = new LinearLayoutManager(this);
-        Log.d(logTag, "Layout manager = " + mLayoutManager.toString());
         mAdapter = new searchBookResultsRecyclerViewAdapter(bookResults);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
