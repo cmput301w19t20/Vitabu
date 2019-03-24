@@ -54,7 +54,7 @@ public class BorrowRecord {
     private String ownerNotes;
     private String ownerEmail;
 
-
+    
     /**
      * This is the constructor that is used to instantiate the BorrowRecord object with all the necessary
      * and specified parameters.

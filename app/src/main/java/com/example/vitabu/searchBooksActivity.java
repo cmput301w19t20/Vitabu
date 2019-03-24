@@ -82,6 +82,10 @@ public class searchBooksActivity extends AppCompatActivity {
             @Override
             public void run() {
                 searchResults = database.getSearchBooksReturnValue();
+                if (searchResults.size() == 0) {
+                    Toast.makeText(getApplicationContext(), "Search returned no results.", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 showSearchResults();
             }
         };
@@ -89,7 +93,7 @@ public class searchBooksActivity extends AppCompatActivity {
         Runnable fail = new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), "Search failed.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Search returned no results.", Toast.LENGTH_LONG).show();
             }
         };
         // Get search results.

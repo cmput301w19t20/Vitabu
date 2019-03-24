@@ -15,6 +15,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+
 public class returnBookActivity extends AppCompatActivity {
 
     String returnedISBN; // scanned book isbn
@@ -89,31 +91,23 @@ public class returnBookActivity extends AppCompatActivity {
     }
 
     public void completeBookReturnTransaction() {
-        if(returnedISBN == book.getISBN()){
+        if(returnedISBN.equals(book.getISBN())){
             Database database = Database.getInstance();
             Runnable onSuccess = new Runnable() {
                 @Override
                 public void run() {
-                    deleteBorrowRecord();
+                    startBrowseBooksActivity();
                 }
             };
-            database.queryDatabase(onSuccess, database.getRootReference().child("borrowrecords"),
-                                    "bookid", book.getBookid());
+            database.returnBook(onSuccess, null, book);
+
+
         }else{
             Toast.makeText(returnBookActivity.this, "Wrong ISBN please try again", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void deleteBorrowRecord(){
-        Database database = Database.getInstance();
-        DatabaseReference ref = database.getRootReference();
-        BorrowRecord b = new BorrowRecord();
-        for(DataSnapshot snap : database.getQueryResult()){
-            b = snap.getValue(BorrowRecord.class);
-        }
-        ref.child("borrowrecords").child(b.getRecordid()).removeValue();
-        ref.child("books").child(book.getBookid()).child("borrower").setValue("");
-        ref.child("books").child(book.getBookid()).child("status").setValue("available");
+    public void startBrowseBooksActivity(){
         Intent intent = new Intent(this, browseBooksActivity.class);
         startActivity(intent);
     }
