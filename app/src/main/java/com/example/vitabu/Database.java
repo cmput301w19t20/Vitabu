@@ -276,7 +276,8 @@ public class Database {
                                     (author.equals("") || curBook.getAuthor().equals(author)) &&
                                     (isbn.equals("") || curBook.getISBN().equals(isbn)) &&
                                     (kwords.equals("") || curBook.getDescription().equals("") || curBook.getDescription().contains(kwords) )&&
-                                    (author.equals("") || curBook.getAuthor().equals(author))
+                                    (author.equals("") || curBook.getAuthor().equals(author)) &&
+                                    (! curBook.getStatus().equals("borrowed") && ! curBook.getStatus().equals("accepted"))
                             ) {
                                 bookList.add(curBook);
                             }
