@@ -301,7 +301,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
             intent.putExtra(MainActivity.BOOK_MESSAGE, message);
         }else if(book.getStatus().equals("accepted")) {
             //TODO: change activity to the new tradeoff activity
-            intent = new Intent(this.getContext(), acceptBookRequestActivity.class);
+            intent = new Intent(this.getContext(), acceptBookActivity.class);
             String message = gson.toJson(book);
             intent.putExtra(MainActivity.BOOK_MESSAGE, message);
         }else if(book.getStatus().equals("borrowed")) {
