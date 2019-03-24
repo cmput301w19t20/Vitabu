@@ -12,7 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class searchBookResultsActivity extends AppCompatActivity {
@@ -20,7 +22,12 @@ public class searchBookResultsActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private searchBookResultsRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<Book> bookResults = new ArrayList(); // container for search results
+    private ArrayList<Book> bookResults; // container for search results
+    private String logTag = "SearchBookResultsActivity";
+    private String author;
+    private String title;
+    private String isbn;
+    private String kwords;
     private LocalUser curUser;
 
 
@@ -29,9 +36,24 @@ public class searchBookResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_book_results);
 
-        //TODO: receive intent from searchBooksActivity
+        // Get search results, LocalUser, and search terms from intent.
+        Intent intent = getIntent();
+        String bookResultsMessage = intent.getStringExtra(MainActivity.BOOKLIST_MESSAGE);
+        Gson gson = new Gson();
+        // Used https://stackoverflow.com/questions/5374546/passing-arraylist-through-intent
+        // To find how to retrieve arraylist of arbitrary type from intent.
+        Type type = new TypeToken<ArrayList<Book>>(){}.getType();
+        bookResults = gson.fromJson(bookResultsMessage, type);
+        String curUserMessage = intent.getStringExtra(MainActivity.USER_MESSAGE);
+        curUser = gson.fromJson(curUserMessage, LocalUser.class);
+        author = intent.getStringExtra(searchBooksActivity.AUTHOR_SEARCH_MESSAGE);
+        title = intent.getStringExtra(searchBooksActivity.TITLE_SEARCH_MESSAGE);
+        isbn = intent.getStringExtra(searchBooksActivity.ISBN_SEARCH_MESSAGE);
+        kwords = intent.getStringExtra(searchBooksActivity.KWORDS_SEARCH_MESSAGE);
 
-        //TODO: set up local user
+        for(Book book : bookResults){
+            Log.d(logTag, "Pulled book '" + book.getTitle() + "' From intent!");
+        }
 
         // set up textviews
         TextView inputTitle = (TextView) findViewById(R.id.search_results_title);
@@ -40,27 +62,22 @@ public class searchBookResultsActivity extends AppCompatActivity {
         TextView inputKeywords = (TextView) findViewById(R.id.search_results_keywords);
 
         // populate fields with data passed through intent from searchBooksActivity
-        // currently hardcoded for testing
-        inputTitle.setText("test book name");
-        inputAuthor.setText("test author");
-        inputISBN.setText("0123456789");
-        inputKeywords.setText("keywords input will be listed here");
+        inputTitle.setText(title);
+        inputAuthor.setText(author);
+        inputISBN.setText(isbn);
+        inputKeywords.setText(kwords);
 
-        populateSearchResults();
         buildRecyclerView();
 
 
     }
 
-    // populate list with search results from database
-    public void populateSearchResults() {
-
-    }
 
     public void buildRecyclerView() {
         // set up the recycler view
-        mRecyclerView = findViewById(R.id.book_requests_list);
+        mRecyclerView = findViewById(R.id.search_results_list);
         mLayoutManager = new LinearLayoutManager(this);
+        Log.d(logTag, "Layout manager = " + mLayoutManager.toString());
         mAdapter = new searchBookResultsRecyclerViewAdapter(bookResults);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);

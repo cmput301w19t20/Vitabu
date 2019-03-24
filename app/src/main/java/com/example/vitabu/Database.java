@@ -256,6 +256,11 @@ public class Database {
             initialSearchValue = kwords;
             initialSearchField = "description";
         }
+        else{
+            // No search parameters were passed.  Call failcallback.
+            failCallback.run();
+            return;
+        }
         Log.d(logTag, initialSearchValue);
 
         rootReference.child("books").orderByChild(initialSearchField).equalTo(initialSearchValue).addListenerForSingleValueEvent(
