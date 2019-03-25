@@ -133,7 +133,11 @@ public class setMeetingActivity extends FragmentActivity implements DatePickerDi
             return;
         }
 
-        borrowRecord.setPickUpLocation(mMarker.getPosition());
+        Location location = new Location();
+        location.setLat(mMarker.getPosition().latitude);
+        location.setLng(mMarker.getPosition().longitude);
+
+        borrowRecord.setPickUpLocation(location);
         borrowRecord.setDateBorrowed(date);
         borrowRecord.setOwnerEmail(email);
         borrowRecord.setOwnerPhoneNumber(phone);

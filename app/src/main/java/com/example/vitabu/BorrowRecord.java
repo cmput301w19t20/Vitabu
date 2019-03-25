@@ -47,7 +47,7 @@ public class BorrowRecord {
     private String borrowerName;
     private String bookid;
     private Date dateBorrowed;
-    private LatLng pickUpLocation;
+    private Location pickUpLocation;
     private boolean approved;
     private String recordid;
     private String ownerPhoneNumber;
@@ -237,7 +237,7 @@ public class BorrowRecord {
      *
      * @return the pickup location
      */
-    public LatLng getPickUpLocation() {
+    public Location getPickUpLocation() {
         return pickUpLocation;
     }
 
@@ -246,7 +246,7 @@ public class BorrowRecord {
      *
      * @param pickUpLocation the pickup location.
      */
-    public void setPickUpLocation(LatLng pickUpLocation) {
+    public void setPickUpLocation(Location pickUpLocation) {
         this.pickUpLocation = pickUpLocation;
     }
 }
