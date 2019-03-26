@@ -47,7 +47,8 @@ public class BorrowRecord {
     private String borrowerName;
     private String bookid;
     private Date dateBorrowed;
-    private LatLng pickUpLocation;
+    private double latitude;
+    private double longitude;
     private boolean approved;
     private String recordid;
     private String ownerPhoneNumber;
@@ -67,7 +68,7 @@ public class BorrowRecord {
         this.ownerName = ownerName;
         this.borrowerName = borrowerName;
         this.bookid = bookid;
-        //this.dateBorrowed = new Date();
+        this.dateBorrowed = new Date();
         this.recordid = UUID.randomUUID().toString();
         this.approved = false;
     }
@@ -232,13 +233,12 @@ public class BorrowRecord {
         this.dateBorrowed = dateBorrowed;
     }
 
-    /**
-     * The getter for the pickup location.
-     *
-     * @return the pickup location
-     */
-    public LatLng getPickUpLocation() {
-        return pickUpLocation;
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 
     /**
@@ -247,6 +247,7 @@ public class BorrowRecord {
      * @param pickUpLocation the pickup location.
      */
     public void setPickUpLocation(LatLng pickUpLocation) {
-        this.pickUpLocation = pickUpLocation;
+        latitude = pickUpLocation.latitude;
+        longitude = pickUpLocation.longitude;
     }
 }

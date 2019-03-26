@@ -33,6 +33,7 @@ package com.example.vitabu;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +74,8 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
         FirebaseUser firebaseUser = auth.getCurrentUser();
         String userName = firebaseUser.getDisplayName();
 
-        if (!book.getOwnerName().equals(userName)){
+        if (!book.getOwnerName().equals(userName) && book.getStatus().equals("borrowed")){
+            //Log.d("BOOKKKK", book.getTitle() + " " +  book.getOwnerName() + " " + userName);
             status = "borrowing";
         }
 

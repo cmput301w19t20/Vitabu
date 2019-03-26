@@ -192,7 +192,6 @@ public class bookInfoActivity extends AppCompatActivity {
                     }
                 });
 
-
         myRef.child("borrowrecords").child(newRecord.getRecordid()).setValue(newRecord)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
