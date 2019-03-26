@@ -428,6 +428,8 @@ public class Database {
                 });
         //Change the book status to accepted
         rootReference.child("books").child(record.getBookid()).child("status").setValue("accepted");
+        //Change the book borrower
+        rootReference.child("books").child(record.getBookid()).child("borrower").setValue(record.getBorrowerName());
 
     }
 
@@ -548,6 +550,8 @@ public class Database {
 
     }
 
-
+    public DatabaseReference getRootReference() {
+        return rootReference;
+    }
 }
 

@@ -66,7 +66,7 @@ public class acceptBookActivity extends AppCompatActivity {
     public void onScanISBNClick(View view){
         Intent intent = new Intent(this, ISBNActivity.class);
         startActivityForResult(intent, 1);
-        Toast.makeText(this, "Accept book transaction for ISBN: " + bookISBN, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Accept book transaction for ISBN: " + bookISBN, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -81,16 +81,24 @@ public class acceptBookActivity extends AppCompatActivity {
                 String text = data.getStringExtra("ISBN_number");
 //                Toast.makeText(this.getActivity(), text, Toast.LENGTH_SHORT).show();
                 bookISBN = text;
+                if(bookISBN.equals(book.getISBN())){
+                    if(book.getBorrower().equals(userName)){
+                        Toast.makeText(this, "Success borrower", Toast.LENGTH_SHORT).show();
+                        completeBookBorrowTransaction();
+                    }else{
+                        Toast.makeText(this, "Success owner", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(this, "Incorrect ISBN try again", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
 
     public void completeBookBorrowTransaction() {
-
-    }
-
-    public void updateBorrowRecord() {
-
+        Database d = Database.getInstance();
+        d.getRootReference().child("books").child(book.getBookid()).child("status").setValue("borrowed");
+        this.finish();
     }
 
 }

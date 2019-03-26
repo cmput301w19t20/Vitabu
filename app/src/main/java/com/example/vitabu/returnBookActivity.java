@@ -47,9 +47,8 @@ public class returnBookActivity extends AppCompatActivity {
         returnBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(returnBookActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 onScanISBNClick(v);
-                // method call to handle database implementation of book return
-                completeBookReturnTransaction();
             }
         });
 
@@ -71,13 +70,14 @@ public class returnBookActivity extends AppCompatActivity {
     public void onScanISBNClick(View view){
         Intent intent = new Intent(this, ISBNActivity.class);
         startActivityForResult(intent, 1);
-        Toast.makeText(returnBookActivity.this, "Book return for ISBN: " + returnedISBN, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(returnBookActivity.this, "Book return for ISBN: " + returnedISBN, Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("BACK", "FROM ACTIVITY");
 //        getActivity();
         // Check which request we're responding to
         if (requestCode == 1) {
@@ -86,29 +86,32 @@ public class returnBookActivity extends AppCompatActivity {
                 String text = data.getStringExtra("ISBN_number");
 //                Toast.makeText(this.getActivity(), text, Toast.LENGTH_SHORT).show();
                 returnedISBN = text;
+                completeBookReturnTransaction();
             }
         }
     }
 
     public void completeBookReturnTransaction() {
         if(returnedISBN.equals(book.getISBN())){
-            Database database = Database.getInstance();
-            Runnable onSuccess = new Runnable() {
-                @Override
-                public void run() {
-                    startBrowseBooksActivity();
-                }
-            };
-            database.returnBook(onSuccess, null, book);
-
-
+            if(userName.equals(book.getOwnerName())) {
+                Toast.makeText(returnBookActivity.this, "Success Owner", Toast.LENGTH_SHORT).show();
+                Database database = Database.getInstance();
+                Runnable onSuccess = new Runnable() {
+                    @Override
+                    public void run() {
+                        returnFromActivity();
+                    }
+                };
+                database.returnBook(onSuccess, null, book);
+            }else{
+                Toast.makeText(returnBookActivity.this, "Success Borrower", Toast.LENGTH_SHORT).show();
+            }
         }else{
             Toast.makeText(returnBookActivity.this, "Wrong ISBN please try again", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void startBrowseBooksActivity(){
-        Intent intent = new Intent(this, browseBooksActivity.class);
-        startActivity(intent);
+    public void returnFromActivity(){
+        this.finish();
     }
 }

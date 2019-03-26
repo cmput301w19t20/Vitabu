@@ -57,6 +57,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.Objects;
 
 public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSelectedListener, OwnedBooksBookRecyclerViewAdapter.ItemClickListener {
     private OwnedBooksBookRecyclerViewAdapter recyclerViewAdapter;
@@ -65,6 +66,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
     private String userName;
     private RecyclerView recyclerView;
     private boolean created;
+    private boolean onStart;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
 
         books = new ArrayList<>();
         bookids = new ArrayList<>();
+        onStart = true;
       
         // set up the RecyclerView
         recyclerView = fragmentView.findViewById(R.id.owned_books_list);
@@ -100,7 +103,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         userName = firebaseUser.getDisplayName();
 
         // pull all books that user owns
-        myRef.child("books").orderByChild("ownerName").equalTo(userName).addValueEventListener(
+        myRef.child("books").orderByChild("ownerName").equalTo(userName).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -122,18 +125,22 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
     }
 
     private void newAdapter(){
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        recyclerViewAdapter = new OwnedBooksBookRecyclerViewAdapter(this.getActivity(), books);
-        recyclerViewAdapter.setClickListener(this);
-        recyclerView.setAdapter(recyclerViewAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        try {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+            recyclerViewAdapter = new OwnedBooksBookRecyclerViewAdapter(this.getActivity(), books);
+            recyclerViewAdapter.setClickListener(this);
+            recyclerView.setAdapter(recyclerViewAdapter);
+            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        } catch(Exception e){
+            Log.d("Adapter error", e.getMessage());
+        }
     }
 
     // pull all bookids from borrow records that have been approved, where user is the borrower
     private void nextStep1(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
-        myRef.child("borrowrecords").orderByChild("borrowerName").equalTo(userName).addValueEventListener(
+        myRef.child("borrowrecords").orderByChild("borrowerName").equalTo(userName).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -168,22 +175,24 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
                             new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    Book b = dataSnapshot.getValue(Book.class);
-                                    if (bookids.size() == 0) {
-                                        String bid = b.getBookid();
-                                        bookids.add(bid);
-                                        ArrayList<Book> copy = new ArrayList<>();
-                                        for (Book book : books) {
-                                            if (book.getBookid().equals(bid)) {
-                                                copy.add(book);
+                                    if(onStart) {
+                                        Book b = dataSnapshot.getValue(Book.class);
+                                        if (bookids.size() == 0) {
+                                            String bid = b.getBookid();
+                                            bookids.add(bid);
+                                            ArrayList<Book> copy = new ArrayList<>();
+                                            for (Book book : books) {
+                                                if (book.getBookid().equals(bid)) {
+                                                    copy.add(book);
+                                                }
+                                            }
+                                            for (Book book : copy) {
+                                                books.remove(book);
                                             }
                                         }
-                                        for (Book book: copy){
-                                            books.remove(book);
-                                        }
+                                        books.add(b);
+                                        removeBookid(b.getBookid());
                                     }
-                                    books.add(b);
-                                    removeBookid(b.getBookid());
                                 }
 
                                 @Override
@@ -203,6 +212,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         bookids.remove(id);
         if(bookids.size() == 0 && created){
             created = false;
+            onStart = false;
             orderBy("available");
         }
     }
@@ -241,12 +251,12 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         ArrayList<Book> temp = new ArrayList<>();
         if(status.equals("borrowing")) {
             for (Book b : books) {
-                if (!b.getOwnerName().equals(userName)) {
+                if (!b.getOwnerName().equals(userName) && b.getStatus().equals("borrowed")) {
                     temp.add(b);
                 }
             }
             for (Book b : books) {
-                if (b.getOwnerName().equals(userName)) {
+                if (b.getOwnerName().equals(userName) || !b.getStatus().equals("borrowed")) {
                     temp.add(b);
                 }
             }

@@ -116,7 +116,10 @@ public class ISBNActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_isbn_scanner);
-
+//        Intent intent = new Intent();
+//        intent.putExtra("ISBN_number", "1234");
+//        setResult(RESULT_OK, intent);
+//        this.finish();
         // get handle on view/buttons and set click listener
         textureView = (TextureView) findViewById(R.id.isbn_texture);
         textureView.setSurfaceTextureListener(textureListener);
