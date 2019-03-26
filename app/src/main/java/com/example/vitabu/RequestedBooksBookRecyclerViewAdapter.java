@@ -63,13 +63,14 @@ public class RequestedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<
     @Override
     public void onBindViewHolder(RequestedBooksBookRecyclerViewAdapter.ViewHolder holder, int position) {
         Book book = mData.get(position);
+
         String title = book.getTitle();
         String author = book.getAuthor();
-//            Once Book has comments attribute added, get comments from there
-        String comments = "Comments go here";//book.getComments();
+        String owner = book.getOwnerName();
+
         holder.title.setText(title);
         holder.author.setText(author);
-        holder.comments.setText(comments);
+        holder.owner.setText(owner);
     }
 
     // Returns total number of rows
@@ -81,13 +82,13 @@ public class RequestedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title, author, comments;
+        TextView title, author, owner;
 
         ViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.requested_books_book_title);
-            author = itemView.findViewById(R.id.requested_books_book_author);
-            comments = itemView.findViewById(R.id.requested_books_book_comment);
+            title = itemView.findViewById(R.id.requested_fragment_book_title);
+            author = itemView.findViewById(R.id.requested_fragment_book_author);
+            owner = itemView.findViewById(R.id.requested_fragment_book_owner);
             itemView.setOnClickListener(this);
         }
 
