@@ -461,6 +461,11 @@ public class Database {
         // TODO Remove notification from database as well!
     }
 
+
+    public void resetBookStatus(final String bookId){
+        rootReference.child("books").child(bookId).child("status").setValue("available");
+    }
+
     /**
      * Helper function for returnBook().
      *
