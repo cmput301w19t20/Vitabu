@@ -188,8 +188,38 @@ public class bookEditActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * This method will delete a book from the database and delete the image related to it if one
+     * exists.
+     *
+     * @param view the view from which this method was called
+     */
     public void onClickDeleteBook(View view){
-
+        myRef.child("books").child(book.getBookid()).removeValue()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Book Edit", "Successfully deleted book from database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Book Edit", "Failed to delete book from database.");
+                    }
+                });
+        mStorageRef.child(book.getBookid()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(logTag, "Successfully updated the image");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(logTag, "Failed to delete image from cloud storage", e);
+            }
+        });
+        finish();
     }
 
 
