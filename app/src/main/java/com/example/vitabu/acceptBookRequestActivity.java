@@ -289,10 +289,11 @@ public class acceptBookRequestActivity extends AppCompatActivity {
     }
 
     public void declineBookRequest(int position) {
+        databaseWrapper.denyBorrowRequest(null, null, records.get(position));
         records.remove(position);
         mAdapter.notifyItemRemoved(position);
         mAdapter.notifyDataSetChanged();
-        databaseWrapper.denyBorrowRequest(null, null, records.get(position));
+//        databaseWrapper.denyBorrowRequest(null, null, records.get(position));
     }
 
     public void goToUserProfileActivity(User owner) {
