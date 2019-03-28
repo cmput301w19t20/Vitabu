@@ -56,12 +56,12 @@ public class WriteReviewActivity extends AppCompatActivity {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance(); //The realtime database handle
     private DatabaseReference myRef = database.getReference(); //The reference to the database handle
+    User user = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_review);
-
 
         // get borrowRecord
         Intent intent = getIntent();
@@ -103,6 +103,7 @@ public class WriteReviewActivity extends AppCompatActivity {
                         String body = review_message.getText().toString();
                         Review review = new Review(ownerName, borrowerName, rating, body, reviewFrom, reviewTo);
                         writeReview(review);
+                        updateRating(review);
                         Toast.makeText(WriteReviewActivity.this, R.string.write_review_success, Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -110,7 +111,7 @@ public class WriteReviewActivity extends AppCompatActivity {
         );
     }
 
-    public void writeReview(Review review){
+    private void writeReview(Review review){
         myRef.child("reviews").child(review.getReviewid()).setValue(review)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -124,5 +125,56 @@ public class WriteReviewActivity extends AppCompatActivity {
                         Log.d("Write Review activity", "Failed to write User to database", e);
                     }
                 });
+    }
+
+    private void updateRating(Review  review){
+        // update rating of person reviewed
+        myRef.child("users").equalTo(review.getReviewTo()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                            user = postSnapshot.getValue(User.class);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                }
+        );
+        while(user == null);
+        String username = user.getUserName();
+        if (username.equals(review.getOwnerName())){
+            int rating = user.getOwnerRating();
+            int numReviews = user.getNumOwnerReviews();
+            rating = (rating*numReviews + review.getRating())/(numReviews+1);
+            user.setOwnerRating((int) rating);
+            user.setNumOwnerReviews(numReviews +1);
+        }
+        else{
+            int rating = user.getBorrowerRating();
+            int numReviews = user.getNumBorrowerReviews();
+            rating = (rating*numReviews + review.getRating())/(numReviews+1);
+            user.setBorrowerRating((int) rating);
+            user.setNumBorrowerReviews(numReviews +1);
+        }
+
+        // write back to database
+        myRef.child("books").child(user.getUserName()).setValue(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("user review", "Successfully updated user's rating in database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("user review", "Failed to update user rating in database.");
+                    }
+                }
+                );
     }
 }
