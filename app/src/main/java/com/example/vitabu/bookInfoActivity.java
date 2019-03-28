@@ -115,6 +115,7 @@ public class bookInfoActivity extends AppCompatActivity {
         TextView desc = (TextView) findViewById(R.id.book_info_desc);
         desc.setText(book.getDescription());
 
+        //This section gets the image of the book if it currently exists from the firebase storage service
         final ImageView image = (ImageView) findViewById(R.id.book_info_picture);
         StorageReference mReference = FirebaseStorage.getInstance().getReference().child("images/" + book.getBookid());
         mReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

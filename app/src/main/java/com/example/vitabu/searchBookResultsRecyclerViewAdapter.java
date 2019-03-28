@@ -90,6 +90,8 @@ public class searchBookResultsRecyclerViewAdapter extends RecyclerView.Adapter<s
         holder.title.setText(book.getTitle());
         holder.author.setText(book.getAuthor());
         holder.status.setText(book.getStatus());
+
+        //This section gets the image of the book if it currently exists from the firebase storage service
         StorageReference mReference = FirebaseStorage.getInstance().getReference().child("images/" + book.getBookid());
         mReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override

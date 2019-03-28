@@ -99,6 +99,7 @@ public class bookEditActivity extends AppCompatActivity {
         TextView desc = (TextView) findViewById(R.id.book_edit_desc);
         desc.setText(book.getDescription());
 
+        //This section gets the image of the book if it currently exists from the firebase storage service
         final ImageView image = (ImageView) findViewById(R.id.book_edit_picture);
         StorageReference mReference = FirebaseStorage.getInstance().getReference().child("images/" + book.getBookid());
         mReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -223,6 +224,7 @@ public class bookEditActivity extends AppCompatActivity {
                     }
                 });
 
+        //Uploads an image to the firebase storage service if there is one to upload.
         if(imageExists){
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -241,6 +243,7 @@ public class bookEditActivity extends AppCompatActivity {
             });
             imageExists = false;
         }
+        //Deletes an image from the firebase storage service if it was deleted by the user
         if(imageDeleted){
             mStorageRef.child(book.getBookid()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override

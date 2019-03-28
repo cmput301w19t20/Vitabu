@@ -95,6 +95,8 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
         holder.author.setText(author);
         holder.status.setText(status);
         holder.borrower.setText(borrower);
+
+        //This section gets the image of the book if it currently exists from the firebase storage service
         StorageReference mReference = FirebaseStorage.getInstance().getReference().child("images/" + book.getBookid());
         mReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override

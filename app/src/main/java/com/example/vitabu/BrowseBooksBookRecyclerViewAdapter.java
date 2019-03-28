@@ -83,6 +83,8 @@ public class BrowseBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Bro
             holder.title.setText(title);
             holder.author.setText(author);
             holder.status.setText(status);
+
+            //This section gets the image of the book if it currently exists from the firebase storage service
             StorageReference mReference = FirebaseStorage.getInstance().getReference().child("images/" + book.getBookid());
             mReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override

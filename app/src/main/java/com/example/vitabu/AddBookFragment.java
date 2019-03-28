@@ -283,8 +283,8 @@ public class AddBookFragment extends Fragment {
                     }
                 });
 
+        //Uploads an image to the firebase storage service if there is one to upload.
         if(imageExists){
-
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
