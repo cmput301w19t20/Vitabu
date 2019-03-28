@@ -59,7 +59,7 @@
         android:rating="3.5"
         android:stepSize=".5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.272"
+        app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toEndOf="@+id/edit_profile_borrower_rating"
         app:layout_constraintTop_toBottomOf="@+id/edit_profile_location" />
 
@@ -93,9 +93,9 @@
 
     <TextView
         android:id="@+id/edit_profile_owner_rating"
-        android:layout_width="99dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="109dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="44dp"
         android:text="@string/user_profile_owner_rating"
         android:textColor="@android:color/black"
@@ -107,14 +107,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:isIndicator="true"
         android:numStars="5"
         android:rating="5"
         android:stepSize=".5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toEndOf="@+id/edit_profile_owner_rating"
         app:layout_constraintTop_toBottomOf="@+id/edit_profile_borrower_rating_bar" />
 
@@ -140,10 +140,10 @@
         android:text="@string/user_profile_joined_on"
         android:textAlignment="center"
         android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/edit_profile_joined_on"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="467dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/edit_profile_email"

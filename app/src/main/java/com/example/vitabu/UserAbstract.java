@@ -41,6 +41,8 @@ public abstract class UserAbstract extends Object{
     protected int booksBorrowed;
     protected Date joinDate;
     protected String email;
+    protected int numOwnerReviews;
+    protected int numBorrowerReviews;
 
     public abstract Location getLocation();
     public abstract void setLocation(Location l);
@@ -60,4 +62,8 @@ public abstract class UserAbstract extends Object{
     //public abstract void setEmail(String s);
     public abstract String getUserid();
     public abstract void setUserid(String s);
+    public abstract int getNumOwnerReviews();
+    public abstract void setNumOwnerReviews(int i);
+    public abstract int getNumBorrowerReviews();
+    public abstract void setNumBorrowerReviews(int i);
 }
