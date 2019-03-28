@@ -4,10 +4,12 @@
     <item
         android:id="@+id/browse_books_appbar_search"
         android:icon="@drawable/search_icon"
+        android:title="@string/search_books_search_button_text"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/browse_books_appbar_profile"
         android:icon="@drawable/profile"
+        android:title="@string/appbar_profile"
         app:showAsAction="ifRoom" />
 </menu>
