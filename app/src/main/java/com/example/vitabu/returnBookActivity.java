@@ -99,9 +99,15 @@ public class returnBookActivity extends AppCompatActivity {
     }
 
     public void completeBookReturnTransaction() {
-        if(returnedISBN.equals(book.getISBN())){
+        if(returnedISBN.equals(book.getISBN())) {
             getBorrowRecord(book.getBookid());
-            while(record == null);
+        }
+        else{
+            Toast.makeText(returnBookActivity.this, "Wrong ISBN please try again", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void completeBookReturnTransaction2(){
             String message;
             if(userName.equals(book.getOwnerName())) {
                 Toast.makeText(returnBookActivity.this, "Success Owner", Toast.LENGTH_SHORT).show();
@@ -114,7 +120,8 @@ public class returnBookActivity extends AppCompatActivity {
                 };
                 database.returnBook(onSuccess, null, book);
                 message = "Write a review of " + record.getBorrowerName()+ ".";
-            }else{
+            }
+            else{
                 Toast.makeText(returnBookActivity.this, "Success Borrower", Toast.LENGTH_SHORT).show();
                 message = "Write a review of " + record.getOwnerName()+ ".";
             }
@@ -122,10 +129,6 @@ public class returnBookActivity extends AppCompatActivity {
             // create review notification
             Notification newNotification = new Notification("Write Review", message, "review", userName, record.getRecordid());
             storeReview(newNotification);
-
-        }else{
-            Toast.makeText(returnBookActivity.this, "Wrong ISBN please try again", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void returnFromActivity(){
@@ -142,6 +145,7 @@ public class returnBookActivity extends AppCompatActivity {
                         Log.d("Count2 ", "" + snapshot.getChildrenCount());
                         for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                             record = postSnapshot.getValue(BorrowRecord.class);
+                            completeBookReturnTransaction2();
                         }
                     }
 

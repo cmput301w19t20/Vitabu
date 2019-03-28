@@ -127,8 +127,9 @@ public class WriteReviewActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateRating(Review  review){
+    private void updateRating(Review  review) {
         // update rating of person reviewed
+        final Review review2 = review;
         myRef.child("users").equalTo(review.getReviewTo()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -136,6 +137,7 @@ public class WriteReviewActivity extends AppCompatActivity {
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                             user = postSnapshot.getValue(User.class);
                         }
+                        modifyRating(review2, user);
                     }
 
                     @Override
@@ -144,7 +146,10 @@ public class WriteReviewActivity extends AppCompatActivity {
                     }
                 }
         );
-        while(user == null);
+    }
+
+    private void modifyRating(Review review, User user){
+        // update the user's rating
         String username = user.getUserName();
         if (username.equals(review.getOwnerName())){
             int rating = user.getOwnerRating();
