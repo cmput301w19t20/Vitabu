@@ -40,6 +40,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +51,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
@@ -110,6 +114,26 @@ public class bookInfoActivity extends AppCompatActivity {
         ISBN.setText(book.getISBN());
         TextView desc = (TextView) findViewById(R.id.book_info_desc);
         desc.setText(book.getDescription());
+
+        final ImageView image = (ImageView) findViewById(R.id.book_info_picture);
+        StorageReference mReference = FirebaseStorage.getInstance().getReference().child("images/" + book.getBookid());
+        mReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get()
+                        .load(uri)
+                        .fit()
+                        .centerCrop()
+                        .into(image);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Do nothing.
+            }
+        });
+
+
     }
 
     /**

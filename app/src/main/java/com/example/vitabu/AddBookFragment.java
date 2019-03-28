@@ -64,6 +64,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -80,12 +85,15 @@ public class AddBookFragment extends Fragment {
     Button addBookButton;
     EditText isbnText;
     Button addImageButton;
+    Bitmap imageBitmap;
+    boolean imageExists = false;
     FirebaseAuth auth;
     private final String logTag = "AddBookFragment";
     private static final int REQUEST_CAMERA_PERMISSION = 200;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance(); //The realtime database handle
     private DatabaseReference myRef = database.getReference(); //The reference to the database handle
+    private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference("images");
 
     View root;
 
@@ -144,7 +152,7 @@ public class AddBookFragment extends Fragment {
 
     /**
      * This function processes the Scan ISBN button result (placing the scanned ISBN into the ISBN
-     * text field).
+     * text field) and the add image button result.
      *
      * @param requestCode the number that lets us know which activity returned.
      * @param resultCode the number identifying the fact that the activity finished as intended
@@ -167,13 +175,14 @@ public class AddBookFragment extends Fragment {
         if (requestCode == 2 && resultCode == RESULT_OK) {
             // get image from picture intent and display preview
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageBitmap = (Bitmap) extras.get("data");
             TextView textView = (TextView) root.findViewById(R.id.add_book_add_image_text);
             textView.setVisibility(View.GONE);
             ImageView imageView = (ImageView) root.findViewById(R.id.add_book_pic);
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageBitmap(imageBitmap);
             Toast.makeText(this.getActivity(), "You took a photo.", Toast.LENGTH_LONG).show();
+            imageExists = true;
         }
 
     }
@@ -273,6 +282,27 @@ public class AddBookFragment extends Fragment {
                         Log.d(logTag, "Failed to write User to database", e);
                     }
                 });
+
+        if(imageExists){
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+            UploadTask uploadTask = mStorageRef.child(bookToAdd.getBookid()).putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.d(logTag, "Failed to write image to cloud storage", exception);
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    ((ImageView) view.findViewById(R.id.add_book_pic)).setVisibility(View.GONE);
+                    ((TextView) view.findViewById(R.id.add_book_add_image_text)).setVisibility((View.VISIBLE));
+                }
+            });
+            imageExists = false;
+        }
 
     }
 

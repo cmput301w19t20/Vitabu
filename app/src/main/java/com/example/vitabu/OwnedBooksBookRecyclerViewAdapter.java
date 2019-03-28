@@ -32,15 +32,23 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 package com.example.vitabu;
 
 import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -64,7 +72,7 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
 
     // binds the data to the fields in each row
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         Book book = mData.get(position);
         String title = book.getTitle();
         String author = book.getAuthor();
@@ -87,6 +95,22 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
         holder.author.setText(author);
         holder.status.setText(status);
         holder.borrower.setText(borrower);
+        StorageReference mReference = FirebaseStorage.getInstance().getReference().child("images/" + book.getBookid());
+        mReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get()
+                        .load(uri)
+                        .fit()
+                        .centerCrop()
+                        .into(holder.image);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Do nothing.
+            }
+        });
 
     }
 
@@ -100,6 +124,7 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView title, author, status, borrower;
+        ImageView image;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -107,6 +132,7 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
             author = itemView.findViewById(R.id.owned_books_book_author);
             status = itemView.findViewById(R.id.owned_books_book_status);
             borrower = itemView.findViewById(R.id.owned_books_book_borrower);
+            image = itemView.findViewById(R.id.owned_books_book_image);
             itemView.setOnClickListener(this);
         }
 

@@ -1,12 +1,20 @@
 package com.example.vitabu;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -31,6 +39,7 @@ public class searchBookResultsRecyclerViewAdapter extends RecyclerView.Adapter<s
         public TextView title;
         public TextView author;
         public TextView status;
+        public ImageView image;
 
         // constructor
         public ViewHolder(View itemView, final OnItemClickListener listener) {
@@ -38,6 +47,7 @@ public class searchBookResultsRecyclerViewAdapter extends RecyclerView.Adapter<s
             title = itemView.findViewById(R.id.search_books_book_title);
             author = itemView.findViewById(R.id.search_books_book_author);
             status = itemView.findViewById(R.id.search_books_book_status);
+            image = itemView.findViewById(R.id.search_books_book_image);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,11 +85,27 @@ public class searchBookResultsRecyclerViewAdapter extends RecyclerView.Adapter<s
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         Book book = mData.get(position);
         holder.title.setText(book.getTitle());
         holder.author.setText(book.getAuthor());
         holder.status.setText(book.getStatus());
+        StorageReference mReference = FirebaseStorage.getInstance().getReference().child("images/" + book.getBookid());
+        mReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get()
+                        .load(uri)
+                        .fit()
+                        .centerCrop()
+                        .into(holder.image);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Do nothing.
+            }
+        });
     }
 
     @Override
