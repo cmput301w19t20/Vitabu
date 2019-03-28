@@ -177,6 +177,20 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
                     }
             );
         }
+        if (curNotification.getType().equals("review")){
+            myRef.child("borrowrecords").child(curNotification.getBorrowRecordId()).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            startReviewActivity(dataSnapshot.getValue(BorrowRecord.class));
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    }
+            );
+        }
 
 
     }
@@ -215,6 +229,14 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         Intent intent = new Intent(this.getContext(), acceptBookRequestActivity.class);
         Gson gson = new Gson();
         intent.putExtra(MainActivity.BOOK_MESSAGE, gson.toJson(book));
+        startActivity(intent);
+    }
+
+    public void startReviewActivity(BorrowRecord rec) {
+        Intent intent = new Intent(getActivity(), WriteReviewActivity.class);
+        Gson gson = new Gson();
+        String message = gson.toJson(rec);
+        intent.putExtra(MainActivity.BORROWRECORD_MESSAGE, message);
         startActivity(intent);
     }
 
