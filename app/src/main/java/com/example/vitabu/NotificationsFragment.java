@@ -107,7 +107,9 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
                     Log.d("Count ", "" + snapshot.getChildrenCount());
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                         Notification n = postSnapshot.getValue(Notification.class);
-                        addNotification(n);
+                        if (!n.isSeen()) {
+                            addNotification(n);
+                        }
                         if (emptyText != null) {
                             emptyText.setVisibility(View.GONE);
                         }

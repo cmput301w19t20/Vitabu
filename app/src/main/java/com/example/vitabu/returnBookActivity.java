@@ -128,7 +128,7 @@ public class returnBookActivity extends AppCompatActivity {
 
             // create review notification
             Notification newNotification = new Notification("Write Review", message, "review", userName, record.getRecordid());
-            storeReview(newNotification);
+            storeNotification(newNotification);
     }
 
     public void returnFromActivity(){
@@ -155,7 +155,7 @@ public class returnBookActivity extends AppCompatActivity {
                 });
     }
 
-    private void storeReview(Notification notif){
+    private void storeNotification(Notification notif){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
         myRef.child("notifications").child(notif.getNotificationid()).setValue(notif)

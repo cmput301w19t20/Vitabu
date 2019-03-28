@@ -130,14 +130,19 @@ public class WriteReviewActivity extends AppCompatActivity {
     private void updateRating(Review  review) {
         // update rating of person reviewed
         final Review review2 = review;
-        myRef.child("users").equalTo(review.getReviewTo()).addListenerForSingleValueEvent(
+        myRef.child("users").orderByChild("userName").equalTo(review.getReviewTo()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                             user = postSnapshot.getValue(User.class);
                         }
-                        modifyRating(review2, user);
+                        if (user != null) {
+                            modifyRating(review2, user);
+                        }
+                        else{
+                            Log.e("user status", "null as null can be");
+                        }
                     }
 
                     @Override
@@ -167,7 +172,7 @@ public class WriteReviewActivity extends AppCompatActivity {
         }
 
         // write back to database
-        myRef.child("books").child(user.getUserName()).setValue(user)
+        myRef.child("users").child(user.getUserName()).setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -181,5 +186,6 @@ public class WriteReviewActivity extends AppCompatActivity {
                     }
                 }
                 );
+
     }
 }
