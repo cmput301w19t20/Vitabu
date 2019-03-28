@@ -260,8 +260,8 @@ public class BorrowRecord {
         this.pickUpLocation = pickUpLocation;
     }
 
-    public void setPickUpLocation(LatLng pickUpLocation) {
-        latitude = pickUpLocation.latitude;
-        longitude = pickUpLocation.longitude;
-    }
+//    public void setPickUpLocation(LatLng pickUpLocation) {
+//        latitude = pickUpLocation.latitude;
+//        longitude = pickUpLocation.longitude;
+//    }
 }
