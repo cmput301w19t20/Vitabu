@@ -211,7 +211,6 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
     }
 
     public void startAcceptBookRequestActivity(Book book){
-        // TODO launch acceptBookRequestActivity.
         Intent intent = new Intent(this.getContext(), acceptBookRequestActivity.class);
         Gson gson = new Gson();
         intent.putExtra(MainActivity.BOOK_MESSAGE, gson.toJson(book));
