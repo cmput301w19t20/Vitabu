@@ -32,11 +32,20 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 package com.example.vitabu;
 
 import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -63,7 +72,7 @@ public class BrowseBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Bro
 
         // binds the data to the fields in each row
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
             Book book = mData.get(position);
             String title = book.getTitle();
             String author = book.getAuthor();
@@ -74,6 +83,24 @@ public class BrowseBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Bro
             holder.title.setText(title);
             holder.author.setText(author);
             holder.status.setText(status);
+
+            //This section gets the image of the book if it currently exists from the firebase storage service
+            StorageReference mReference = FirebaseStorage.getInstance().getReference().child("images/" + book.getBookid());
+            mReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get()
+                            .load(uri)
+                            .fit()
+                            .centerCrop()
+                            .into(holder.imageView);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                   // Do nothing.
+                }
+            });
         }
 
         // Returns total number of rows
@@ -86,12 +113,14 @@ public class BrowseBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Bro
         // stores and recycles views as they are scrolled off screen
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             TextView title, author, status;
+            ImageView imageView;
 
             ViewHolder(View itemView) {
                 super(itemView);
                 title = itemView.findViewById(R.id.browse_books_book_title);
                 author = itemView.findViewById(R.id.browse_books_book_author);
                 status = itemView.findViewById(R.id.browse_books_book_status);
+                imageView = itemView.findViewById((R.id.browse_books_book_image));
                 itemView.setOnClickListener(this);
             }
 
