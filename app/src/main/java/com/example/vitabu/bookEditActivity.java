@@ -27,7 +27,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
 
 
 /**
@@ -44,9 +50,13 @@ public class bookEditActivity extends AppCompatActivity {
     String ownerid;
     User owner;
     LocalUser curUser;
+    Bitmap imageBitmap;
+    boolean imageExists = false;
+    boolean imageDeleted = false;
     final String logTag = "bookInfoActivity";
     FirebaseDatabase database;
     DatabaseReference myRef;
+    private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference("images");
     FirebaseAuth auth;
     private static final int REQUEST_CAMERA_PERMISSION = 200;
 
@@ -88,6 +98,25 @@ public class bookEditActivity extends AppCompatActivity {
         ISBN.setText(book.getISBN());
         TextView desc = (TextView) findViewById(R.id.book_edit_desc);
         desc.setText(book.getDescription());
+
+        //This section gets the image of the book if it currently exists from the firebase storage service
+        final ImageView image = (ImageView) findViewById(R.id.book_edit_picture);
+        StorageReference mReference = FirebaseStorage.getInstance().getReference().child("images/" + book.getBookid());
+        mReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get()
+                        .load(uri)
+                        .fit()
+                        .centerCrop()
+                        .into(image);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Do nothing.
+            }
+        });
     }
 
     /**
@@ -195,6 +224,42 @@ public class bookEditActivity extends AppCompatActivity {
                     }
                 });
 
+        //Uploads an image to the firebase storage service if there is one to upload.
+        if(imageExists){
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+            UploadTask uploadTask = mStorageRef.child(book.getBookid()).putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.d(logTag, "Failed to write image to cloud storage", exception);
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Log.d(logTag, "Successfully updated the image");
+                }
+            });
+            imageExists = false;
+        }
+        //Deletes an image from the firebase storage service if it was deleted by the user
+        if(imageDeleted){
+            mStorageRef.child(book.getBookid()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(logTag, "Successfully updated the image");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(logTag, "Failed to delete image from cloud storage", e);
+                }
+            });
+            imageDeleted = false;
+
+        }
+
 //        myRef.child("books").child(bookToAdd.getBookid()).setValue(bookToAdd)
 //                .addOnSuccessListener(new OnSuccessListener<Void>() {
 //                    @Override
@@ -225,8 +290,10 @@ public class bookEditActivity extends AppCompatActivity {
     public void onClickDeleteImage(View view){
         // handle deleting an image
         ImageView imageView = (ImageView) findViewById(R.id.book_edit_picture);
-        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.ic_launcher);
-        imageView.setImageBitmap(bitmap);
+        //Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.ic_launcher);
+        imageExists = false;
+        imageDeleted = true;
+        imageView.setImageResource(R.mipmap.ic_launcher);
 
     }
 
@@ -259,9 +326,11 @@ public class bookEditActivity extends AppCompatActivity {
         if (requestCode == 2 && resultCode == RESULT_OK) {
             // get image from picture intent and display preview
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageBitmap = (Bitmap) extras.get("data");
             ImageView imageView = (ImageView) findViewById(R.id.book_edit_picture);
             imageView.setImageBitmap(imageBitmap);
+            imageExists = true;
+            imageDeleted = false;
         }
 
     }
