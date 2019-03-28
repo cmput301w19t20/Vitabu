@@ -43,6 +43,7 @@
         android:inputType="textPersonName"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/add_book_title_text"
         app:layout_constraintTop_toBottomOf="@+id/add_book_header" />
 
@@ -70,6 +71,7 @@
         android:inputType="textPersonName"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/add_book_author_text"
         app:layout_constraintTop_toBottomOf="@+id/add_book_title_input" />
 
@@ -96,6 +98,7 @@
         android:hint="@string/add_book_required"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/add_book_isbn_text"
         app:layout_constraintTop_toBottomOf="@+id/add_book_author_input" />
 
@@ -103,10 +106,13 @@
         android:id="@+id/add_book_isbn_scan_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
         android:onClick="onScanISBNClick"
         android:text="@string/add_book_isbn_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_book_isbn_input" />
 
@@ -114,27 +120,29 @@
         android:id="@+id/add_book_submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
         android:onClick="onAddBookClick"
         android:text="@string/add_book_submit_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_book_description_input" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/add_book_description_input"
         android:layout_width="346dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:hint="@string/add_book_description_input"
         android:inputType="textMultiLine"
         android:maxLines="4"
         android:minLines="4"
+        app:layout_constraintBottom_toTopOf="@+id/add_book_submit_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.421"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_book_add_image_text" />
+        app:layout_constraintTop_toBottomOf="@+id/add_book_add_image_button" />
 
     <TextView
         android:id="@+id/add_book_add_image_text"
@@ -152,13 +160,13 @@
         android:id="@+id/add_book_add_image_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="32dp"
         android:onClick="onAddImageClick"
         android:text="@string/add_book_add_image_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.948"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_book_isbn_scan_button" />
 
@@ -167,8 +175,13 @@
         android:layout_width="110dp"
         android:layout_height="95dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="224dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/add_book_description_input"
+        app:layout_constraintEnd_toStartOf="@+id/add_book_isbn_scan_button"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_book_isbn_input"
         app:srcCompat="@color/browser_actions_bg_grey" />
 </android.support.constraint.ConstraintLayout>
