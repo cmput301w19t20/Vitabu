@@ -158,6 +158,12 @@ public class bookEditActivity extends AppCompatActivity {
         finish();
     }
 
+
+    public void onClickDeleteBook(View view){
+
+    }
+
+
     /**
      * This function will attempt to save the book into the database. On success will notify the user.
      */
