@@ -20,8 +20,8 @@ import java.util.ArrayList;
 /**
  * Singleton Class to encapsulate all logic for interacting with the database.
  *
- * All methods in this
- * class that are NOT constructors will take 2 Runnable objects as their first 2 arguments.
+ * All methods in this class that are NOT constructors or getters will take
+ * two Runnable objects as their first two arguments.
  * These arguments will be the success and fail callbacks respectively.  All methods should be able
  * to handle null being passed as callbacks without throwing an exception.
  *
@@ -63,7 +63,6 @@ public class Database {
     private ArrayList<Book> searchBooksReturnValue;
     private ArrayList<BorrowRecord> getBorrowRecordsByBookidReturnValue;
     private User fetchUserReturnValue;
-    private Iterable<DataSnapshot> queryResult;
 
     // TODO Move all other database accesses to this class.
 
@@ -256,6 +255,11 @@ public class Database {
             initialSearchValue = kwords;
             initialSearchField = "description";
         }
+        else{
+            // No search parameters were passed.  Call failcallback.
+            failCallback.run();
+            return;
+        }
         Log.d(logTag, initialSearchValue);
 
         rootReference.child("books").orderByChild(initialSearchField).equalTo(initialSearchValue).addListenerForSingleValueEvent(
@@ -271,7 +275,8 @@ public class Database {
                                     (author.equals("") || curBook.getAuthor().equals(author)) &&
                                     (isbn.equals("") || curBook.getISBN().equals(isbn)) &&
                                     (kwords.equals("") || curBook.getDescription().equals("") || curBook.getDescription().contains(kwords) )&&
-                                    (author.equals("") || curBook.getAuthor().equals(author))
+                                    (author.equals("") || curBook.getAuthor().equals(author)) &&
+                                    (! curBook.getStatus().equals("borrowed") && ! curBook.getStatus().equals("accepted"))
                             ) {
                                 bookList.add(curBook);
                             }
@@ -421,6 +426,10 @@ public class Database {
                             failCallback.run();
                     }
                 });
+        //Change the book status to accepted
+        rootReference.child("books").child(record.getBookid()).child("status").setValue("accepted");
+        //Change the book borrower
+        rootReference.child("books").child(record.getBookid()).child("borrower").setValue(record.getBorrowerName());
 
     }
 
@@ -453,36 +462,96 @@ public class Database {
     }
 
     /**
-     * Queries the database for snapshots matching the query
-     * @param reference the reference being queried
-     * @param orderBy the attribute being queried
-     * @param equalTo the value to be matched
-     * @return the result of the query
+     * Helper function for returnBook().
+     *
+     * @param successCallback Runnable
+     * @param failCallback Runnable
+     * @param borrowRecords BorrowRecord
+     * @param book Book
      */
-    public void queryDatabase(final Runnable successCallback, DatabaseReference reference, final String orderBy, final String equalTo){
-        reference.orderByChild(orderBy).equalTo(equalTo).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        queryResult = dataSnapshot.getChildren();
-                        successCallback.run();
-                    }
+    private void returnBookHelper(final Runnable successCallback, final Runnable failCallback, final ArrayList<BorrowRecord> borrowRecords, final Book book){
+        BorrowRecord borrowRecord = null;
+        // Find the BorrowRecords pertaining to the passed book.
+        for (BorrowRecord curBorrowRecord : borrowRecords){
+            if (curBorrowRecord.getOwnerName().equals(book.getOwnerName())){
+                // Current user is returning book
+                borrowRecord = curBorrowRecord;
+                break;
+            }
+        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d(logTag, "Query failiure " + orderBy + " " + equalTo, databaseError.toException());
-                    }
+        // Check that we actually found the required borrowRecord.
+        if (borrowRecord == null){
+            Log.d(logTag,"UHH Search for borrow record returned null...");
+            if (failCallback != null)
+                failCallback.run();
+            return;
+        }
+
+        // Set book borrower and status fields to appropriate values.
+        book.setStatus("available");
+        book.setBorrower("");
+        // Update book and delete borrow record from the database.
+        rootReference.child("borrowrecords").child(borrowRecord.getRecordid()).removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError == null) {
+                    rootReference.child("books").child(book.getBookid()).setValue(book, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                            if (databaseError == null) {
+                                if (successCallback != null)
+                                    successCallback.run();
+                            }
+                            else{
+                                if (failCallback != null)
+                                    failCallback.run();
+                            }
+                        }
+                    });
                 }
-        );
+                else{
+                    if (failCallback != null)
+                        failCallback.run();
+                }
+            }
+        });
+
     }
 
-    public Iterable<DataSnapshot> getQueryResult() {
-        return queryResult;
+
+    /**
+     * Returns a book.  Will only actually update the database if the current user is the owner of
+     * the book.
+     * @param successCallback Runnable
+     * @param failCallback Runnable
+     * @param book Book to be returned.
+     */
+    public void returnBook(final Runnable successCallback, final Runnable failCallback, final Book book){
+        // Check if cur user is the one attempting to return.
+        if (! book.getOwnerName().equals(getCurUserName())){
+            if (failCallback != null)
+                failCallback.run();
+            return;
+        }
+        // Call helper function to actually return the book.
+        Runnable borrowRecordsSuccess = new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<BorrowRecord> borrowRecords = getBorrowRecordsByBookidReturnValue;
+                returnBookHelper(successCallback, failCallback, borrowRecords, book);
+
+            }
+        };
+        this.findBorrowRecordsByBookid(borrowRecordsSuccess, failCallback, book.getBookid());
+
+
+
+
     }
 
-    public DatabaseReference getRootReference(){
+    public DatabaseReference getRootReference() {
         return rootReference;
     }
-
 }
 

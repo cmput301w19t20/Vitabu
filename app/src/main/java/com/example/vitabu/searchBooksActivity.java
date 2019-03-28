@@ -31,6 +31,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.example.vitabu;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,31 +39,53 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public class searchBooksActivity extends AppCompatActivity {
     Database database = Database.getInstance();
     private ArrayList<Book> searchResults;
     private String logTag = "Search Books Activity";
+    public static final String AUTHOR_SEARCH_MESSAGE = "author";
+    public static final String TITLE_SEARCH_MESSAGE = "title";
+    public static final String ISBN_SEARCH_MESSAGE = "isbn";
+    public static final String KWORDS_SEARCH_MESSAGE = "kwords";
+    private String author;
+    private String title;
+    private String isbn;
+    private String kwords;
+    private LocalUser curUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_books);
+        // Get the current user from intent.  This activity does not use it directly but it does
+        // Pass it to other activities.
+        Intent intent = getIntent();
+        Gson gson = new Gson();
+        String message = intent.getStringExtra(MainActivity.USER_MESSAGE);
+        curUser = gson.fromJson(message, LocalUser.class);
+
     }
 
 
     public void search (View v){
         Log.d(logTag, "In search");
         // Get Info from search fields.
-        String author = ((EditText) findViewById(R.id.search_books_author_edittext)).getText().toString();
-        String title = ((EditText) findViewById(R.id.search_books_title_edittext)).getText().toString();
-        String isbn = ((EditText) findViewById(R.id.search_books_isbn_edittext)).getText().toString();
-        String kwords = ((EditText) findViewById(R.id.search_books_keywords_edittext)).getText().toString();
+        author = ((EditText) findViewById(R.id.search_books_author_edittext)).getText().toString();
+        title = ((EditText) findViewById(R.id.search_books_title_edittext)).getText().toString();
+        isbn = ((EditText) findViewById(R.id.search_books_isbn_edittext)).getText().toString();
+        kwords = ((EditText) findViewById(R.id.search_books_keywords_edittext)).getText().toString();
 
         Runnable success = new Runnable() {
             @Override
             public void run() {
                 searchResults = database.getSearchBooksReturnValue();
+                if (searchResults.size() == 0) {
+                    Toast.makeText(getApplicationContext(), "Search returned no results.", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 showSearchResults();
             }
         };
@@ -70,7 +93,7 @@ public class searchBooksActivity extends AppCompatActivity {
         Runnable fail = new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), "Search failed.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Search returned no results.", Toast.LENGTH_LONG).show();
             }
         };
         // Get search results.
@@ -82,5 +105,17 @@ public class searchBooksActivity extends AppCompatActivity {
         for(Book book : searchResults ){
             Log.d(logTag, book.getBookid());
         }
+
+        // Put necessary data into intent and start searchBooksResultsActivity.
+        Intent intent = new Intent(this, searchBookResultsActivity.class);
+        Gson gson = new Gson();
+        intent.putExtra(MainActivity.BOOKLIST_MESSAGE, gson.toJson(searchResults));
+        intent.putExtra(MainActivity.USER_MESSAGE, gson.toJson(curUser));
+        intent.putExtra(AUTHOR_SEARCH_MESSAGE, author);
+        intent.putExtra(TITLE_SEARCH_MESSAGE, title);
+        intent.putExtra(ISBN_SEARCH_MESSAGE, isbn);
+        intent.putExtra(KWORDS_SEARCH_MESSAGE, kwords);
+
+        startActivity(intent);
     }
 }

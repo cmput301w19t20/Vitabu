@@ -15,6 +15,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+
 public class returnBookActivity extends AppCompatActivity {
 
     String returnedISBN; // scanned book isbn
@@ -45,9 +47,8 @@ public class returnBookActivity extends AppCompatActivity {
         returnBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(returnBookActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 onScanISBNClick(v);
-                // method call to handle database implementation of book return
-                completeBookReturnTransaction();
             }
         });
 
@@ -69,13 +70,14 @@ public class returnBookActivity extends AppCompatActivity {
     public void onScanISBNClick(View view){
         Intent intent = new Intent(this, ISBNActivity.class);
         startActivityForResult(intent, 1);
-        Toast.makeText(returnBookActivity.this, "Book return for ISBN: " + returnedISBN, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(returnBookActivity.this, "Book return for ISBN: " + returnedISBN, Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("BACK", "FROM ACTIVITY");
 //        getActivity();
         // Check which request we're responding to
         if (requestCode == 1) {
@@ -84,37 +86,32 @@ public class returnBookActivity extends AppCompatActivity {
                 String text = data.getStringExtra("ISBN_number");
 //                Toast.makeText(this.getActivity(), text, Toast.LENGTH_SHORT).show();
                 returnedISBN = text;
+                completeBookReturnTransaction();
             }
         }
     }
 
     public void completeBookReturnTransaction() {
-        if(returnedISBN == book.getISBN()){
-            Database database = Database.getInstance();
-            Runnable onSuccess = new Runnable() {
-                @Override
-                public void run() {
-                    deleteBorrowRecord();
-                }
-            };
-            database.queryDatabase(onSuccess, database.getRootReference().child("borrowrecords"),
-                                    "bookid", book.getBookid());
+        if(returnedISBN.equals(book.getISBN())){
+            if(userName.equals(book.getOwnerName())) {
+                Toast.makeText(returnBookActivity.this, "Success Owner", Toast.LENGTH_SHORT).show();
+                Database database = Database.getInstance();
+                Runnable onSuccess = new Runnable() {
+                    @Override
+                    public void run() {
+                        returnFromActivity();
+                    }
+                };
+                database.returnBook(onSuccess, null, book);
+            }else{
+                Toast.makeText(returnBookActivity.this, "Success Borrower", Toast.LENGTH_SHORT).show();
+            }
         }else{
             Toast.makeText(returnBookActivity.this, "Wrong ISBN please try again", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void deleteBorrowRecord(){
-        Database database = Database.getInstance();
-        DatabaseReference ref = database.getRootReference();
-        BorrowRecord b = new BorrowRecord();
-        for(DataSnapshot snap : database.getQueryResult()){
-            b = snap.getValue(BorrowRecord.class);
-        }
-        ref.child("borrowrecords").child(b.getRecordid()).removeValue();
-        ref.child("books").child(book.getBookid()).child("borrower").setValue("");
-        ref.child("books").child(book.getBookid()).child("status").setValue("available");
-        Intent intent = new Intent(this, browseBooksActivity.class);
-        startActivity(intent);
+    public void returnFromActivity(){
+        this.finish();
     }
 }

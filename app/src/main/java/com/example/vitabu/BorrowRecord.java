@@ -48,13 +48,15 @@ public class BorrowRecord {
     private String bookid;
     private Date dateBorrowed;
     private Location pickUpLocation;
+    private double latitude;
+    private double longitude;
     private boolean approved;
     private String recordid;
     private String ownerPhoneNumber;
     private String ownerNotes;
     private String ownerEmail;
 
-
+    
     /**
      * This is the constructor that is used to instantiate the BorrowRecord object with all the necessary
      * and specified parameters.
@@ -67,7 +69,7 @@ public class BorrowRecord {
         this.ownerName = ownerName;
         this.borrowerName = borrowerName;
         this.bookid = bookid;
-        //this.dateBorrowed = new Date();
+        this.dateBorrowed = new Date();
         this.recordid = UUID.randomUUID().toString();
         this.approved = false;
     }
@@ -241,6 +243,14 @@ public class BorrowRecord {
         return pickUpLocation;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
     /**
      * The setter for the pickup location.
      *
@@ -248,5 +258,10 @@ public class BorrowRecord {
      */
     public void setPickUpLocation(Location pickUpLocation) {
         this.pickUpLocation = pickUpLocation;
+    }
+
+    public void setPickUpLocation(LatLng pickUpLocation) {
+        latitude = pickUpLocation.latitude;
+        longitude = pickUpLocation.longitude;
     }
 }

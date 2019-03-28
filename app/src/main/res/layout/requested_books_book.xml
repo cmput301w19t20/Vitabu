@@ -7,39 +7,71 @@
     android:padding="16dp">
 
     <ImageView
-        android:id="@+id/requested_books_book_image"
+        android:id="@+id/requested_fragment_book_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher"
         android:layout_marginEnd="16dp" />
 
     <TextView
-        android:id="@+id/requested_books_book_title"
+        android:id="@+id/requested_fragment_book_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_toEndOf="@+id/requested_books_book_image"
-        android:text="@string/requested_books_book_title"
+        android:layout_toEndOf="@+id/requested_fragment_book_image"
+        android:text="@string/requested_fragment_book_title_text"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/requested_books_book_author"
+        android:id="@+id/requested_fragment_book_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/requested_books_book_title"
+        android:layout_alignStart="@id/requested_fragment_book_owner"
         android:layout_marginEnd="16dp"
-        android:layout_toEndOf="@+id/requested_books_book_image"
-        android:text="@string/book_status_borrower_book_author"
+        android:layout_toEndOf="@+id/requested_fragment_book_title_text"
+        android:text="@string/requested_fragment_book_title"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/requested_books_book_comment"
+        android:id="@+id/requested_fragment_book_author_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/requested_books_book_author"
+        android:layout_below="@+id/requested_fragment_book_title_text"
         android:layout_marginEnd="16dp"
-        android:layout_toEndOf="@+id/requested_books_book_image"
-        android:text="@string/requested_books_book_comment"
+        android:layout_toEndOf="@+id/requested_fragment_book_image"
+        android:text="@string/requested_fragment_book_author_text"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/requested_fragment_book_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/requested_fragment_book_title"
+        android:layout_alignStart="@id/requested_fragment_book_owner"
+        android:layout_marginEnd="16dp"
+        android:layout_toEndOf="@+id/requested_fragment_book_author_text"
+        android:text="@string/requested_fragment_book_author"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/requested_fragment_book_owner_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/requested_fragment_book_author_text"
+        android:layout_marginEnd="16dp"
+        android:layout_toEndOf="@+id/requested_fragment_book_image"
+        android:text="@string/requested_fragment_book_owner_text"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/requested_fragment_book_owner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/requested_fragment_book_author"
+        android:layout_alignStart="@id/requested_fragment_book_owner"
+        android:layout_marginEnd="16dp"
+        android:layout_toEndOf="@+id/requested_fragment_book_owner_text"
+        android:text="@string/requested_fragment_book_owner"
         android:textSize="18sp" />
 
 </RelativeLayout>

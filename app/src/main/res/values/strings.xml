@@ -153,6 +153,7 @@
     <!--Edit Book Fragment Strings-->
     <string name="edit_book_delete">Delete Image</string>
     <string name="edit_book_add">Add Image</string>
+    <string name="edit_book_remove">Delete</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -161,8 +162,8 @@
     <string name="requested_book_title">title</string>
     <string name="requested_books_book_author">author</string>
     <string name="requested_books_book_title">title</string>
-    <string name="requested_books_book_comment">comment</string>
-    <string name="requested_books_book_owner">owner</string>
+    <string name="requested_books_book_comment" translatable="false">comment</string>
+    <string name="requested_books_book_owner">"Owner: "</string>
     <string name="return_book_title">title</string>
     <string name="return_book_author">author</string>
     <string name="return_book_view_owner_button">View Owner</string>
@@ -195,4 +196,20 @@
     <string name="search_results_isbn">0123456789</string>
     <string name="search_results_keywords_text">Keywords:</string>
     <string name="search_results_keywords">keywords list here</string>
+    <string name="accept_book_header">Accept Book</string>
+    <string name="accept_book_title_text">Title:</string>
+    <string name="accept_book_title_input">autopopulate field w/ title</string>
+    <string name="accept_book_author_text">Author:</string>
+    <string name="accept_book_author_input">autopopulate field w/ author</string>
+    <string name="accept_book_isbn_text">ISBN:</string>
+    <string name="accept_book_isbn_input">autopopulate field w/ isbn</string>
+    <string name="accept_book_isbn_scan_button">accept book</string>
+    <string name="requested_books_book_title_text">Title:</string>
+    <string name="requested_books_book_author_text">Author:</string>
+    <string name="requested_fragment_book_title_text">Title:</string>
+    <string name="requested_fragment_book_author_text">Author:</string>
+    <string name="requested_fragment_book_owner_text">Owner:</string>
+    <string name="requested_fragment_book_title" />
+    <string name="requested_fragment_book_author" />
+    <string name="requested_fragment_book_owner" />
 </resources>
