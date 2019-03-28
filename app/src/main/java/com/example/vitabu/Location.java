@@ -43,6 +43,8 @@ public class Location {
     private String provinceOrState;
     private String city;
     private String address;
+    private double lat;
+    private double lng;
 
     /**
      * This is the default constructor used by Firebase Database and whenever we want to create a
@@ -122,5 +124,41 @@ public class Location {
      */
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    /**
+     * The getter for the lat.
+     *
+     * @return the lat
+     */
+    public double getLat() {
+        return lat;
+    }
+
+    /**
+     * The setter for the lat.
+     *
+     * @param lat the latitude
+     */
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    /**
+     * The getter for the lat.
+     *
+     * @return the lat
+     */
+    public double getLng() {
+        return lng;
+    }
+
+    /**
+     * The setter for the lat.
+     *
+     * @param lng the latitude
+     */
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 }
