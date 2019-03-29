@@ -87,7 +87,7 @@ public class WriteReviewActivity extends AppCompatActivity {
         final String borrowerName = borrower;
         final String reviewFrom = userName;
         final String reviewTo = messageArray[0];
-        
+
         // populate textViews
         String format = getResources().getString(R.string.write_review_of_name);
         message = String.format(format, reviewTo);
