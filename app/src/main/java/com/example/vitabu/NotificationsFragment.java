@@ -63,7 +63,6 @@ import java.util.UUID;
 public class NotificationsFragment extends Fragment implements NotificationsRecyclerViewAdapter.ItemClickListener {
     NotificationsRecyclerViewAdapter adapter;
     ArrayList<Notification> notifications;
-    private boolean wait = true;
     private TextView emptyText;
     private boolean onCreate;
 
@@ -192,21 +191,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
             );
         }
         if (curNotification.getType().equals("review")){
-            myRef.child("borrowrecords").child(curNotification.getBorrowRecordId()).addListenerForSingleValueEvent(
-                    new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            BorrowRecord rec = dataSnapshot.getValue(BorrowRecord.class);
-                            if (rec != null) {
-                                startReviewActivity(rec);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
-                    }
-            );
+            startReviewActivity(curNotification);
         }
 
     }
@@ -248,15 +233,15 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         startActivity(intent);
     }
 
-    public void startReviewActivity(BorrowRecord rec) {
+    public void startReviewActivity(Notification notif) {
         Intent intent = new Intent(getActivity(), WriteReviewActivity.class);
         Gson gson = new Gson();
-        String message = gson.toJson(rec);
-        intent.putExtra(MainActivity.BORROWRECORD_MESSAGE, message);
+        String message = gson.toJson(notif);
+        intent.putExtra(MainActivity.NOTIFICATION_MESSAGE, message);
         startActivity(intent);
     }
 
-    private void markSeen(Notification notif){
+    static public void markSeen(Notification notif){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
         notif.setSeen(true);
