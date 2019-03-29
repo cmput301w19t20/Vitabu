@@ -44,6 +44,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -61,7 +63,6 @@ import java.util.UUID;
 public class NotificationsFragment extends Fragment implements NotificationsRecyclerViewAdapter.ItemClickListener {
     NotificationsRecyclerViewAdapter adapter;
     ArrayList<Notification> notifications;
-    private boolean wait = true;
     private TextView emptyText;
     private boolean onCreate;
 
@@ -107,11 +108,11 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
                     Log.d("Count ", "" + snapshot.getChildrenCount());
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                         Notification n = postSnapshot.getValue(Notification.class);
-                        if (!n.isSeen()) {
+                        if ((n != null) && (!n.isSeen())) {
                             addNotification(n);
-                        }
-                        if (emptyText != null) {
-                            emptyText.setVisibility(View.GONE);
+                            if (emptyText != null) {
+                                emptyText.setVisibility(View.GONE);
+                            }
                         }
                     }
                     onCreate = false;
@@ -147,16 +148,26 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
 
     @Override
     public void onItemClick(View view, int position) {
-        Notification curNotification = notifications.get(position);
+        final Notification curNotification = notifications.get(position);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
+        final int pos = position;
 
         if (curNotification.getType().equals("request")) {
             myRef.child("borrowrecords").child(curNotification.getBorrowRecordId()).addListenerForSingleValueEvent(
                     new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            getBook(dataSnapshot.getValue(BorrowRecord.class));
+                            BorrowRecord rec = dataSnapshot.getValue(BorrowRecord.class);
+                            if (rec != null) {
+                                getBook(rec);
+                            }
+                            else{
+                                markSeen(curNotification);
+                                Toast.makeText(getActivity(), R.string.notifications_request_error, Toast.LENGTH_SHORT).show();
+                                notifications.remove(pos);
+                                adapter.notifyItemRemoved(pos);
+                            }
                         }
 
                         @Override
@@ -180,20 +191,8 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
             );
         }
         if (curNotification.getType().equals("review")){
-            myRef.child("borrowrecords").child(curNotification.getBorrowRecordId()).addListenerForSingleValueEvent(
-                    new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            startReviewActivity(dataSnapshot.getValue(BorrowRecord.class));
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
-                    }
-            );
+            startReviewActivity(curNotification);
         }
-
 
     }
 
@@ -234,12 +233,31 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         startActivity(intent);
     }
 
-    public void startReviewActivity(BorrowRecord rec) {
+    public void startReviewActivity(Notification notif) {
         Intent intent = new Intent(getActivity(), WriteReviewActivity.class);
         Gson gson = new Gson();
-        String message = gson.toJson(rec);
-        intent.putExtra(MainActivity.BORROWRECORD_MESSAGE, message);
+        String message = gson.toJson(notif);
+        intent.putExtra(MainActivity.NOTIFICATION_MESSAGE, message);
         startActivity(intent);
+    }
+
+    static public void markSeen(Notification notif){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        notif.setSeen(true);
+        myRef.child("notifications").child(notif.getNotificationid()).setValue(notif)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("notifications fragment", "Successfully updated notifications.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("notifications fragment", "Failed to update notifications in database", e);
+                    }
+                });
     }
 
 }

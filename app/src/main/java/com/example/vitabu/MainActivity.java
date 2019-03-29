@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String BOOK_MESSAGE = "Book";
     public static final String LOCALUSER_MESSAGE = "LocalUser";
     public static final String BORROWRECORD_MESSAGE = "BorrowRecord";
+    public static final String NOTIFICATION_MESSAGE = "BorrowRecord";
     public static final String USER_MESSAGE = "User";
     public static final String REVIEW_TYPE = "type";
     public static final String BOOKLIST_MESSAGE = "BookList";
