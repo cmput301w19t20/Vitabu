@@ -173,7 +173,7 @@
     <string name="return_book_book_desc" />
     <string name="return_book_info_view_goodreads_page">View Goodreads Page</string>
     <string name="accept_book_view_requester_profile">view profile</string>
-    <string name="book_request_accept_button">accept</string>
+    <string name="book_request_accept_button">Accept</string>
     <string name="book_requests_view_profile">view profile</string>
     <string name="return_book_header">Return Book</string>
     <string name="return_book_title_text">Title:</string>

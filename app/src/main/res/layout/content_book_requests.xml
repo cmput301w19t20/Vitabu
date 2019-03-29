@@ -31,7 +31,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:text="@string/book_request_accept_button" />
+        android:text="@string/book_request_accept_button"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black" />
 
 
 </RelativeLayout>
