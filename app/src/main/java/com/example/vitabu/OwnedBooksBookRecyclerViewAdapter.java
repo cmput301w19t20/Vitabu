@@ -103,6 +103,7 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
             public void onSuccess(Uri uri) {
                 Picasso.get()
                         .load(uri)
+                        .placeholder(R.mipmap.ic_launcher_round)
                         .fit()
                         .centerCrop()
                         .into(holder.image);

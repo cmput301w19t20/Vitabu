@@ -91,6 +91,7 @@ public class BrowseBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Bro
                 public void onSuccess(Uri uri) {
                     Picasso.get()
                             .load(uri)
+                            .placeholder(R.mipmap.ic_launcher_round)
                             .fit()
                             .centerCrop()
                             .into(holder.imageView);

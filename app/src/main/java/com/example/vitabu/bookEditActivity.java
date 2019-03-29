@@ -107,6 +107,7 @@ public class bookEditActivity extends AppCompatActivity {
             public void onSuccess(Uri uri) {
                 Picasso.get()
                         .load(uri)
+                        .placeholder(R.mipmap.ic_launcher_round)
                         .fit()
                         .centerCrop()
                         .into(image);
