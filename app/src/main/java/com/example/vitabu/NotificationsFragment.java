@@ -181,7 +181,16 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
                     new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            startViewMeetingLocationActivity(dataSnapshot.getValue(BorrowRecord.class));
+                            BorrowRecord rec = dataSnapshot.getValue(BorrowRecord.class);
+                            if (rec != null) {
+                                startViewMeetingLocationActivity(rec);
+                            }
+                            else{
+                                markSeen(curNotification);
+                                Toast.makeText(getActivity(), R.string.notifications_accept_error, Toast.LENGTH_SHORT).show();
+                                notifications.remove(pos);
+                                adapter.notifyItemRemoved(pos);
+                            }
                         }
 
                         @Override
