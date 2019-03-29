@@ -7,6 +7,7 @@
     <string name="appbar_profile">My Profile</string>
     <string name="edit_profile_save_button">Save</string>
     <string name="user_profile_review_button">See User Reviews</string>
+    <string name="edit_profile_cancel_button">Cancel</string>
 
     <!--Login Activity Strings-->
     <string name="login_login_button_text">Login</string>
@@ -24,6 +25,8 @@
     <string name="browse_books_book_author">Author: </string>
     <string name="browse_books_book_status">Status: </string>
     <string name="browse_books_book_borrower">Borrower: </string>
+    <string name="browse_books_title">Browse Books</string>
+
 
     <!--Owned Book Fragment Strings-->
     <string name="owned_books_title">My Books</string>
@@ -130,6 +133,7 @@
 
     <!--Notification Fragment strings-->
     <string name="notifications_no_data">No Notifications</string>
+    <string name="notifications_title">Notifications</string>
 
     <!--Book status strings strings-->
     <string name="title_activity_book_status_owner">bookStatusOwnerActivity</string>
