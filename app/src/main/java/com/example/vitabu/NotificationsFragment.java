@@ -84,22 +84,6 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
-        /*for (int i = 0; i < 5; i++) {
-            Notification notification = new Notification("Notif USERNAME" + Integer.toString(i),
-                                                        "New message #" + Integer.toString(i),
-                                                        "TYPE",
-                                                        "owen");
-            myRef.child("notifications").child(UUID.randomUUID().toString()).setValue(notification);
-        }
-
-        for (int i = 0; i < 5; i++) {
-            Notification notification = new Notification("Notif NONE" + Integer.toString(i),
-                    "New message #" + Integer.toString(i),
-                    "TYPE",
-                    "notarealusername");
-            myRef.child("notifications").child(UUID.randomUUID().toString()).setValue(notification);
-        }*/
-
         myRef.child("notifications").orderByChild("userName").equalTo(userName).addListenerForSingleValueEvent(
                 new ValueEventListener() {
             @Override
@@ -160,43 +144,6 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
             emptyText.setVisibility(View.VISIBLE);
         }
 
-    }
-
-    public  void startViewMeetingLocationActivity(BorrowRecord borrowRecord){
-        // TODO Launch viewMeetingLocationActivity.
-//        Intent intent = new Intent(this, viewMeetingLocationActivity.class);
-//        Gson gson = new Gson();
-//        intent.putExtra(MainActivity.BOOK_MESSAGE, gson.toJson(book));
-//        startActivity(intent);
-    }
-
-    public void getBook(BorrowRecord borrowRecord){
-//        Book book = MainActivity.getBookFromDatabase(borrowRecord.getBookid());
-        // Get Book fom database.
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-
-        myRef.child("books").child(borrowRecord.getBookid()).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        startAcceptBookRequestActivity(dataSnapshot.getValue(Book.class));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                }
-        );
-
-    }
-
-    public void startAcceptBookRequestActivity(Book book){
-        // TODO launch acceptBookRequestActivity.
-        Intent intent = new Intent(this.getContext(), acceptBookRequestActivity.class);
-        Gson gson = new Gson();
-        intent.putExtra(MainActivity.BOOK_MESSAGE, gson.toJson(book));
-        startActivity(intent);
     }
 
     public void startReviewActivity(Notification notif) {
