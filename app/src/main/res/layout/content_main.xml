@@ -54,13 +54,15 @@
 
     <Button
         android:id="@+id/login_login_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:onClick="onPressLogin"
         android:text="@string/login_login_button_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="@+id/login_register_button"
+        app:layout_constraintStart_toStartOf="@+id/login_register_button"
         app:layout_constraintTop_toBottomOf="@+id/login_password" />
 
     <Button
@@ -70,6 +72,8 @@
         android:layout_marginTop="16dp"
         android:onClick="onPressRegister"
         android:text="@string/login_register_button_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_login_button" />
