@@ -119,10 +119,10 @@ public class returnBookActivity extends AppCompatActivity {
                     }
                 };
                 database.returnBook(onSuccess, null, book);
-                message = record.getBorrowerName() + "returned the book. Write a review of " + record.getBorrowerName()+ ".";
+                message = record.getBorrowerName() + " returned the book. Write a review of " + record.getBorrowerName()+ ".";
             }
             else{
-                message = record.getOwnerName() + "received the book. Write a review of " + record.getOwnerName()+ ".";
+                message = record.getOwnerName() + " received the book. Write a review of " + record.getOwnerName()+ ".";
                 updateBorrowerCount(userName);
             }
 

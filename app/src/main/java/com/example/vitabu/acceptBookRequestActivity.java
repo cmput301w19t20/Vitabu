@@ -44,6 +44,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -131,30 +133,6 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         };
         databaseWrapper.findBorrowRecordsByBookid(success, fail, bookid);
 
-/*
-        Log.d("PULLING", "FROM DATABASE");
-        myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        Log.d("Count1 ", "" + snapshot.getChildrenCount());
-                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                            String bid = (String) postSnapshot.child("bookid").getValue();
-                            if (bid.equals(bookid)) {
-                                records.add(new BorrowRecord(userName, (String) postSnapshot.child("borrowerName").getValue(), bookid));
-                            }
-                        }
-                        Log.d("RECORDS", "" + records.size());
-                        buildRecyclerView(); // initialize the recyclerview
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError e) {
-                    }
-                });
-
-        //        mAdapter.notifyDataSetChanged();
-*/
     }
 
     public void buildRecyclerView() {
@@ -226,24 +204,6 @@ public class acceptBookRequestActivity extends AppCompatActivity {
 
         databaseWrapper.fetchUser(success, fail, requester);
 
-        /*
-        // Get Owner from database. When done launch goToUserProfileActivity()
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        myRef.child("users").child(requester).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        goToUserProfileActivity(dataSnapshot.getValue(User.class));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d(logTag, "Database error", databaseError.toException());
-                    }
-                }
-        );
-        */
     }
 
     public void acceptBookRequest(int position) {
@@ -255,31 +215,10 @@ public class acceptBookRequestActivity extends AppCompatActivity {
 
         databaseWrapper.acceptBorrowRequest(null, null, record);
 
-
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef = database.getReference();
-//        myRef.child("borrowrecords").orderByChild("ownerName").equalTo(userName).addValueEventListener(
-//                new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot snapshot) {
-//                        Log.d("Count1 ", "" + snapshot.getChildrenCount());
-//                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-//                            String bid = (String) postSnapshot.child("bookid").getValue();
-//                            if (bid.equals(bookid)) {
-//                                recordids.add(postSnapshot.getKey());
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError e) {
-//                    }
-//                });
-//        for(String id: recordids){
-//            myRef.child("borrowrecords").child(id).removeValue();
-//        }
-//
         createRequestersList(bookid);
+        String message = "Your request has been accepted by " + record.getOwnerName() + ".";
+        Notification newNotification = new Notification("Request Accepted", message, "accept", record.getBorrowerName(), record.getRecordid());
+        storeNotification(newNotification);
         goToSetMeetingActivity(record);
     }
 
@@ -307,5 +246,21 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         intent.putExtra(MainActivity.BORROWRECORD_MESSAGE, gson.toJson(record));
         startActivity(intent);
     }
-//s
+
+    private void storeNotification(Notification notif){
+        myRef.child("notifications").child(notif.getNotificationid()).setValue(notif)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Review notification", "Successfully wrote notification to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Review notification", "Failed to write notification to database", e);
+                    }
+                });
+
+    }
 }
