@@ -43,8 +43,6 @@ public class acceptBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onScanISBNClick(v);
-                // method call to handle database implementation of book borrow transaction
-                completeBookBorrowTransaction();
             }
         });
 
