@@ -123,7 +123,7 @@ public class userReviewActivity extends AppCompatActivity {
             RelativeLayout list = viewHolder.list;
 
             // set text in textviews
-            name.setText(currentReview.getBorrowerName());
+            name.setText(currentReview.getReviewFrom());
             date.setText(currentReview.getDate().toString());
             rating.setText(Integer.toString(currentReview.getRating()));
             review.setText(currentReview.getBody());

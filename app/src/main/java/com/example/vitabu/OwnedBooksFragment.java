@@ -267,7 +267,6 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this.getActivity(), "You clicked " + recyclerViewAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
         Book book = recyclerViewAdapter.getItem(position);
         Gson gson = new Gson();
         Intent intent = new Intent();
