@@ -44,6 +44,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -214,6 +216,9 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         databaseWrapper.acceptBorrowRequest(null, null, record);
 
         createRequestersList(bookid);
+        String message = "Your request has been accepted by " + record.getOwnerName() + ".";
+        Notification newNotification = new Notification("Request Accepted", message, "accept", record.getBorrowerName(), record.getRecordid());
+        storeNotification(newNotification);
         goToSetMeetingActivity(record);
     }
 
@@ -240,5 +245,22 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         Gson gson = new Gson();
         intent.putExtra(MainActivity.BORROWRECORD_MESSAGE, gson.toJson(record));
         startActivity(intent);
+    }
+
+    private void storeNotification(Notification notif){
+        myRef.child("notifications").child(notif.getNotificationid()).setValue(notif)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Review notification", "Successfully wrote notification to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Review notification", "Failed to write notification to database", e);
+                    }
+                });
+
     }
 }
