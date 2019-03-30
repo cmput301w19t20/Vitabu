@@ -56,7 +56,6 @@ public class returnBookActivity extends AppCompatActivity {
         returnBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(returnBookActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 onScanISBNClick(v);
             }
         });
@@ -112,7 +111,6 @@ public class returnBookActivity extends AppCompatActivity {
     private void completeBookReturnTransaction2(){
             String message;
             if(userName.equals(book.getOwnerName())) {
-                Toast.makeText(returnBookActivity.this, "Success Owner", Toast.LENGTH_SHORT).show();
                 Database database = Database.getInstance();
                 Runnable onSuccess = new Runnable() {
                     @Override
@@ -124,7 +122,6 @@ public class returnBookActivity extends AppCompatActivity {
                 message = record.getBorrowerName() + "returned the book. Write a review of " + record.getBorrowerName()+ ".";
             }
             else{
-                Toast.makeText(returnBookActivity.this, "Success Borrower", Toast.LENGTH_SHORT).show();
                 message = record.getOwnerName() + "received the book. Write a review of " + record.getOwnerName()+ ".";
                 updateBorrowerCount(userName);
             }

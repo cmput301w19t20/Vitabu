@@ -201,19 +201,16 @@ public class acceptBookRequestActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 // identify the item swiped
                 int position = viewHolder.getAdapterPosition();
-                Toast.makeText(acceptBookRequestActivity.this, "Removing item at position: " + position, Toast.LENGTH_SHORT).show();
                 declineBookRequest(position);
             }
         }).attachToRecyclerView(mRecyclerView);
     }
 
     public void displayItemClickMessage(int position) {
-        Toast.makeText(acceptBookRequestActivity.this, "You clicked on item: " + mAdapter.getItem(position), Toast.LENGTH_SHORT).show();
+
     }
 
     public void viewRequesterProfile(String requester, int position) {
-        Toast.makeText(acceptBookRequestActivity.this, "View user " + mAdapter.getItem(position) + "'s profile?", Toast.LENGTH_SHORT).show();
-        // I also pulled This logic into the Database.java class.  Same deal as above -Tristan.
         Runnable fail = new Runnable() {
             @Override
             public void run() {
@@ -250,7 +247,6 @@ public class acceptBookRequestActivity extends AppCompatActivity {
     }
 
     public void acceptBookRequest(int position) {
-        Toast.makeText(acceptBookRequestActivity.this, "You would like to accept the request at row: " + position, Toast.LENGTH_SHORT).show();
         final BorrowRecord record = mAdapter.getItem(position);
         record.setApproved(true);
         //record.setRecordid(UUID.randomUUID().toString());

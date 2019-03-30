@@ -83,10 +83,8 @@ public class acceptBookActivity extends AppCompatActivity {
                 bookISBN = text;
                 if(bookISBN.equals(book.getISBN())){
                     if(book.getBorrower().equals(userName)){
-                        Toast.makeText(this, "Success borrower", Toast.LENGTH_SHORT).show();
                         completeBookBorrowTransaction();
                     }else{
-                        Toast.makeText(this, "Success owner", Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     Toast.makeText(this, "Incorrect ISBN try again", Toast.LENGTH_SHORT).show();
