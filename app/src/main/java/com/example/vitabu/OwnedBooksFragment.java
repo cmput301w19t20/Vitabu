@@ -32,6 +32,7 @@ package com.example.vitabu;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -52,12 +53,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.UUID;
-import java.util.Objects;
 
 public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSelectedListener, OwnedBooksBookRecyclerViewAdapter.ItemClickListener {
     private OwnedBooksBookRecyclerViewAdapter recyclerViewAdapter;
@@ -65,13 +65,15 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
     private ArrayList<String> bookids;
     private String userName;
     private RecyclerView recyclerView;
-    private boolean created;
-    private boolean onStart;
+    private Database database;
+    private ValueEventListener firstListener;
+    private Query firstQuery;
+    private ValueEventListener secondListener;
+    private Query secondQuery;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_owned_books, container, false);
-        created = true;
 
         // Since we have predetermined the items for the drop down status menu,
         // will use a string array containing the status items -- located in the resource file
@@ -85,7 +87,6 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
 
         books = new ArrayList<>();
         bookids = new ArrayList<>();
-        onStart = true;
       
         // set up the RecyclerView
         recyclerView = fragmentView.findViewById(R.id.owned_books_list);
@@ -96,32 +97,88 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         recyclerViewAdapter.notifyDataSetChanged();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = auth.getCurrentUser();
-        userName = firebaseUser.getDisplayName();
+        database = Database.getInstance();
+        userName = database.getCurUserName();
 
         // pull all books that user owns
-        myRef.child("books").orderByChild("ownerName").equalTo(userName).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        books = new ArrayList<>();
-                        Log.d("Count1 ", "" + snapshot.getChildrenCount());
-                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                            Book b = postSnapshot.getValue(Book.class);
-                            addBook(b);
-                        }
-                        nextStep1();
-                    }
+        firstQuery = database.getRootReference().child("books").orderByChild("ownerName").equalTo(userName);
 
-                    @Override
-                    public void onCancelled(DatabaseError e) {
+        //Create the ValueEventListener
+        firstListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                books.clear();
+                Log.d("Count1 ", "" + snapshot.getChildrenCount());
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Book b = postSnapshot.getValue(Book.class);
+                    books.add(b);
+                }
+                recyclerViewAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError e) {
+            }
+        };
+
+
+        secondQuery = database.getRootReference().child("borrowrecords").orderByChild("borrowerName").equalTo(userName);
+        secondListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Log.d("Count2 ", "" + snapshot.getChildrenCount());
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    if((boolean)postSnapshot.child("approved").getValue()) {
+                        String id = (String) postSnapshot.child("bookid").getValue();
+                        database.getRootReference().child("books").child(id).addListenerForSingleValueEvent(
+                                new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        Book b = dataSnapshot.getValue(Book.class);
+//                                                String bid = b.getBookid();
+//                                                ArrayList<Book> copy = new ArrayList<>();
+//                                                for (Book book : books) {
+//                                                    if (book.getBookid().equals(bid)) {
+//                                                        copy.add(book);
+//                                                    }
+//                                                }
+//                                                for (Book book : copy) {
+//                                                    books.remove(book);
+//                                                }
+                                        books.add(b);
+                                        recyclerViewAdapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                }
+                        );
                     }
-                });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError e) {
+            }
+        };
 
         return fragmentView;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        firstQuery.addValueEventListener(firstListener);
+        secondQuery.addValueEventListener(secondListener);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        firstQuery.removeEventListener(firstListener);
+        secondQuery.removeEventListener(secondListener);
     }
 
     private void newAdapter(){
@@ -136,83 +193,9 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         }
     }
 
-    // pull all bookids from borrow records that have been approved, where user is the borrower
-    private void nextStep1(){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        myRef.child("borrowrecords").orderByChild("borrowerName").equalTo(userName).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        Log.d("Count2 ", "" + snapshot.getChildrenCount());
-                        bookids = new ArrayList<>();
-                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                            if((boolean)postSnapshot.child("approved").getValue()) {
-                                addBookid((String) postSnapshot.child("bookid").getValue());
-                            }
-                        }
-                        Log.d("Bookid len ", "" + bookids.size());
-                        nextStep2();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError e) {
-                    }
-                });
-    }
-
-    // pull all book ids
-    private void nextStep2(){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        if(bookids.size() == 0 && created){
-            created = false;
-            orderBy("available");
-        }else {
-            for (String id : bookids) {
-                try {
-                    myRef.child("books").child(id).addListenerForSingleValueEvent(
-                            new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if(onStart) {
-                                        Book b = dataSnapshot.getValue(Book.class);
-                                        if (bookids.size() == 0) {
-                                            String bid = b.getBookid();
-                                            bookids.add(bid);
-                                            ArrayList<Book> copy = new ArrayList<>();
-                                            for (Book book : books) {
-                                                if (book.getBookid().equals(bid)) {
-                                                    copy.add(book);
-                                                }
-                                            }
-                                            for (Book book : copy) {
-                                                books.remove(book);
-                                            }
-                                        }
-                                        books.add(b);
-                                        removeBookid(b.getBookid());
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            }
-                    );
-                } catch (Exception e) {
-                    Log.d("OWNED_BOOKS_FRAGMENT", "Missing bookid " + e.getMessage());
-                }
-            }
-        }
-    }
-
     private void removeBookid(String id){
         bookids.remove(id);
-        if(bookids.size() == 0 && created){
-            created = false;
-            onStart = false;
+        if(bookids.size() == 0){
             orderBy("available");
         }
     }
@@ -274,10 +257,6 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
 
         }
         books = temp;
-//        Log.d("BOOKS", "" + books.size());
-//        for(Book b: books){
-//            Log.d("book: ", b.getTitle());
-//        }
         newAdapter();
     }
 
@@ -288,15 +267,6 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
 
     @Override
     public void onItemClick(View view, int position) {
-//        TODO: Opens book info activity
-//        Toast.makeText(this.getActivity(), "You clicked " + recyclerViewAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(this.getContext(), bookEditActivity.class);
-//        Log.d("fragment launch", recyclerViewAdapter.getItem(position).getTitle());
-//        Gson gson = new Gson();
-//        String message = gson.toJson(recyclerViewAdapter.getItem(position));
-//        intent.putExtra(MainActivity.BOOK_MESSAGE, message);
-//        startActivity(intent);
-
         Book book = recyclerViewAdapter.getItem(position);
         Gson gson = new Gson();
         Intent intent = new Intent();
