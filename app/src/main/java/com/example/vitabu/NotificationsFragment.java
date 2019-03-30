@@ -143,7 +143,6 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         if (notifications.size() == 0) {
             emptyText.setVisibility(View.VISIBLE);
         }
-
     }
 
     public void startReviewActivity(Notification notif) {
