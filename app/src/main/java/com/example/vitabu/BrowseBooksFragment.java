@@ -148,7 +148,6 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
         intent.putExtra(MainActivity.LOCALUSER_MESSAGE, LocalUserMessage);
         startActivity(intent);
 
-        Toast.makeText(this.getActivity(), "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
 
 }

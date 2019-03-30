@@ -113,7 +113,6 @@ public class WriteReviewActivity extends AppCompatActivity {
                         Review review = new Review(ownerName, borrowerName, rating, body, reviewFrom, reviewTo);
                         writeReview(review);
                         updateRating(review);
-                        Toast.makeText(WriteReviewActivity.this, R.string.write_review_success, Toast.LENGTH_SHORT).show();
                         NotificationsFragment.markSeen(notif);
                         finish();
                     }

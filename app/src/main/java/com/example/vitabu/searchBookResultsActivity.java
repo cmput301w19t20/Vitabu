@@ -86,7 +86,6 @@ public class searchBookResultsActivity extends AppCompatActivity {
         mAdapter.setOnItemClickListener(new searchBookResultsRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(searchBookResultsActivity.this, "You clicked " + mAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getApplicationContext(), bookInfoActivity.class);
                 Log.d("launch", mAdapter.getItem(position).getTitle());
