@@ -77,21 +77,16 @@ public class WriteReviewActivity extends AppCompatActivity {
         if (messageArray[1].equals("returned")){
             owner = userName;
             borrower = messageArray[0];
-            Log.e("namer", owner+borrower);
         }
         else{
             owner = messageArray[0];
             borrower = userName;
-            Log.e("namee", owner+borrower);
         }
 
         final String ownerName = owner;
         final String borrowerName = borrower;
         final String reviewFrom = userName;
         final String reviewTo = messageArray[0];
-        Log.e("namerh", "h"+reviewFrom+" "+reviewTo);
-
-
 
         // populate textViews
         String format = getResources().getString(R.string.write_review_of_name);
@@ -113,7 +108,7 @@ public class WriteReviewActivity extends AppCompatActivity {
                         Review review = new Review(ownerName, borrowerName, rating, body, reviewFrom, reviewTo);
                         writeReview(review);
                         updateRating(review);
-                        NotificationsFragment.markSeen(notif);
+                        Toast.makeText(WriteReviewActivity.this, R.string.write_review_success, Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 }

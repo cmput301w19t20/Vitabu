@@ -253,7 +253,6 @@ public class acceptBookRequestActivity extends AppCompatActivity {
 //        recordids = new ArrayList<>();
 
 
-
         databaseWrapper.acceptBorrowRequest(null, null, record);
 
 
@@ -300,8 +299,6 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         intent.putExtra(MainActivity.USER_MESSAGE, gson.toJson(owner));
         startActivity(intent);
     }
-
-
 
     //TODO: update recyclerview
     public void goToSetMeetingActivity(BorrowRecord record) {
