@@ -29,6 +29,8 @@ public class returnBookActivity extends AppCompatActivity {
     Book book;
     String userName;
     BorrowRecord record = null;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +126,7 @@ public class returnBookActivity extends AppCompatActivity {
             else{
                 Toast.makeText(returnBookActivity.this, "Success Borrower", Toast.LENGTH_SHORT).show();
                 message = record.getOwnerName() + "received the book. Write a review of " + record.getOwnerName()+ ".";
+                updateBorrowerCount(userName);
             }
 
             // create review notification
@@ -136,8 +139,6 @@ public class returnBookActivity extends AppCompatActivity {
     }
 
     private void getBorrowRecord(String bookid) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
         myRef.child("borrowrecords").orderByChild("bookid").equalTo(bookid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -156,8 +157,6 @@ public class returnBookActivity extends AppCompatActivity {
     }
 
     private void storeNotification(Notification notif){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
         myRef.child("notifications").child(notif.getNotificationid()).setValue(notif)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -169,6 +168,43 @@ public class returnBookActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d("Review notification", "Failed to write notification to database", e);
+                    }
+                });
+
+    }
+
+    private void updateBorrowerCount(String userName){
+        myRef.child("users").orderByChild("userName").equalTo(userName).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            User user = postSnapshot.getValue(User.class);
+                            if (user != null) {
+                                user.setBooksBorrowed(user.getBooksBorrowed() + 1);
+                                storeUser(user);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError e) {
+                    }
+                });
+    }
+
+    private void storeUser(User user){
+        myRef.child("users").child(user.getUserName()).setValue(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("user borrower", "Successfully wrote user to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("user borrowers", "Failed to write user to database", e);
                     }
                 });
 

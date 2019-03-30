@@ -256,7 +256,7 @@ public class acceptBookRequestActivity extends AppCompatActivity {
         //record.setRecordid(UUID.randomUUID().toString());
 //        recordids = new ArrayList<>();
 
-        
+
         databaseWrapper.acceptBorrowRequest(null, null, record);
 
 
