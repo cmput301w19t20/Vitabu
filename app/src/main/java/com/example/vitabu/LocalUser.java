@@ -273,6 +273,41 @@ public class LocalUser extends UserAbstract {
     }
 
     /**
+     * The getter of the number of owner reviews of the user.
+     *
+     * @return the number of owner reviews
+     */
+    public int getNumOwnerReviews() {
+        return numOwnerReviews;
+    }
+
+    /**
+     * The setter for the number of owner reviews of the user.
+     *
+     * @param numReviews the number of owner reviews
+     */
+    public void setNumOwnerReviews(int numReviews) {
+        this.numOwnerReviews = numReviews;
+    }
+
+    /**
+     * The getter of the number of owner reviews of the user.
+     *
+     * @return the number of borrower reviews
+     */
+    public int getNumBorrowerReviews() {
+        return numBorrowerReviews;
+    }
+
+    /**
+     * The setter for the number of owner reviews of the user.
+     *
+     * @param numReviews the number of borrower reviews
+     */
+    public void setNumBorrowerReviews(int numReviews) {
+        this.numBorrowerReviews = numReviews;
+    }
+    /**
      * This converts this class to JSON and returns it.
      *
      * @return the JSON string representing this class.

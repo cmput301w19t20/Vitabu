@@ -44,6 +44,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -61,7 +63,6 @@ import java.util.UUID;
 public class NotificationsFragment extends Fragment implements NotificationsRecyclerViewAdapter.ItemClickListener {
     NotificationsRecyclerViewAdapter adapter;
     ArrayList<Notification> notifications;
-    private boolean wait = true;
     private TextView emptyText;
     private boolean onCreate;
 
@@ -83,22 +84,6 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
-        /*for (int i = 0; i < 5; i++) {
-            Notification notification = new Notification("Notif USERNAME" + Integer.toString(i),
-                                                        "New message #" + Integer.toString(i),
-                                                        "TYPE",
-                                                        "owen");
-            myRef.child("notifications").child(UUID.randomUUID().toString()).setValue(notification);
-        }
-
-        for (int i = 0; i < 5; i++) {
-            Notification notification = new Notification("Notif NONE" + Integer.toString(i),
-                    "New message #" + Integer.toString(i),
-                    "TYPE",
-                    "notarealusername");
-            myRef.child("notifications").child(UUID.randomUUID().toString()).setValue(notification);
-        }*/
-
         myRef.child("notifications").orderByChild("userName").equalTo(userName).addListenerForSingleValueEvent(
                 new ValueEventListener() {
             @Override
@@ -107,9 +92,11 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
                     Log.d("Count ", "" + snapshot.getChildrenCount());
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                         Notification n = postSnapshot.getValue(Notification.class);
-                        addNotification(n);
-                        if (emptyText != null) {
-                            emptyText.setVisibility(View.GONE);
+                        if ((n != null) && (!n.isSeen())) {
+                            addNotification(n);
+                            if (emptyText != null) {
+                                emptyText.setVisibility(View.GONE);
+                            }
                         }
                     }
                     onCreate = false;
@@ -146,64 +133,41 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
     @Override
     public void onItemClick(View view, int position) {
         Notification curNotification = notifications.get(position);
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
 
-        if (curNotification.getType().equals("request")) {
-            myRef.child("borrowrecords").child(curNotification.getBorrowRecordId()).addListenerForSingleValueEvent(
-                    new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            getBook(dataSnapshot.getValue(BorrowRecord.class));
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
-                    }
-            );
+        if (curNotification.getType().equals("review")){
+            startReviewActivity(curNotification);
         }
-        if (curNotification.getType().equals("acccept")){
-            myRef.child("borrowrecords").child(curNotification.getBorrowRecordId()).addListenerForSingleValueEvent(
-                    new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            startViewMeetingLocationActivity(dataSnapshot.getValue(BorrowRecord.class));
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
-                    }
-            );
+        markSeen(curNotification);
+        notifications.remove(position);
+        adapter.notifyItemRemoved(position);
+        if (notifications.size() == 0) {
+            emptyText.setVisibility(View.VISIBLE);
         }
-
-
     }
 
-    public  void startViewMeetingLocationActivity(BorrowRecord borrowRecord){
-        // TODO Launch viewMeetingLocationActivity.
-//        Intent intent = new Intent(this, viewMeetingLocationActivity.class);
-//        Gson gson = new Gson();
-//        intent.putExtra(MainActivity.BOOK_MESSAGE, gson.toJson(book));
-//        startActivity(intent);
+    public void startReviewActivity(Notification notif) {
+        Intent intent = new Intent(getActivity(), WriteReviewActivity.class);
+        Gson gson = new Gson();
+        String message = gson.toJson(notif);
+        intent.putExtra(MainActivity.NOTIFICATION_MESSAGE, message);
+        startActivity(intent);
     }
 
-    public void getBook(BorrowRecord borrowRecord){
-//        Book book = MainActivity.getBookFromDatabase(borrowRecord.getBookid());
-        // Get Book fom database.
+    private void markSeen(Notification notif){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
-
-        myRef.child("books").child(borrowRecord.getBookid()).addListenerForSingleValueEvent(
-                new ValueEventListener() {
+        notif.setSeen(true);
+        myRef.child("notifications").child(notif.getNotificationid()).setValue(notif)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        startAcceptBookRequestActivity(dataSnapshot.getValue(Book.class));
+                    public void onSuccess(Void aVoid) {
+                        Log.d("notifications fragment", "Successfully updated notifications.");
                     }
-
+                })
+                .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("notifications fragment", "Failed to update notifications in database", e);
                     }
                 }
         );

@@ -56,32 +56,37 @@ public class WriteReviewActivity extends AppCompatActivity {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance(); //The realtime database handle
     private DatabaseReference myRef = database.getReference(); //The reference to the database handle
+    User user = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_review);
 
-
         // get borrowRecord
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.BORROWRECORD_MESSAGE);
+        String message = intent.getStringExtra(MainActivity.NOTIFICATION_MESSAGE);
         Gson gson = new Gson();
-        final BorrowRecord record = gson.fromJson(message, BorrowRecord.class);
+        final Notification notif = gson.fromJson(message, Notification.class);
         final String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
 
         // determine who is the reviewer
-        final String ownerName = record.getOwnerName();
-        final String borrowerName = record.getBorrowerName();
-        final String reviewFrom, reviewTo;
-        if (ownerName.equals(userName)){
-            reviewFrom = ownerName;
-            reviewTo = borrowerName;
+        message = notif.getMessage();
+        String[] messageArray =  message.split(" ");
+        String owner, borrower;
+        if (messageArray[1].equals("returned")){
+            owner = userName;
+            borrower = messageArray[0];
         }
         else{
-            reviewFrom = borrowerName;
-            reviewTo = ownerName;
+            owner = messageArray[0];
+            borrower = userName;
         }
+
+        final String ownerName = owner;
+        final String borrowerName = borrower;
+        final String reviewFrom = userName;
+        final String reviewTo = messageArray[0];
 
         // populate textViews
         String format = getResources().getString(R.string.write_review_of_name);
@@ -95,7 +100,6 @@ public class WriteReviewActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         // get fields for making a review object
                         RatingBar ratingBar = (RatingBar) findViewById(R.id.write_review_ratingBar);
                         int rating = Math.round(ratingBar.getRating());
@@ -103,6 +107,7 @@ public class WriteReviewActivity extends AppCompatActivity {
                         String body = review_message.getText().toString();
                         Review review = new Review(ownerName, borrowerName, rating, body, reviewFrom, reviewTo);
                         writeReview(review);
+                        updateRating(review);
                         Toast.makeText(WriteReviewActivity.this, R.string.write_review_success, Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -110,7 +115,7 @@ public class WriteReviewActivity extends AppCompatActivity {
         );
     }
 
-    public void writeReview(Review review){
+    private void writeReview(Review review){
         myRef.child("reviews").child(review.getReviewid()).setValue(review)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -124,5 +129,67 @@ public class WriteReviewActivity extends AppCompatActivity {
                         Log.d("Write Review activity", "Failed to write User to database", e);
                     }
                 });
+    }
+
+    private void updateRating(Review  review) {
+        // update rating of person reviewed
+        final Review review2 = review;
+        myRef.child("users").orderByChild("userName").equalTo(review.getReviewTo()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                            user = postSnapshot.getValue(User.class);
+                        }
+                        if (user != null) {
+                            modifyRating(review2, user);
+                        }
+                        else{
+                            Log.e("user status", "null as null can be");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                }
+        );
+    }
+
+    private void modifyRating(Review review, User user){
+        // update the user's rating
+        String username = user.getUserName();
+        if (username.equals(review.getOwnerName())){
+            int rating = user.getOwnerRating();
+            int numReviews = user.getNumOwnerReviews();
+            rating = (rating*numReviews + review.getRating())/(numReviews+1);
+            user.setOwnerRating(rating);
+            user.setNumOwnerReviews(numReviews +1);
+        }
+        else{
+            int rating = user.getBorrowerRating();
+            int numReviews = user.getNumBorrowerReviews();
+            rating = (rating*numReviews + review.getRating())/(numReviews+1);
+            user.setBorrowerRating((int) rating);
+            user.setNumBorrowerReviews(numReviews +1);
+        }
+
+        // write back to database
+        myRef.child("users").child(user.getUserName()).setValue(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("user review", "Successfully updated user's rating in database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("user review", "Failed to update user rating in database.");
+                    }
+                }
+                );
+
     }
 }

@@ -1,6 +1,7 @@
 package com.example.vitabu;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +10,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -22,6 +28,9 @@ public class returnBookActivity extends AppCompatActivity {
     String returnedISBN; // scanned book isbn
     Book book;
     String userName;
+    BorrowRecord record = null;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +56,6 @@ public class returnBookActivity extends AppCompatActivity {
         returnBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(returnBookActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 onScanISBNClick(v);
             }
         });
@@ -92,9 +100,17 @@ public class returnBookActivity extends AppCompatActivity {
     }
 
     public void completeBookReturnTransaction() {
-        if(returnedISBN.equals(book.getISBN())){
+        if(returnedISBN.equals(book.getISBN())) {
+            getBorrowRecord(book.getBookid());
+        }
+        else{
+            Toast.makeText(returnBookActivity.this, "Wrong ISBN please try again", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void completeBookReturnTransaction2(){
+            String message;
             if(userName.equals(book.getOwnerName())) {
-                Toast.makeText(returnBookActivity.this, "Success Owner", Toast.LENGTH_SHORT).show();
                 Database database = Database.getInstance();
                 Runnable onSuccess = new Runnable() {
                     @Override
@@ -103,15 +119,91 @@ public class returnBookActivity extends AppCompatActivity {
                     }
                 };
                 database.returnBook(onSuccess, null, book);
-            }else{
-                Toast.makeText(returnBookActivity.this, "Success Borrower", Toast.LENGTH_SHORT).show();
+                message = record.getBorrowerName() + " returned the book. Write a review of " + record.getBorrowerName()+ ".";
             }
-        }else{
-            Toast.makeText(returnBookActivity.this, "Wrong ISBN please try again", Toast.LENGTH_SHORT).show();
-        }
+            else{
+                message = record.getOwnerName() + " received the book. Write a review of " + record.getOwnerName()+ ".";
+                updateBorrowerCount(userName);
+            }
+
+            // create review notification
+            Notification newNotification = new Notification("Write Review", message, "review", userName, record.getRecordid());
+            storeNotification(newNotification);
     }
 
     public void returnFromActivity(){
         this.finish();
+    }
+
+    private void getBorrowRecord(String bookid) {
+        myRef.child("borrowrecords").orderByChild("bookid").equalTo(bookid).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        Log.d("Count2 ", "" + snapshot.getChildrenCount());
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            record = postSnapshot.getValue(BorrowRecord.class);
+                            completeBookReturnTransaction2();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError e) {
+                    }
+                });
+    }
+
+    private void storeNotification(Notification notif){
+        myRef.child("notifications").child(notif.getNotificationid()).setValue(notif)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Review notification", "Successfully wrote notification to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Review notification", "Failed to write notification to database", e);
+                    }
+                });
+
+    }
+
+    private void updateBorrowerCount(String userName){
+        myRef.child("users").orderByChild("userName").equalTo(userName).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            User user = postSnapshot.getValue(User.class);
+                            if (user != null) {
+                                user.setBooksBorrowed(user.getBooksBorrowed() + 1);
+                                storeUser(user);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError e) {
+                    }
+                });
+    }
+
+    private void storeUser(User user){
+        myRef.child("users").child(user.getUserName()).setValue(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("user borrower", "Successfully wrote user to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("user borrowers", "Failed to write user to database", e);
+                    }
+                });
+
     }
 }

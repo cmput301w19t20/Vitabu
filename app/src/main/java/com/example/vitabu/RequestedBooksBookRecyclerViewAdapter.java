@@ -88,6 +88,7 @@ public class RequestedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<
             public void onSuccess(Uri uri) {
                 Picasso.get()
                         .load(uri)
+                        .placeholder(R.mipmap.ic_launcher_round)
                         .fit()
                         .centerCrop()
                         .into(holder.image);

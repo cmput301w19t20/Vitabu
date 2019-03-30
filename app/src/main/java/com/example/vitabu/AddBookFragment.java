@@ -181,7 +181,6 @@ public class AddBookFragment extends Fragment {
             ImageView imageView = (ImageView) root.findViewById(R.id.add_book_pic);
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageBitmap(imageBitmap);
-            Toast.makeText(this.getActivity(), "You took a photo.", Toast.LENGTH_LONG).show();
             imageExists = true;
         }
 
@@ -203,7 +202,6 @@ public class AddBookFragment extends Fragment {
      * @param view the view where this fragment resides
      */
     public void onAddBookClick(View view){
-        Toast.makeText(this.getActivity(), "You clicked on Add Book button.", Toast.LENGTH_SHORT).show();
         EditText title = (EditText) view.findViewById(R.id.add_book_title_input);
         EditText author = (EditText) view.findViewById(R.id.add_book_author_input);
         EditText description = (EditText) view.findViewById(R.id.add_book_description_input);

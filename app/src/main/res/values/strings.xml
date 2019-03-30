@@ -134,6 +134,8 @@
     <!--Notification Fragment strings-->
     <string name="notifications_no_data">No Notifications</string>
     <string name="notifications_title">Notifications</string>
+    <string name="notifications_request_error">The user is no longer requesting this book</string>
+    <string name="notifications_accept_error">The user is no longer accepting your request</string>
 
     <!--Book status strings strings-->
     <string name="title_activity_book_status_owner">bookStatusOwnerActivity</string>
