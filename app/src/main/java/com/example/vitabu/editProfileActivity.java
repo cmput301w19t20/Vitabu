@@ -79,11 +79,6 @@ public class editProfileActivity extends AppCompatActivity {
         Gson gson = new Gson();
         user = gson.fromJson(userMessage, User.class);
 
-        // setting temporary default rating for borrower and owner bars
-        // also set in .xml file for each rating bar for viewing purposes
-        // so actually I'm not sure why I've put this here ...
-//        borrowerRating.setRating(3.5f);
-//        ownerRatingBar.setRating(5.0f);
 
         // get hold of textviews and populate information
         TextView nameHolder = (TextView) findViewById(R.id.edit_profile_username);

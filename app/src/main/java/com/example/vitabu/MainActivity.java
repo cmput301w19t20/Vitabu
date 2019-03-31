@@ -162,9 +162,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onPressLogin(View view) {
-//        Intent intent = new Intent(this, browseBooksActivity.class);
-//        startActivity(intent);
-        // TODO: Validate login details. If valid email/password combo, proceed, otherwise alert user to incorrect login.
         String email = ((TextView) findViewById(R.id.login_email)).getText().toString();
         String password = ((TextView) findViewById(R.id.login_password)).getText().toString();
         if (email.length() < 1 || password.length() < 1){
@@ -194,8 +191,6 @@ public class MainActivity extends AppCompatActivity {
 
         uiUpdated = true;
 
-
-        // TODO Update ui here with newly signed in users info.
         String userName = firebaseUser.getDisplayName();
         myRef.child("users").child(userName).addListenerForSingleValueEvent(
                 new ValueEventListener() {

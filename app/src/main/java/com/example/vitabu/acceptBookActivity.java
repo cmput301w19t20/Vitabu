@@ -21,8 +21,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 /*
- * This file contains the activity that has the logic and UI of finalizing an accept book borrow
- * transaction between a book owner and borrower.
+ * This file contains the activity that has the logic and UI of finalizing the acceptance of a book
+ * transaction between a book owner and borrower in order to actually lend / borrow the book.
  *
  * Author: Katherine Richards
  * Version: 1.0
@@ -69,6 +69,7 @@ public class acceptBookActivity extends AppCompatActivity {
         TextView ISBN = (TextView) findViewById(R.id.accept_book_isbn_input);
         ISBN.setText(book.getISBN());
         Button acceptBookButton = (Button) findViewById(R.id.accept_book_isbn_scan_button);
+
         // when return book button is clicked, user is sent to ISBNActivity to scan ISBN
         acceptBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,21 +100,21 @@ public class acceptBookActivity extends AppCompatActivity {
 
     }
 
+    //This code is run when the ISBN scanner returns with a scanned ISBN code.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        getActivity();
         // Check which request we're responding to
         if (requestCode == 1) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 String text = data.getStringExtra("ISBN_number");
-//                Toast.makeText(this.getActivity(), text, Toast.LENGTH_SHORT).show();
                 bookISBN = text;
+                //This checks that the ISBN scanned is the same as the ISBN of the book that you are trying to borrow.
+                //If it is, then accept the transaction within the database.
                 if(bookISBN.equals(book.getISBN())){
                     if(book.getBorrower().equals(userName)){
                         completeBookBorrowTransaction();
-                    }else{
                     }
                 }else{
                     Toast.makeText(this, "Incorrect ISBN try again", Toast.LENGTH_SHORT).show();
@@ -122,6 +123,7 @@ public class acceptBookActivity extends AppCompatActivity {
         }
     }
 
+    //This runs will accept the transaction and return back to the previously opened screen.
     public void completeBookBorrowTransaction() {
         Database d = Database.getInstance();
         d.getRootReference().child("books").child(book.getBookid()).child("status").setValue("borrowed");

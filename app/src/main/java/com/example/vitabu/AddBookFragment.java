@@ -168,7 +168,6 @@ public class AddBookFragment extends Fragment {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 String text = data.getStringExtra("ISBN_number");
-//                Toast.makeText(this.getActivity(), text, Toast.LENGTH_SHORT).show();
                 isbnText.setText(text);
             }
         }
@@ -249,6 +248,7 @@ public class AddBookFragment extends Fragment {
             bookToAdd.setDescription(description);
         }
 
+        //This will write the newly created book to the database.
         myRef.child("books").child(bookToAdd.getBookid()).setValue(bookToAdd)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -328,7 +328,6 @@ public class AddBookFragment extends Fragment {
      * @param view the view where this fragment resides.
      */
     public void onAddImageClick(View view){
-        //Toast.makeText(this.getActivity(), "You clicked on Add Image button. This feature is not yet implemented.", Toast.LENGTH_SHORT).show();
         if (this.getActivity() != null) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -342,6 +341,8 @@ public class AddBookFragment extends Fragment {
 
     }
 
+
+    //This method will check if the required permissions were given.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {

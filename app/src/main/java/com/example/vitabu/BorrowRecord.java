@@ -22,7 +22,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /*
  * This file contains the BorrowRecord model class that is used to keep track of the current status
- * of a borrowing.
+ * of a borrowing transaction
  *
  * Author: Owen Randall
  * Version: 1.3
@@ -39,7 +39,7 @@ import java.util.UUID;
  * Object used to keep track of borrow/lending transactions between users. Both lender and borrower should receive a copy of this record.
  * Doubles as a book request, if approved is false.
  *
- * @version 1.3
+ * @version 1.4
  * @author Owen Randall
  */
 public class BorrowRecord {
@@ -48,8 +48,6 @@ public class BorrowRecord {
     private String bookid;
     private Date dateBorrowed;
     private Location pickUpLocation;
-    private double latitude;
-    private double longitude;
     private boolean approved;
     private String recordid;
     private String ownerPhoneNumber;
@@ -243,22 +241,6 @@ public class BorrowRecord {
         return pickUpLocation;
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-//    public void setLatitude(double latitude) {
-//        this.latitude = latitude;
-//    }
-//
-//    public void setLongitude(double longitude) {
-//        this.longitude = longitude;
-//    }
-
     /**
      * The setter for the pickup location.
      *
@@ -268,8 +250,4 @@ public class BorrowRecord {
         this.pickUpLocation = pickUpLocation;
     }
 
-//    public void setPickUpLocation(LatLng pickUpLocation) {
-//        latitude = pickUpLocation.latitude;
-//        longitude = pickUpLocation.longitude;
-//    }
 }
