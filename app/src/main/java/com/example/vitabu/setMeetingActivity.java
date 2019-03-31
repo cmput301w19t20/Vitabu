@@ -242,6 +242,9 @@ public class setMeetingActivity extends FragmentActivity implements DatePickerDi
         android.location.Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (location != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12.0f));
+//            Place default marker on user current location.
+            mMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("Meeting Location"));
+
         } else {
             Toast.makeText(this, "Error getting location.", Toast.LENGTH_SHORT).show();
         }
