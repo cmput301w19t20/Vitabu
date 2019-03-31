@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class BookInfoTest extends ActivityTestRule<MainActivity> {
     private Solo solo;
+    private Activity activity;
 
     public BookInfoTest() {
         super(MainActivity.class, false, true);
@@ -33,24 +34,23 @@ public class BookInfoTest extends ActivityTestRule<MainActivity> {
     @Before
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), rule.getActivity());
+        solo.clickOnText("The Two Towers");
     }
 
     @Test
     public void start() throws Exception {
-        Activity activity = rule.getActivity();
+        activity = rule.getActivity();
     }
 
     @Test
     public void testContent() {
-        solo.clickOnText("temp3");
         solo.assertCurrentActivity("Wrong Activity (check that there are books in database to click).", bookInfoActivity.class);
-        assertTrue(solo.waitForText("temp3", 2, 2000));
-        assertTrue(solo.waitForText("4649877", 1, 2000));
+        assertTrue(solo.waitForText("The Two Towers", 2, 2000));
+        assertTrue(solo.waitForText("9780007203550", 1, 2000));
     }
 
     @Test
     public void testViewOwner() {
-        solo.clickOnText("temp3");
         solo.assertCurrentActivity("Wrong Activity (check that there are books in database to click).", bookInfoActivity.class);
         solo.clickOnButton("View Owner");
         solo.assertCurrentActivity("Wrong Activity", userProfileActivity.class);
@@ -58,18 +58,16 @@ public class BookInfoTest extends ActivityTestRule<MainActivity> {
 
     @Test
     public void testRequestBook() {
-        solo.clickOnText("temp3");
         solo.assertCurrentActivity("Wrong Activity (check that there are books in database to click).", bookInfoActivity.class);
         solo.clickOnButton("Request Book");
-        assertTrue(solo.waitForText("You have requested 'temp3'"));
+        assertTrue(solo.waitForText("You have requested 'The Two Towers'"));
     }
 
     @Test
     public void testViewGoodreads() {
-        solo.clickOnText("temp3");
         solo.assertCurrentActivity("Wrong Activity (check that there are books in database to click).", bookInfoActivity.class);
         solo.clickOnButton("View Goodreads Page");
-        // Test goodreads opens...
+        assertTrue(solo.getCurrentActivity() != activity);
     }
 
     @After

@@ -208,7 +208,7 @@ public class acceptBookRequestActivity extends AppCompatActivity implements Recy
 
         //Creates the notification and will start the process to open the set meeting activity.
         createRequestersList(bookid);
-        String message = "Your request has been accepted by " + record.getOwnerName() + ".";
+        String message = "Your request has been accepted by " + record.getOwnerName() + ". Tap to dismiss.";
         Notification newNotification = new Notification("Request Accepted", message, "accept", record.getBorrowerName(), record.getRecordid());
         storeNotification(newNotification);
         goToSetMeetingActivity(record);

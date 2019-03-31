@@ -247,6 +247,7 @@ public class AddBookFragment extends Fragment {
         if (description.length() > 0){
             bookToAdd.setDescription(description);
         }
+        Toast.makeText(getContext(), "Book Added.", Toast.LENGTH_LONG).show();
 
         //This will write the newly created book to the database.
         myRef.child("books").child(bookToAdd.getBookid()).setValue(bookToAdd)
