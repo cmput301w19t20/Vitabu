@@ -40,6 +40,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,12 +77,15 @@ public class acceptBookRequestsRecyclerViewAdapter extends RecyclerView.Adapter<
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView requester;
         public Button acceptButton;
+        public RelativeLayout viewBackground, viewForeground;
 
         // constructor
         public ViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             requester = itemView.findViewById(R.id.book_requests_requester_username);
             acceptButton = itemView.findViewById(R.id.book_request_accept_button);
+            viewBackground = itemView.findViewById(R.id.view_background);
+            viewForeground = itemView.findViewById(R.id.view_foreground);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -154,37 +158,3 @@ public class acceptBookRequestsRecyclerViewAdapter extends RecyclerView.Adapter<
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

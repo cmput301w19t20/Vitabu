@@ -24,8 +24,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * This file contains the adapter for the RequestedBooksBookRecyclerView. This adapter provides the UI and
  * functionality to the recycler view to display the requested books correctly.
  *
- * Author: Jacob Paton
- * Version: 1.2
+ * Author: Katherine Richards
+ * Version: 1.0
  * Outstanding Issues: ---
  */
 
