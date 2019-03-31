@@ -13,10 +13,10 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
+        android:stepSize=".1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/write_review_rating"
-        tools:stepSize=".1" />
+        app:layout_constraintTop_toBottomOf="@+id/write_review_rating" />
 
     <TextView
         android:id="@+id/write_review_of_name"

@@ -102,7 +102,7 @@ public class WriteReviewActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         // get fields for making a review object
                         RatingBar ratingBar = (RatingBar) findViewById(R.id.write_review_ratingBar);
-                        int rating = Math.round(ratingBar.getRating());
+                        float rating = ratingBar.getRating();
                         EditText review_message = (EditText) findViewById(R.id.write_review_body);
                         String body = review_message.getText().toString();
                         Review review = new Review(ownerName, borrowerName, rating, body, reviewFrom, reviewTo);

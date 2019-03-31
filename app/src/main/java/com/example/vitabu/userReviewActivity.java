@@ -125,7 +125,7 @@ public class userReviewActivity extends AppCompatActivity {
             // set text in textviews
             name.setText(currentReview.getReviewFrom());
             date.setText(currentReview.getDate().toString());
-            rating.setText(Integer.toString(currentReview.getRating()));
+            rating.setText(Float.toString(currentReview.getRating()));
             review.setText(currentReview.getBody());
 
         }

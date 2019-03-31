@@ -46,7 +46,7 @@ public class Review {
     private String reviewFrom;
     private String reviewTo;
     private Date date;
-    private int rating;
+    private float rating;
     private String body;
 
     /**
@@ -67,7 +67,7 @@ public class Review {
      * @param reviewFrom the reviewer's username
      * @param reviewTo the username of the recipient of the review
      */
-    public Review(String ownerName, String borrowerName, int rating, String body, String reviewFrom, String reviewTo) {
+    public Review(String ownerName, String borrowerName, float rating, String body, String reviewFrom, String reviewTo) {
         this.ownerName = ownerName;
         this.borrowerName = borrowerName;
         this.rating = rating;
@@ -155,7 +155,7 @@ public class Review {
      *
      * @return the rating of the review being given.
      */
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
@@ -167,7 +167,7 @@ public class Review {
      * @throws IllegalArgumentException an exception when someone tries to set the rating with data
      *                                  that is outside of the range of accepted values.
      */
-    public void setRating(int rating) throws IllegalArgumentException {
+    public void setRating(float rating) throws IllegalArgumentException {
         if(rating > 5 || rating < 0){
             throw new IllegalArgumentException();
         }
