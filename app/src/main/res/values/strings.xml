@@ -186,7 +186,7 @@
     <string name="return_book_button">Return Book</string>
     <string name="return_book_book_desc" />
     <string name="return_book_info_view_goodreads_page">View Goodreads Page</string>
-    <string name="accept_book_view_requester_profile">view profile</string>
+    <string name="accept_book_view_requester_profile">View Profile</string>
     <string name="book_request_accept_button">Accept</string>
     <string name="book_requests_view_profile">view profile</string>
     <string name="return_book_header">Return Book</string>
@@ -217,7 +217,7 @@
     <string name="accept_book_author_input">autopopulate field w/ author</string>
     <string name="accept_book_isbn_text">ISBN:</string>
     <string name="accept_book_isbn_input">autopopulate field w/ isbn</string>
-    <string name="accept_book_isbn_scan_button">accept book</string>
+    <string name="accept_book_isbn_scan_button">Accept Book</string>
     <string name="requested_books_book_title_text">Title:</string>
     <string name="requested_books_book_author_text">Author:</string>
     <string name="requested_fragment_book_title_text">Title:</string>

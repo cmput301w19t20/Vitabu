@@ -102,16 +102,20 @@
 
     <Button
         android:id="@+id/accept_book_isbn_scan_button"
-        android:layout_width="211dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="@color/colorAccent"
+        android:layout_marginBottom="8dp"
         android:onClick="onScanISBNClick"
         android:text="@string/accept_book_isbn_scan_button"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accept_book_isbn_input" />
+        app:layout_constraintTop_toBottomOf="@+id/accept_book_isbn_input"
+        app:layout_constraintVertical_bias="0.20999998" />
 
 </android.support.constraint.ConstraintLayout>
