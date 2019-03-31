@@ -26,7 +26,7 @@ public class ReviewTest {
 
     @Test
     public void ReviewRating_isCorrect() {
-        assertEquals(1, review.getRating());
+        assertEquals(1, review.getRating(),1);
     }
 
     @Test
