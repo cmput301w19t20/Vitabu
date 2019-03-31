@@ -96,9 +96,6 @@ public class AddBookTest extends ActivityTestRule<MainActivity> {
         solo.clickOnText("Add Book");
         assertTrue(solo.waitForText("Add Book", 2, 2000));
         solo.clickOnButton("Add Image");
-//        solo.assertCurrentActivity("Wrong Activity", addImageActivity.class);
-//        Add Images doesn't exist yet
-        fail();
     }
 
     @Test

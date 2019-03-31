@@ -32,6 +32,7 @@ public class EditProfileTest extends ActivityTestRule<MainActivity> {
     @Before
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), rule.getActivity());
+        solo.clickOnView(solo.getView(R.id.browse_books_appbar_profile));
     }
 
     @Test
@@ -41,28 +42,19 @@ public class EditProfileTest extends ActivityTestRule<MainActivity> {
 
     @Test
     public void testContent() {
-        solo.waitForActivity(browseBooksActivity.class);
-        solo.clickOnActionBarItem(R.menu.browse_books_appbar);
-        solo.clickOnMenuItem("My Profile");
-        assertTrue(solo.waitForText("testusername1", 1, 2000));
-        assertTrue(solo.waitForText("test1@email.com", 1, 2000));
+        assertTrue(solo.waitForText("jacobpaton", 1, 2000));
+        assertTrue(solo.waitForText("jjpaton@ualberta.ca", 1, 2000));
         assertTrue(solo.waitForText("Edmonton", 1, 2000));
     }
 
     @Test
     public void testSeeUserReviews() {
-        solo.waitForActivity(browseBooksActivity.class);
-        solo.clickOnActionBarItem(R.menu.browse_books_appbar);
-        solo.clickOnMenuItem("My Profile");
         solo.clickOnButton("See User Reviews");
         solo.assertCurrentActivity("Wrong Activity", userReviewActivity.class);
     }
 
     @Test
     public void testSave() {
-        solo.waitForActivity(browseBooksActivity.class);
-        solo.clickOnActionBarItem(R.menu.browse_books_appbar);
-        solo.clickOnMenuItem("My Profile");
         solo.clickOnButton("Save");
         solo.assertCurrentActivity("Wrong Activity", browseBooksActivity.class);
     }
