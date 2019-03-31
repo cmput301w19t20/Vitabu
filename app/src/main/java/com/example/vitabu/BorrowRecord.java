@@ -48,8 +48,6 @@ public class BorrowRecord {
     private String bookid;
     private Date dateBorrowed;
     private Location pickUpLocation;
-    private double latitude;
-    private double longitude;
     private boolean approved;
     private String recordid;
     private String ownerPhoneNumber;
@@ -243,22 +241,6 @@ public class BorrowRecord {
         return pickUpLocation;
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-//    public void setLatitude(double latitude) {
-//        this.latitude = latitude;
-//    }
-//
-//    public void setLongitude(double longitude) {
-//        this.longitude = longitude;
-//    }
-
     /**
      * The setter for the pickup location.
      *
@@ -268,8 +250,4 @@ public class BorrowRecord {
         this.pickUpLocation = pickUpLocation;
     }
 
-//    public void setPickUpLocation(LatLng pickUpLocation) {
-//        latitude = pickUpLocation.latitude;
-//        longitude = pickUpLocation.longitude;
-//    }
 }
