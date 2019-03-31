@@ -36,13 +36,14 @@ public class getMeetingActivity extends AppCompatActivity implements OnMapReadyC
         borrowRecord = gson.fromJson(message, BorrowRecord.class);
 
         TextView time = (TextView) findViewById(R.id.get_meeting_time);
-        String temp = "Time: " + Integer.toString(borrowRecord.getDateBorrowed().getHours()) + ":" +
-                Integer.toString(borrowRecord.getDateBorrowed().getMinutes());
+        String temp = "Time: ";
+        temp += (borrowRecord.getDateBorrowed().getHours() < 10) ? ("0" + Integer.toString(borrowRecord.getDateBorrowed().getHours()) + ":") : (Integer.toString(borrowRecord.getDateBorrowed().getHours()) + ":");
+        temp += (borrowRecord.getDateBorrowed().getMinutes() < 10) ? ("0" + Integer.toString(borrowRecord.getDateBorrowed().getMinutes())) : (Integer.toString(borrowRecord.getDateBorrowed().getMinutes())) ;
         time.setText(temp);
 
         TextView date = (TextView) findViewById(R.id.get_meeting_date);
         temp = "Date: " + Integer.toString(borrowRecord.getDateBorrowed().getYear()) + "-" +
-                Integer.toString(borrowRecord.getDateBorrowed().getMonth()) + "-" +
+                Integer.toString(borrowRecord.getDateBorrowed().getMonth() + 1) + "-" +
                 Integer.toString(borrowRecord.getDateBorrowed().getDay());
         date.setText(temp);
 
@@ -63,8 +64,8 @@ public class getMeetingActivity extends AppCompatActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(borrowRecord.getLatitude(), borrowRecord.getLongitude()), 12.0f));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(borrowRecord.getLatitude(), borrowRecord.getLongitude())).title("Meeting Location"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(borrowRecord.getPickUpLocation().getLat(), borrowRecord.getPickUpLocation().getLng()), 12.0f));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(borrowRecord.getPickUpLocation().getLat(), borrowRecord.getPickUpLocation().getLng())).title("Meeting Location"));
 
     }
 }
