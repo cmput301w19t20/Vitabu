@@ -80,7 +80,6 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         final String userName = firebaseUser.getDisplayName();
         notifications = new ArrayList<>();
 
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
