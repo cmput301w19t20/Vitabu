@@ -56,7 +56,8 @@
         <activity android:name=".bookEditActivity" />
         <activity android:name=".searchBookResultsActivity" />
         <activity android:name=".acceptBookActivity" />
-        <activity android:name=".getMeetingActivity"></activity>
+        <activity android:name=".getMeetingActivity" />
+        <activity android:name=".requestsBookInfoActivity"></activity>
     </application>
 
 </manifest>

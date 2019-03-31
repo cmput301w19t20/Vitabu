@@ -62,6 +62,7 @@
         android:onClick="onClickViewOwner"
         android:text="@string/book_info_view_owner_button_text"
         android:textAllCaps="false"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,6 +92,7 @@
         android:onClick="onClickRequestBook"
         android:text="@string/book_info_request_book_button_text"
         android:textAllCaps="false"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -120,6 +122,7 @@
         android:onClick="onGoodreadsClick"
         android:text="@string/book_info_view_goodreads_page"
         android:textAllCaps="false"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/book_info_isbn"
