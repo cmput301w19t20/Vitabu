@@ -43,16 +43,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-/**
- * Activity is created following 1 of 2 possible cases:
- * Case 1: after "Owner Profile" is selected from bookInfoActivity (UI C)
- * Case 2: user should be able to view their own profile, access point currently undecided
- *
- * TODO: add "see all reviews" in layout .xml file
- * TODO: display in full or in part user's owned and borrowed books in this activity
- * TODO: fetch all relevant information to display in this activity ..
- */
-
 public class userProfileActivity extends AppCompatActivity {
     User user;
 

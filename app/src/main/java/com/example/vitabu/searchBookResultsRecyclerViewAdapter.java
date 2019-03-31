@@ -106,7 +106,7 @@ public class searchBookResultsRecyclerViewAdapter extends RecyclerView.Adapter<s
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // Do nothing.
+                holder.image.setImageResource(R.drawable.image);
             }
         });
     }
