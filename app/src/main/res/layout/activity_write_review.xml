@@ -15,7 +15,8 @@
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/write_review_rating" />
+        app:layout_constraintTop_toBottomOf="@+id/write_review_rating"
+        tools:stepSize=".1" />
 
     <TextView
         android:id="@+id/write_review_of_name"
