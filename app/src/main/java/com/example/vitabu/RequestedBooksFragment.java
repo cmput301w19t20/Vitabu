@@ -65,7 +65,7 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
     String logTag = "RequestedBooksFragment";
     FirebaseAuth auth;
     FirebaseUser firebaseuser;
-    boolean accepted_filter;
+    boolean accepted_filter = false;
     FirebaseDatabase database;
     DatabaseReference myRef;
     DataSnapshot curSnapshot;
@@ -196,12 +196,29 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
         final Book clickedBook = books.get(position);
         LocalUser curUser = ((browseBooksActivity) getActivity()).getCurUser();
 
-        // Call book info activity.
-        Intent intent = new Intent(this.getContext(), bookInfoActivity.class);
-        Gson gson = new Gson();
-        intent.putExtra(MainActivity.LOCALUSER_MESSAGE, gson.toJson(curUser));
-        intent.putExtra((MainActivity.BOOK_MESSAGE), gson.toJson(clickedBook));
-        startActivity(intent);
+        if (accepted_filter){
+            for (DataSnapshot subSnapshot : curSnapshot.getChildren()) {
+                BorrowRecord curBorrowRecord = subSnapshot.getValue(BorrowRecord.class);
+                Log.d(logTag, "Borrow record: " + curBorrowRecord.getRecordid() + " Status: " + curBorrowRecord.isApproved());
+                if (curBorrowRecord.isApproved() == accepted_filter && curBorrowRecord.getBookid().equals(clickedBook.getBookid()) &&
+                        curBorrowRecord.getOwnerName().equals(clickedBook.getOwnerName())){
+                    Intent intent = new Intent(this.getContext(), getMeetingActivity.class);
+                    Gson gson = new Gson();
+                    intent.putExtra(MainActivity.BORROWRECORD_MESSAGE, gson.toJson(curBorrowRecord));
+//                    intent.putExtra((MainActivity.BOOK_MESSAGE), gson.toJson(clickedBook));
+                    startActivity(intent);
+                }
+
+            }
+
+        } else {
+            // Call book info activity.
+            Intent intent = new Intent(this.getContext(), bookInfoActivity.class);
+            Gson gson = new Gson();
+            intent.putExtra(MainActivity.LOCALUSER_MESSAGE, gson.toJson(curUser));
+            intent.putExtra((MainActivity.BOOK_MESSAGE), gson.toJson(clickedBook));
+            startActivity(intent);
+        }
 
     }
 }

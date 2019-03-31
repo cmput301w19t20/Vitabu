@@ -197,7 +197,8 @@ public class setMeetingActivity extends FragmentActivity implements DatePickerDi
         timeset = true;
         date.setHours(hourOfDay);
         date.setMinutes(minute);
-        String timeString = Integer.toString(hourOfDay) + ":" + Integer.toString(minute);
+        String timeString = (hourOfDay < 10) ? ("0" + Integer.toString(hourOfDay) + ":") : (Integer.toString(hourOfDay) + ":");
+        timeString += (minute < 10) ? ("0" + Integer.toString(minute)) : (Integer.toString(minute));
         Button timeButton = (Button) findViewById(R.id.set_meeting_set_time_button);
         timeButton.setText(timeString);
 
@@ -217,7 +218,7 @@ public class setMeetingActivity extends FragmentActivity implements DatePickerDi
         date.setYear(year);
         date.setMonth(month);
         date.setDate(day);
-        String dateString = Integer.toString(year) + "-" + Integer.toString(month) + "-" + Integer.toString(day);
+        String dateString = Integer.toString(year) + "-" + Integer.toString(month + 1) + "-" + Integer.toString(day);
         dateButton.setText(dateString);
 
     }

@@ -251,6 +251,14 @@ public class BorrowRecord {
         return longitude;
     }
 
+//    public void setLatitude(double latitude) {
+//        this.latitude = latitude;
+//    }
+//
+//    public void setLongitude(double longitude) {
+//        this.longitude = longitude;
+//    }
+
     /**
      * The setter for the pickup location.
      *

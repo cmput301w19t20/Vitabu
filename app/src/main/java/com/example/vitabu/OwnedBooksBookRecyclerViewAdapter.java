@@ -111,7 +111,7 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // Do nothing.
+                holder.image.setImageResource(R.drawable.image);
             }
         });
 
