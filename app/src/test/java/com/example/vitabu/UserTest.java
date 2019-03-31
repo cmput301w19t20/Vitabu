@@ -50,14 +50,14 @@ public class UserTest {
     public void userBorrowRating_isCorrect() {
         // test getters and setters
         user3.setBorrowerRating(4);
-        assertEquals(4, user3.getBorrowerRating());
+        assertEquals(4, user3.getBorrowerRating(),1);
     }
 
     @Test
     public void userOwnerRating_isCorrect() {
         // test getters and setters
         user3.setOwnerRating(3);
-        assertEquals(3, user3.getOwnerRating());
+        assertEquals(3, user3.getOwnerRating(),1);
     }
 
     @Test

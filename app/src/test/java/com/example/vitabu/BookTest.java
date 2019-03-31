@@ -71,7 +71,7 @@ public class BookTest {
     public void bookBorrower_isCorrect() {
         // tests getters and setters
         assertEquals("Vitabu Borrower", book.getBorrower());
-        book.setTitle("Vitabu Borrower2");
+        book.setBorrower("Vitabu Borrower2");
         assertEquals("Vitabu Borrower2", book.getBorrower());
     }
 }

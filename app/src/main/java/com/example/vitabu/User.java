@@ -102,7 +102,7 @@ public class User extends UserAbstract {
      *
      * @return the borrower rating of the user.
      */
-    public int getBorrowerRating() {
+    public float getBorrowerRating() {
         return borrowerRating;
     }
 
@@ -111,7 +111,7 @@ public class User extends UserAbstract {
      *
      * @param borrowerRating the borrower rating of the user.
      */
-    public void setBorrowerRating(int borrowerRating) {
+    public void setBorrowerRating(float borrowerRating) {
         this.borrowerRating = borrowerRating;
     }
 
@@ -120,7 +120,7 @@ public class User extends UserAbstract {
      *
      * @return the owner rating of the user.
      */
-    public int getOwnerRating() {
+    public float getOwnerRating() {
         return ownerRating;
     }
 
@@ -129,7 +129,7 @@ public class User extends UserAbstract {
      *
      * @param ownerRating the owner rating of the user.
      */
-    public void setOwnerRating(int ownerRating) {
+    public void setOwnerRating(float ownerRating) {
         this.ownerRating = ownerRating;
     }
 
