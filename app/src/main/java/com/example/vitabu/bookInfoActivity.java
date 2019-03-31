@@ -199,7 +199,7 @@ public class bookInfoActivity extends AppCompatActivity {
         BorrowRecord newRecord = new BorrowRecord(owner.getUserName(), curUser.getUserName(), book.getBookid());
         // Construct notification for owner
         Notification newNotification = new Notification("Book Request for '" + book.getTitle() + "'",
-                "A user has requested your book. Click here to view.",
+                "A user has requested your book. Tap to dismiss.",
                 "request", ownerid, newRecord.getRecordid());
 
         Log.d(logTag, "Notification ID = " + newNotification.getNotificationid());
