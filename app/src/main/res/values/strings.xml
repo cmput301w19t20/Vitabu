@@ -155,6 +155,14 @@
     <string name="edit_book_add">Add Image</string>
     <string name="edit_book_remove">Delete</string>
 
+    <!--Get meeting activity strings-->
+    <string name="get_meeting_title">Meeting Information</string>
+    <string name="get_meeting_time">Time: 19:03</string>
+    <string name="get_meeting_date">Date: 2019-02-06</string>
+    <string name="get_meeting_owner_email_title">Owner\'s Email</string>
+    <string name="get_meeting_owner_phone_title">Owner\'s Phone</string>
+    <string name="get_meeting_owner_notes_title">Owner\'s Notes</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="requested_books_requests_title">Requests</string>

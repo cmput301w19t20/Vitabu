@@ -99,7 +99,7 @@ public class BrowseBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Bro
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                   // Do nothing.
+                   holder.imageView.setImageResource(R.drawable.image);
                 }
             });
         }
