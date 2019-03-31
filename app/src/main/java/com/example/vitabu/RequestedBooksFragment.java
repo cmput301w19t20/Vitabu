@@ -213,7 +213,7 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
 
         } else {
             // Call book info activity.
-            Intent intent = new Intent(this.getContext(), bookInfoActivity.class);
+            Intent intent = new Intent(this.getContext(), requestsBookInfoActivity.class);
             Gson gson = new Gson();
             intent.putExtra(MainActivity.LOCALUSER_MESSAGE, gson.toJson(curUser));
             intent.putExtra((MainActivity.BOOK_MESSAGE), gson.toJson(clickedBook));
