@@ -52,15 +52,15 @@ public class RequestsTest extends ActivityTestRule<MainActivity> {
     @Test
     public void testBook() {
         solo.clickOnText("Requests");
-        assertTrue(solo.waitForText("temp3", 1, 2000));
-        assertTrue(solo.waitForText("temp3", 1, 2000));
+        assertTrue(solo.waitForText("The Two Towers", 1, 2000));
+        assertTrue(solo.waitForText("The Two Towers", 1, 2000));
     }
 
     @Test
     public void testBookClick() {
         solo.clickOnText("Requests");
-        solo.clickOnText("temp3");
-        solo.assertCurrentActivity("Wrong Activity (check that there are books in database to click).", bookInfoActivity.class);
+        solo.clickOnText("The Two Towers");
+        solo.assertCurrentActivity("Wrong Activity (check that there are books in database to click).", requestsBookInfoActivity.class);
     }
 
     @After

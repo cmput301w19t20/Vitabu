@@ -42,20 +42,40 @@ public class MyBooksTest extends ActivityTestRule<MainActivity> {
     @Test
     public void testBook() {
         solo.clickOnText("My Books");
-        assertTrue(solo.waitForText("TestBook", 1, 2000));
-        assertTrue(solo.waitForText("TestAuthor", 1, 2000));
+        assertTrue(solo.waitForText("The Two Towers", 1, 2000));
     }
 
     @Test
-    public void testBookClick() {
+    public void testAvailableBook() {
         solo.clickOnText("My Books");
-        solo.clickOnText("Title:");
-        solo.assertCurrentActivity("Wrong Activity (check that there are books in database to click).", bookInfoActivity.class);
+        solo.clickOnText("available", 2);
+        solo.assertCurrentActivity("Wrong Activity (check that there are books in database to click).", bookEditActivity.class);
+    }
+
+    @Test
+    public void testBorrowedBook() {
+        solo.clickOnText("My Books");
+        solo.clickOnText("borrowed");
+        solo.assertCurrentActivity("Wrong Activity (check that there are books in database to click).", returnBookActivity.class);
+    }
+
+    @Test
+    public void testRequestedBook() {
+        solo.clickOnText("My Books");
+        solo.clickOnText("requested");
+        solo.assertCurrentActivity("Wrong Activity (check that there are books in database to click).", acceptBookRequestActivity.class);
+    }
+
+    @Test
+    public void testAcceptedBook() {
+        solo.clickOnText("My Books");
+        solo.clickOnText("accepted");
+        solo.assertCurrentActivity("Wrong Activity (check that there are books in database to click).", acceptBookActivity.class);
     }
 
 
     @After
-    public void tearDown() throws Exception{
+    public void tearDown() throws Exception {
         solo.finishOpenedActivities();
     }
 }
