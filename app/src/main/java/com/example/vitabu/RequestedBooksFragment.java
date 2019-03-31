@@ -23,8 +23,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 /*
  * This file contains the fragment that has the logic and UI of showing the books requested by the user.
  *
- * Author: Jacob Paton
- * Version: 1.2
+ * Author: Katherine Richards
+ * Version: 1.0
  * Outstanding Issues: ---
  */
 

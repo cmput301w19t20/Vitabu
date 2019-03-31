@@ -60,7 +60,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class acceptBookRequestActivity extends AppCompatActivity {
+public class acceptBookRequestActivity extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener{
 
     private RecyclerView mRecyclerView;
     private acceptBookRequestsRecyclerViewAdapter mAdapter;
@@ -167,21 +167,25 @@ public class acceptBookRequestActivity extends AppCompatActivity {
             }
         });
 
-        // handle swipe to delete
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder viewHolder1) {
-                // do nothing
-                return false;
-            }
+        // attach the ItemTouchHelper to the recycler view
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
 
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                // identify the item swiped
-                int position = viewHolder.getAdapterPosition();
-                declineBookRequest(position);
-            }
-        }).attachToRecyclerView(mRecyclerView);
+        // handle swipe to delete
+//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+//            @Override
+//            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder viewHolder1) {
+//                // do nothing
+//                return false;
+//            }
+//
+//            @Override
+//            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+//                // identify the item swiped
+//                int position = viewHolder.getAdapterPosition();
+//                declineBookRequest(position);
+//            }
+//        }).attachToRecyclerView(mRecyclerView);
     }
 
     public void displayItemClickMessage(int position) {
@@ -263,4 +267,11 @@ public class acceptBookRequestActivity extends AppCompatActivity {
                 });
 
     }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        // identify the item swiped
+        declineBookRequest(position);
+    }
+
 }
