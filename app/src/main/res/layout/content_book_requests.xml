@@ -1,21 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/book_requests_requester_username"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/view_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent">
+
+
+        <ImageView
+            android:id="@+id/delete_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_delete_white_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/delete_icon"
+            android:text="Decline"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/view_foreground"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="20dp"
-        android:text="@string/book_requests_requester_username"
-        android:textStyle="bold" />
+        android:background="@color/white"
+        android:padding="16dp">
 
-    <!--<TextView-->
+        <TextView
+            android:id="@+id/book_requests_requester_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:text="@string/book_requests_requester_username"
+            android:textStyle="bold" />
+
+        <!--<TextView-->
         <!--android:id="@+id/accept_book_view_requester_profile"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
@@ -25,13 +61,17 @@
         <!--android:text="@string/accept_book_view_requester_profile"-->
         <!--android:textSize="16sp" />-->
 
-    <Button
-        android:id="@+id/book_request_accept_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:text="@string/book_request_accept_button" />
+        <Button
+            android:id="@+id/book_request_accept_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="@string/book_request_accept_button"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black" />
 
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</FrameLayout>

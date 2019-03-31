@@ -15,7 +15,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/vitabu_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/vitabu_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
@@ -55,7 +55,8 @@
         <activity android:name=".editProfileActivity" />
         <activity android:name=".bookEditActivity" />
         <activity android:name=".searchBookResultsActivity" />
-        <activity android:name=".acceptBookActivity"></activity>
+        <activity android:name=".acceptBookActivity" />
+        <activity android:name=".getMeetingActivity"></activity>
     </application>
 
 </manifest>

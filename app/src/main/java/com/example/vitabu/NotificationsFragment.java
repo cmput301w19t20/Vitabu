@@ -168,7 +168,16 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
                     public void onFailure(@NonNull Exception e) {
                         Log.d("notifications fragment", "Failed to update notifications in database", e);
                     }
-                });
+                }
+        );
+
+    }
+
+    public void startAcceptBookRequestActivity(Book book){
+        Intent intent = new Intent(this.getContext(), acceptBookRequestActivity.class);
+        Gson gson = new Gson();
+        intent.putExtra(MainActivity.BOOK_MESSAGE, gson.toJson(book));
+        startActivity(intent);
     }
 
 }

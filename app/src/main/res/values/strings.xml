@@ -7,6 +7,7 @@
     <string name="appbar_profile">My Profile</string>
     <string name="edit_profile_save_button">Save</string>
     <string name="user_profile_review_button">See User Reviews</string>
+    <string name="edit_profile_cancel_button">Cancel</string>
 
     <!--Login Activity Strings-->
     <string name="login_login_button_text">Login</string>
@@ -24,6 +25,8 @@
     <string name="browse_books_book_author">Author: </string>
     <string name="browse_books_book_status">Status: </string>
     <string name="browse_books_book_borrower">Borrower: </string>
+    <string name="browse_books_title">Browse Books</string>
+
 
     <!--Owned Book Fragment Strings-->
     <string name="owned_books_title">My Books</string>
@@ -130,6 +133,7 @@
 
     <!--Notification Fragment strings-->
     <string name="notifications_no_data">No Notifications</string>
+    <string name="notifications_title">Notifications</string>
     <string name="notifications_request_error">The user is no longer requesting this book</string>
     <string name="notifications_accept_error">The user is no longer accepting your request</string>
 
@@ -157,6 +161,14 @@
     <string name="edit_book_add">Add Image</string>
     <string name="edit_book_remove">Delete</string>
 
+    <!--Get meeting activity strings-->
+    <string name="get_meeting_title">Meeting Information</string>
+    <string name="get_meeting_time">Time: 19:03</string>
+    <string name="get_meeting_date">Date: 2019-02-06</string>
+    <string name="get_meeting_owner_email_title">Owner\'s Email</string>
+    <string name="get_meeting_owner_phone_title">Owner\'s Phone</string>
+    <string name="get_meeting_owner_notes_title">Owner\'s Notes</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="requested_books_requests_title">Requests</string>
@@ -175,7 +187,7 @@
     <string name="return_book_book_desc" />
     <string name="return_book_info_view_goodreads_page">View Goodreads Page</string>
     <string name="accept_book_view_requester_profile">view profile</string>
-    <string name="book_request_accept_button">accept</string>
+    <string name="book_request_accept_button">Accept</string>
     <string name="book_requests_view_profile">view profile</string>
     <string name="return_book_header">Return Book</string>
     <string name="return_book_title_text">Title:</string>
