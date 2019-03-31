@@ -47,11 +47,6 @@ import java.util.ArrayList;
 
 public class bookRequestsFragment extends Fragment implements AdapterView.OnItemSelectedListener, bookRequestsRecyclerViewAdapter.ItemClickListener{
 
-    /**
-     *  This Fragment is not yet ready to be used. Need to consult with logic team on how to
-     *  retrieve all pending requests for a specific book.
-     */
-
     bookRequestsRecyclerViewAdapter recyclerViewAdapter;
     //Intent will contain JSON of the Book being requested
     private Book book;

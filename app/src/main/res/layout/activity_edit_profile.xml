@@ -122,28 +122,32 @@
         android:id="@+id/edit_profile_joined_on"
         android:layout_width="191dp"
         android:layout_height="36dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/user_profile_joined_on"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/edit_profile_save_profile"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_joined_on2" />
 
     <TextView
         android:id="@+id/edit_profile_joined_on2"
         android:layout_width="195dp"
         android:layout_height="17dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/user_profile_joined_on"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/edit_profile_joined_on"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_owner_review_button" />
 
     <EditText
         android:id="@+id/edit_profile_email"
@@ -163,6 +167,7 @@
         android:layout_height="wrap_content"
         android:text="@string/user_profile_review_button"
         android:textAlignment="center"
+        android:textAllCaps="false"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
@@ -175,6 +180,7 @@
         android:layout_height="wrap_content"
         android:text="@string/user_profile_review_button"
         android:textAlignment="center"
+        android:textAllCaps="false"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
@@ -183,14 +189,32 @@
 
     <Button
         android:id="@+id/edit_profile_save_profile"
-        android:layout_width="128dp"
-        android:layout_height="39dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/edit_profile_save_button"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/edit_profile_cancel"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/edit_profile_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/edit_profile_cancel_button"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/edit_profile_save_profile"
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_joined_on" />
 
 </android.support.constraint.ConstraintLayout>

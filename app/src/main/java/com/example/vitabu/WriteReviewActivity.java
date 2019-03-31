@@ -65,23 +65,28 @@ public class WriteReviewActivity extends AppCompatActivity {
 
         // get borrowRecord
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.BORROWRECORD_MESSAGE);
+        String message = intent.getStringExtra(MainActivity.NOTIFICATION_MESSAGE);
         Gson gson = new Gson();
-        final BorrowRecord record = gson.fromJson(message, BorrowRecord.class);
+        final Notification notif = gson.fromJson(message, Notification.class);
         final String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
 
         // determine who is the reviewer
-        final String ownerName = record.getOwnerName();
-        final String borrowerName = record.getBorrowerName();
-        final String reviewFrom, reviewTo;
-        if (ownerName.equals(userName)){
-            reviewFrom = ownerName;
-            reviewTo = borrowerName;
+        message = notif.getMessage();
+        String[] messageArray =  message.split(" ");
+        String owner, borrower;
+        if (messageArray[1].equals("returned")){
+            owner = userName;
+            borrower = messageArray[0];
         }
         else{
-            reviewFrom = borrowerName;
-            reviewTo = ownerName;
+            owner = messageArray[0];
+            borrower = userName;
         }
+
+        final String ownerName = owner;
+        final String borrowerName = borrower;
+        final String reviewFrom = userName;
+        final String reviewTo = messageArray[0];
 
         // populate textViews
         String format = getResources().getString(R.string.write_review_of_name);
@@ -95,7 +100,6 @@ public class WriteReviewActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         // get fields for making a review object
                         RatingBar ratingBar = (RatingBar) findViewById(R.id.write_review_ratingBar);
                         int rating = Math.round(ratingBar.getRating());
@@ -160,7 +164,7 @@ public class WriteReviewActivity extends AppCompatActivity {
             int rating = user.getOwnerRating();
             int numReviews = user.getNumOwnerReviews();
             rating = (rating*numReviews + review.getRating())/(numReviews+1);
-            user.setOwnerRating((int) rating);
+            user.setOwnerRating(rating);
             user.setNumOwnerReviews(numReviews +1);
         }
         else{

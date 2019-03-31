@@ -1,3 +1,34 @@
+/*
+Vitabu is an Open Source application available under the Apache (Version 2.0) License.
+
+Copyright 2019 Arseniy Kouzmenkov, Owen Randall, Ayooluwa Oladosu, Tristan Carlson, Jacob Paton,
+Katherine Richards
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial
+portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * This file contains the activity that has the logic and UI of finalizing a return book borrow
+ * transaction between a book owner and borrower.
+ *
+ * Author: Katherine Richards
+ * Version: 1.0
+ * Outstanding Issues: ---
+ */
+
 package com.example.vitabu;
 
 import android.content.Intent;
@@ -29,6 +60,8 @@ public class returnBookActivity extends AppCompatActivity {
     Book book;
     String userName;
     BorrowRecord record = null;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +87,6 @@ public class returnBookActivity extends AppCompatActivity {
         returnBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(returnBookActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 onScanISBNClick(v);
             }
         });
@@ -110,7 +142,6 @@ public class returnBookActivity extends AppCompatActivity {
     private void completeBookReturnTransaction2(){
             String message;
             if(userName.equals(book.getOwnerName())) {
-                Toast.makeText(returnBookActivity.this, "Success Owner", Toast.LENGTH_SHORT).show();
                 Database database = Database.getInstance();
                 Runnable onSuccess = new Runnable() {
                     @Override
@@ -119,11 +150,11 @@ public class returnBookActivity extends AppCompatActivity {
                     }
                 };
                 database.returnBook(onSuccess, null, book);
-                message = "Write a review of " + record.getBorrowerName()+ ".";
+                message = record.getBorrowerName() + " returned the book. Write a review of " + record.getBorrowerName()+ ".";
             }
             else{
-                Toast.makeText(returnBookActivity.this, "Success Borrower", Toast.LENGTH_SHORT).show();
-                message = "Write a review of " + record.getOwnerName()+ ".";
+                message = record.getOwnerName() + " received the book. Write a review of " + record.getOwnerName()+ ".";
+                updateBorrowerCount(userName);
             }
 
             // create review notification
@@ -136,8 +167,6 @@ public class returnBookActivity extends AppCompatActivity {
     }
 
     private void getBorrowRecord(String bookid) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
         myRef.child("borrowrecords").orderByChild("bookid").equalTo(bookid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -156,8 +185,6 @@ public class returnBookActivity extends AppCompatActivity {
     }
 
     private void storeNotification(Notification notif){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
         myRef.child("notifications").child(notif.getNotificationid()).setValue(notif)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -169,6 +196,43 @@ public class returnBookActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d("Review notification", "Failed to write notification to database", e);
+                    }
+                });
+
+    }
+
+    private void updateBorrowerCount(String userName){
+        myRef.child("users").orderByChild("userName").equalTo(userName).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            User user = postSnapshot.getValue(User.class);
+                            if (user != null) {
+                                user.setBooksBorrowed(user.getBooksBorrowed() + 1);
+                                storeUser(user);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError e) {
+                    }
+                });
+    }
+
+    private void storeUser(User user){
+        myRef.child("users").child(user.getUserName()).setValue(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("user borrower", "Successfully wrote user to database.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("user borrowers", "Failed to write user to database", e);
                     }
                 });
 

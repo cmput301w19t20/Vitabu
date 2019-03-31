@@ -230,6 +230,7 @@ public class setMeetingActivity extends FragmentActivity implements DatePickerDi
 //        Get location permissions if they haven't been given yet.
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_FINE_LOCATION_PERMISSION);
+            return;
         }
 
 //        Add my location button and display user on map.

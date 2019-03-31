@@ -73,7 +73,7 @@
         android:id="@+id/book_info_isbn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:text="@string/book_info_isbn"
         android:textColor="@android:color/black"

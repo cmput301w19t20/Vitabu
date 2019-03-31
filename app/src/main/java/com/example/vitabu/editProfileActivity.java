@@ -197,5 +197,16 @@ public class editProfileActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+
+        // Create onClickListener for cancel button
+        Button buttonCancel = (Button) findViewById(R.id.edit_profile_cancel);
+        buttonCancel.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                }
+        );
     }
 }

@@ -25,7 +25,7 @@
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
         android:visibility="visible"
-        app:itemBackground="@color/colorPrimary"
+        app:itemBackground="@color/primaryColor"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
         app:labelVisibilityMode="labeled"
