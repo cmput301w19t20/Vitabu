@@ -24,8 +24,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * This file contains the activity that sets the meeting between the owner and the borrower.
  *
  * Author: Tristan Carlson
- * Version: 1.0
- * Outstanding Issues: This file has no database connectivity yet.
+ * Version: 1.1
+ * Outstanding Issues:
  */
 package com.example.vitabu;
 

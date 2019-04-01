@@ -190,6 +190,5 @@ public class WriteReviewActivity extends AppCompatActivity {
                     }
                 }
                 );
-
     }
 }

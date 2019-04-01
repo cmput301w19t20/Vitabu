@@ -25,7 +25,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * functionality to the recycler view to display the requested books correctly.
  *
  * Author: Katherine Richards
- * Version: 1.0
+ * Version: 1.1
  * Outstanding Issues: ---
  */
 

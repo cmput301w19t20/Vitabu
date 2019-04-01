@@ -24,8 +24,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * This file contains the fragment that has the logic and UI of showing the notifications to the user.
  *
  * Author: Jacob Paton
- * Version: 1.2
- * Outstanding Issues: Implement the requests listing and accepting.
+ * Version: 1.3
+ * Outstanding Issues: ---
  */
 
 package com.example.vitabu;
@@ -66,6 +66,8 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
     private TextView emptyText;
     private boolean onCreate;
 
+    //This method is called when the fragment is first opened. It populates the screen with the notifications
+    //that are stored in the database.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View fragmentView = inflater.inflate(R.layout.fragment_notifications, container, false);
@@ -79,6 +81,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
+        //Gets all the notifications from the database
         myRef.child("notifications").orderByChild("userName").equalTo(userName).addListenerForSingleValueEvent(
                 new ValueEventListener() {
             @Override
@@ -106,9 +109,9 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         return fragmentView;
     }
 
-    private void nextStep(View fragmentView){
-        System.out.println(notifications.toString());
 
+    //This method actually updates the recycler view and it's adapter to present the notificaitons.
+    private void nextStep(View fragmentView){
         // set up the RecyclerView
         RecyclerView recyclerView = fragmentView.findViewById(R.id.notifications_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -125,6 +128,8 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         }
     }
 
+
+    //This method deals with the interaction when a notification is pressed.
     @Override
     public void onItemClick(View view, int position) {
         Notification curNotification = notifications.get(position);
@@ -140,6 +145,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         }
     }
 
+    //This method will start to run the review activity from the notification.
     public void startReviewActivity(Notification notif) {
         Intent intent = new Intent(getActivity(), WriteReviewActivity.class);
         Gson gson = new Gson();
@@ -148,6 +154,7 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         startActivity(intent);
     }
 
+    //When a notification is pressed, it will be marked as "seen" in the database.
     private void markSeen(Notification notif){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
@@ -169,6 +176,9 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
 
     }
 
+
+    //This method is deprecated now as the provided functionality has been moved to the owned book
+    //fragment. It used to open the request accepting activity.
     public void startAcceptBookRequestActivity(Book book){
         Intent intent = new Intent(this.getContext(), acceptBookRequestActivity.class);
         Gson gson = new Gson();
@@ -176,6 +186,8 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         startActivity(intent);
     }
 
+
+    //This method ensures that the notifications are presented in chronological order.
     private void addNotification(Notification n){
         // adds notifications in chronological order
         Date date = n.getDate();

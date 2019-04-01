@@ -24,7 +24,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * This file contains the fragment that has the logic and UI of showing the books requested by the user.
  *
  * Author: Katherine Richards
- * Version: 1.0
+ * Version: 1.1
  * Outstanding Issues: ---
  */
 
@@ -72,6 +72,7 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
     boolean initialDataUpdateNeeded = true;
 
 
+    //This method will
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         auth = FirebaseAuth.getInstance();
@@ -141,7 +142,6 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
             if (curBorrowRecord.isApproved() == accepted_filter){
                 bookIds.add(curBorrowRecord.getBookid());
             }
-
         }
 
         // get relevant books from database, and append them
@@ -205,12 +205,9 @@ public class RequestedBooksFragment extends Fragment implements AdapterView.OnIt
                     Intent intent = new Intent(this.getContext(), getMeetingActivity.class);
                     Gson gson = new Gson();
                     intent.putExtra(MainActivity.BORROWRECORD_MESSAGE, gson.toJson(curBorrowRecord));
-//                    intent.putExtra((MainActivity.BOOK_MESSAGE), gson.toJson(clickedBook));
                     startActivity(intent);
                 }
-
             }
-
         } else {
             // Call book info activity.
             Intent intent = new Intent(this.getContext(), requestsBookInfoActivity.class);

@@ -21,10 +21,11 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 /*
- * This file contains the fragment that has the logic and UI of showing the books owned by the user.
+ * This file contains the fragment that has the logic and UI of showing the books owned, or currently
+ * held by the user.
  *
  * Author: Jacob Paton
- * Version: 1.2
+ * Version: 1.3
  * Outstanding Issues: ---
  */
 
@@ -71,6 +72,9 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
     private ValueEventListener secondListener;
     private Query secondQuery;
 
+
+    //This method is called when the fragment is first opened. It will correctly create the recycler
+    //view that holds all the books currently owned or held by the user.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_owned_books, container, false);
@@ -121,7 +125,8 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
             }
         };
 
-
+        //Gets all the necessary information for the books that the user will hold soon (eg accepted,
+        //but not yet borrowed) and adds them to the list too.
         secondQuery = database.getRootReference().child("borrowrecords").orderByChild("borrowerName").equalTo(userName);
         secondListener = new ValueEventListener() {
             @Override
@@ -135,16 +140,6 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         Book b = dataSnapshot.getValue(Book.class);
-//                                                String bid = b.getBookid();
-//                                                ArrayList<Book> copy = new ArrayList<>();
-//                                                for (Book book : books) {
-//                                                    if (book.getBookid().equals(bid)) {
-//                                                        copy.add(book);
-//                                                    }
-//                                                }
-//                                                for (Book book : copy) {
-//                                                    books.remove(book);
-//                                                }
                                         books.add(b);
                                         recyclerViewAdapter.notifyDataSetChanged();
                                     }
@@ -167,6 +162,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         return fragmentView;
     }
 
+    //This will run the two queries when the fragment is started.
     @Override
     public void onStart(){
         super.onStart();
@@ -174,6 +170,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         secondQuery.addValueEventListener(secondListener);
     }
 
+    //Ensures that the dataset change listeners do not interrupt the flow of the app at some other point.
     @Override
     public void onPause(){
         super.onPause();
@@ -181,6 +178,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         secondQuery.removeEventListener(secondListener);
     }
 
+    //This will reset the adapter when needed.
     private void newAdapter(){
         try {
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -192,6 +190,7 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
             Log.d("Adapter error", e.getMessage());
         }
     }
+
 
     private void removeBookid(String id){
         bookids.remove(id);
@@ -209,6 +208,10 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         recyclerViewAdapter.notifyDataSetChanged();
     }
 
+
+
+    //This selects the ordering of the books based on the statuses provided (as per the requirements
+    //of the project).
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
@@ -230,6 +233,8 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         }
     }
 
+
+    //This method will actually order the books based on a provided status.
     private void orderBy(String status){
         ArrayList<Book> temp = new ArrayList<>();
         if(status.equals("borrowing")) {
@@ -260,11 +265,14 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
         newAdapter();
     }
 
+    //This method is necessary to use the recycler view adapter.
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // do nothing for now...
     }
 
+
+    //Will open the necessary activity based on the status of the book clicked.
     @Override
     public void onItemClick(View view, int position) {
         Book book = recyclerViewAdapter.getItem(position);
@@ -279,7 +287,6 @@ public class OwnedBooksFragment extends Fragment implements AdapterView.OnItemSe
             String message = gson.toJson(book);
             intent.putExtra(MainActivity.BOOK_MESSAGE, message);
         }else if(book.getStatus().equals("accepted")) {
-            //TODO: change activity to the new tradeoff activity
             intent = new Intent(this.getContext(), acceptBookActivity.class);
             String message = gson.toJson(book);
             intent.putExtra(MainActivity.BOOK_MESSAGE, message);

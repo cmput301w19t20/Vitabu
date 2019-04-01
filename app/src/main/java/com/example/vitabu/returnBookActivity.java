@@ -63,6 +63,8 @@ public class returnBookActivity extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
 
+    //This method will create the activity when it is first called. It will get all the
+    //necessary information to return the book.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,21 +111,17 @@ public class returnBookActivity extends AppCompatActivity {
     public void onScanISBNClick(View view){
         Intent intent = new Intent(this, ISBNActivity.class);
         startActivityForResult(intent, 1);
-        //Toast.makeText(returnBookActivity.this, "Book return for ISBN: " + returnedISBN, Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("BACK", "FROM ACTIVITY");
-//        getActivity();
         // Check which request we're responding to
         if (requestCode == 1) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 String text = data.getStringExtra("ISBN_number");
-//                Toast.makeText(this.getActivity(), text, Toast.LENGTH_SHORT).show();
                 returnedISBN = text;
                 completeBookReturnTransaction();
             }
