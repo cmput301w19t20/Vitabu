@@ -42,11 +42,11 @@ import android.view.View;
 
 /**
  * This class extends from the class ItemTouchHelper.SimpleCallback to add swipe functionality
- * to the recycler view items displayed in acceptBookActivity.
+ * to the recycler view items displayed in acceptBookRequestActivity.
  *
  * @author Katherine Richards
  * @version 1.0
- * @see acceptBookActivity
+ * @see acceptBookRequestActivity
  */
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     private RecyclerItemTouchHelperListener listener;
@@ -56,11 +56,25 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         this.listener = listener;
     }
 
+    /**
+     * Called when ItemTouchHelper wants to move the dragged item from its old position to the new position.
+     *
+     * @param recyclerView the recycler view that the ItemTouchHelper is bound to.
+     * @param viewHolder the view that is being dragged by the user.
+     * @param target the view that the current item is being dragged over.
+     * @return true if the viewHolder has been moved to the adapter position of the target.
+     */
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
         return true;
     }
 
+    /**
+     * This method is called when the viewHolder swiped/dragged by the ItemTouchHelper is changed.
+     *
+     * @param viewHolder the view that is being dragged by the user.
+     * @param actionState
+     */
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         if (viewHolder != null) {
@@ -70,6 +84,19 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         }
     }
 
+    /**
+     * This method is called by the recycler view's onDraw callback method. Dictates how to draw
+     * the foreground of the swiped item.
+     *
+     * @param c the canvas that the recycler view is drawing on.
+     * @param recyclerView the recycler view that the ItemTouchHelper is bound to.
+     * @param viewHolder the view that is being dragged by the user.
+     * @param dX measurement of horizontal displacement caused by the user.
+     * @param dY measurement of vertical displacement caused by the user.
+     * @param actionState
+     * @param isCurrentlyActive true if displacement is being caused by the user, false if the item
+     *                          is animating back to origin.
+     */
     @Override
     public void onChildDrawOver(Canvas c, RecyclerView recyclerView,
                                 RecyclerView.ViewHolder viewHolder, float dX, float dY,
@@ -79,12 +106,32 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
                 actionState, isCurrentlyActive);
     }
 
+    /**
+     * This method is called when the user's interaction with the item inside the recycler view is
+     * over and the animation is complete.
+     *
+     * @param recyclerView the recycler view that the ItemTouchHelper is bound to.
+     * @param viewHolder the view that is being dragged by the user.
+     */
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         final View foregroundView = ((acceptBookRequestsRecyclerViewAdapter.ViewHolder) viewHolder).viewForeground;
         getDefaultUIUtil().clearView(foregroundView);
     }
 
+    /**
+     * This method is called by the recycler view's onDraw callback method. Dictates how to draw
+     * the foreground of the swiped item.
+     *
+     * @param c the canvas that the recycler view is drawing on.
+     * @param recyclerView the recycler view that the ItemTouchHelper is bound to.
+     * @param viewHolder the view that is being dragged by the user.
+     * @param dX measurement of horizontal displacement caused by the user.
+     * @param dY measurement of vertical displacement caused by the user.
+     * @param actionState
+     * @param isCurrentlyActive true if displacement is being caused by the user, false if the item
+     *                          is animating back to origin.
+     */
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView,
                             RecyclerView.ViewHolder viewHolder, float dX, float dY,
@@ -95,16 +142,34 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
                 actionState, isCurrentlyActive);
     }
 
+    /**
+     * Called when a view is swiped by the user.
+     *
+     * @param viewHolder the view that is being dragged by the user.
+     * @param direction the direction in which the view is swiped.
+     */
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         listener.onSwiped(viewHolder, direction, viewHolder.getAdapterPosition());
     }
 
+    /**
+     * This method converts a set of flags to directions to determine the start and end position
+     * of the swipe animation.
+     *
+     * @param flags movement flag value.
+     * @param layoutDirection the layout direction of the recycler view.
+     * @return int which includes absolute direction values.
+     */
     @Override
     public int convertToAbsoluteDirection(int flags, int layoutDirection) {
         return super.convertToAbsoluteDirection(flags, layoutDirection);
     }
 
+    /**
+     * Interface to be implemented by parent activity
+     * @see acceptBookRequestActivity
+     */
     public interface RecyclerItemTouchHelperListener {
         void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position);
     }
