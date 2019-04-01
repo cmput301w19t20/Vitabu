@@ -30,6 +30,9 @@ public class LoginTest extends ActivityTestRule<MainActivity> {
     @Before
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), rule.getActivity());
+        if (solo.waitForText("My Books", 1, 2000)) {
+            solo.goBack();
+        }
     }
 
     @Test
@@ -85,8 +88,8 @@ public class LoginTest extends ActivityTestRule<MainActivity> {
     @Test
     public void testLogin() {
 //        Correct email and password
-        solo.enterText((EditText) solo.getView(R.id.login_email), "arseniykd@gmail.com");
-        solo.enterText((EditText) solo.getView(R.id.login_password), "qwertyui");
+        solo.enterText((EditText) solo.getView(R.id.login_email), "jjpaton@ualberta.ca");
+        solo.enterText((EditText) solo.getView(R.id.login_password), "password");
         solo.clickOnButton("Login");
         solo.assertCurrentActivity("Wrong Activity", browseBooksActivity.class);
     }

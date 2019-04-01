@@ -13,12 +13,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Date;
+
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.TestCase.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class RegisterTest extends ActivityTestRule<registerActivity> {
     private Solo solo;
+    private Date date;
 
     public RegisterTest() {
         super(registerActivity.class, false, true);
@@ -80,8 +83,8 @@ public class RegisterTest extends ActivityTestRule<registerActivity> {
     @Test
     public void testTakenEmail() {
 //        Email already taken
-        solo.enterText((EditText) solo.getView(R.id.register_username), "testTakenEmail");
-        solo.enterText((EditText) solo.getView(R.id.register_email), "arseniykd@gmail.com");
+        solo.enterText((EditText) solo.getView(R.id.register_username), "testTakenEmail" + date.toString());
+        solo.enterText((EditText) solo.getView(R.id.register_email), "jjpaton@ualberta.ca");
         solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
         solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword");
         solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
@@ -98,7 +101,7 @@ public class RegisterTest extends ActivityTestRule<registerActivity> {
         solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword");
         solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
         solo.clickOnButton("Register");
-        assertTrue(solo.waitForText("Please provide a valid email.", 1, 2000));
+        assertTrue(solo.waitForText("That email has been taken.", 1, 2000));
     }
 
     @Test
@@ -175,10 +178,10 @@ public class RegisterTest extends ActivityTestRule<registerActivity> {
     @Test
     public void testRegister() {
 //        Valid input
-        solo.enterText((EditText) solo.getView(R.id.register_username), "testusername");
-        solo.enterText((EditText) solo.getView(R.id.register_email), "test@email.com");
-        solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword");
-        solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword");
+        solo.enterText((EditText) solo.getView(R.id.register_username), "testusername" + date.toString());
+        solo.enterText((EditText) solo.getView(R.id.register_email), "test@email.com" + date.toString());
+        solo.enterText((EditText) solo.getView(R.id.register_password), "testpassword" + date.toString());
+        solo.enterText((EditText) solo.getView(R.id.register_reenter_password), "testpassword" + date.toString());
         solo.enterText((EditText) solo.getView(R.id.register_city), "Surrey");
         solo.clickOnButton("Register");
         solo.assertCurrentActivity("Wrong Activity.", MainActivity.class);
