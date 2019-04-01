@@ -1,3 +1,38 @@
+/*
+Vitabu is an Open Source application available under the Apache (Version 2.0) License.
+
+Copyright 2019 Arseniy Kouzmenkov, Owen Randall, Ayooluwa Oladosu, Tristan Carlson, Jacob Paton,
+Katherine Richards
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial
+portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * This file deals with the functionality of editing a book that you own and is currently available.
+ * You can change any information with regards to the book and image related to the book in this
+ * activity.
+ *
+ * Author: Jacob Paton
+ *
+ * Version: 2.0
+ *
+ * Outstanding Issues: Change the default image resource when deleting an image.
+ */
+
+
 package com.example.vitabu;
 
 import android.Manifest;
@@ -40,7 +75,7 @@ import java.io.ByteArrayOutputStream;
  * This class creates the Book Edt activity which lets a book owner view and edit the full information about a
  * provided book.
  *
- * @version 1.0
+ * @version 2.0
  * @author Jacob Paton
  * @see browseBooksActivity
  */
@@ -115,7 +150,7 @@ public class bookEditActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // Do nothing.
+                image.setImageResource(R.drawable.image);
             }
         });
     }
@@ -297,31 +332,6 @@ public class bookEditActivity extends AppCompatActivity {
 
         }
 
-//        myRef.child("books").child(bookToAdd.getBookid()).setValue(bookToAdd)
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        Log.d(logTag, "Successfully wrote book to database.");
-//
-//                        myRef.child("users").child(user).addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                            }
-//                        });
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.d(logTag, "Failed to write User to database", e);
-//                    }
-//                });
     }
 
     public void onClickDeleteImage(View view){
@@ -333,6 +343,7 @@ public class bookEditActivity extends AppCompatActivity {
         imageView.setImageResource(R.mipmap.ic_launcher);
 
     }
+
 
     public void onClickAddImage(View view){
         // handle adding a new image
@@ -347,6 +358,8 @@ public class bookEditActivity extends AppCompatActivity {
         }
     }
 
+
+    //This method will deal with getting information back from the previously called activities.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data); //Gets the handle on the onActivityResult from

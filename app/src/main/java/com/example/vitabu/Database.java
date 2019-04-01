@@ -1,3 +1,34 @@
+/*
+Vitabu is an Open Source application available under the Apache (Version 2.0) License.
+
+Copyright 2019 Arseniy Kouzmenkov, Owen Randall, Ayooluwa Oladosu, Tristan Carlson, Jacob Paton,
+Katherine Richards
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial
+portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * This file contains the singleton that implements the functionality behind accesses to the database
+ * and other smaller helper functions related to the database.
+ *
+ * Author: Tristan Carlson
+ * Version: 1.2
+ * Outstanding Issues: ---
+ */
+
 package com.example.vitabu;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,6 +60,7 @@ import java.util.ArrayList;
  * this class, then returned useing a getter that is to be called ONLY from within the success
  * callback.
  *
+<<<<<<< HEAD
  * Ideally all database interactions would be migrated here eventually.
  *
  * @author Tristan Carlson
@@ -145,7 +177,6 @@ public class Database {
                                         }
                                     }
                                 });
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -249,8 +280,6 @@ public class Database {
                         searchBooksReturnValue = bookList;
                         if (successCallback != null)
                             successCallback.run();
-
-
                     }
 
                     @Override
@@ -424,6 +453,12 @@ public class Database {
     }
 
 
+    /**
+     * When no more requests exist after deleting the current one, the status of the book needs to
+     * change back to "available". This method accomplishes that interaction.
+     *
+     * @param bookId the id of the book for which to reset the status.
+     */
     public void resetBookStatus(final String bookId){
         rootReference.child("books").child(bookId).child("status").setValue("available");
     }
@@ -511,10 +546,6 @@ public class Database {
             }
         };
         this.findBorrowRecordsByBookid(borrowRecordsSuccess, failCallback, book.getBookid());
-
-
-
-
     }
 
     public DatabaseReference getRootReference() {

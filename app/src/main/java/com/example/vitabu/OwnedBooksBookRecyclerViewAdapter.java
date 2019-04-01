@@ -26,7 +26,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * functionality to the recycler view to display the owned books correctly.
  *
  * Author: Owen Randall
- * Version: 1.2
+ * Version: 1.3
  * Outstanding Issues: ---
  */
 package com.example.vitabu;
@@ -83,7 +83,6 @@ public class OwnedBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Owne
         String userName = firebaseUser.getDisplayName();
 
         if (!book.getOwnerName().equals(userName) && book.getStatus().equals("borrowed")){
-            //Log.d("BOOKKKK", book.getTitle() + " " +  book.getOwnerName() + " " + userName);
             status = "borrowing";
         }
 

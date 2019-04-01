@@ -25,7 +25,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * the option of viewing the Owner's profile, and viewing a Goodreads page for the book.
  *
  * Author: Jacob Paton
- * Version: 1.1
+ * Version: 1.2
  * Outstanding Issues: ---
  */
 
@@ -58,7 +58,7 @@ import com.squareup.picasso.Picasso;
  * This class creates the Book Info activity which lets the users view the full information about a
  * provided book (which they have requested).
  *
- * @version 1.1
+ * @version 1.2
  * @author Jacob Paton
  * @see browseBooksActivity, bookRequestsFragment
  */
@@ -127,11 +127,10 @@ public class requestsBookInfoActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // Do nothing.
+                image.setImageResource(R.drawable.image);
+
             }
         });
-
-
     }
 
     /**
@@ -145,7 +144,6 @@ public class requestsBookInfoActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.goodreads.com/book/isbn/" + book.getISBN()));
         startActivity(intent);
     }
-
 
     /**
      * This method simply finishes the current activity.

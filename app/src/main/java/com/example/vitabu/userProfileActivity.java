@@ -46,6 +46,8 @@ import com.google.gson.Gson;
 public class userProfileActivity extends AppCompatActivity {
     User user;
 
+    //This method is called on start up of this activity and will populate the necessary fields with
+    //information that people will be able to see when viewing a user profile.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

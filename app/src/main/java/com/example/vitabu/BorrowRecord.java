@@ -22,7 +22,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /*
  * This file contains the BorrowRecord model class that is used to keep track of the current status
- * of a borrowing.
+ * of a borrowing transaction
  *
  * Author: Owen Randall
  * Version: 1.3
@@ -39,7 +39,7 @@ import java.util.UUID;
  * Object used to keep track of borrow/lending transactions between users. Both lender and borrower should receive a copy of this record.
  * Doubles as a book request, if approved is false.
  *
- * @version 1.3
+ * @version 1.4
  * @author Owen Randall
  */
 public class BorrowRecord {
