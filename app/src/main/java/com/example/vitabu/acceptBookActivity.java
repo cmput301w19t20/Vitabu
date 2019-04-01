@@ -83,12 +83,12 @@ public class acceptBookActivity extends AppCompatActivity {
 
         if(bookOwner == userName){
             TextView header = (TextView) findViewById(R.id.accept_book_header);
-            header.setText("Accept book");
+            header.setText("Accept Book");
             acceptBookButton.setText("Accept book");
         }else{
             TextView header = (TextView) findViewById(R.id.accept_book_header);
             header.setText("Lend Book");
-            acceptBookButton.setText("Accept book");
+            acceptBookButton.setText("Lend book");
         }
     }
 
