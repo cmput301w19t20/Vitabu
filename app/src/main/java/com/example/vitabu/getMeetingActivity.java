@@ -81,7 +81,7 @@ public class getMeetingActivity extends AppCompatActivity implements OnMapReadyC
         TextView date = (TextView) findViewById(R.id.get_meeting_date);
         temp = "Date: " + Integer.toString(borrowRecord.getDateBorrowed().getYear()) + "-" +
                 Integer.toString(borrowRecord.getDateBorrowed().getMonth() + 1) + "-" +
-                Integer.toString(borrowRecord.getDateBorrowed().getDay());
+                Integer.toString(borrowRecord.getDateBorrowed().getDate());
         date.setText(temp);
 
         TextView ownerEmail = (TextView) findViewById(R.id.get_meeting_owner_email_email);
