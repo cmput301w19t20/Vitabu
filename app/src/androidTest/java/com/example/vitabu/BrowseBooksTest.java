@@ -43,12 +43,6 @@ public class BrowseBooksTest extends ActivityTestRule<MainActivity> {
     }
 
     @Test
-    public void testActivity() {
-        solo.clickOnButton("Browse");
-        solo.assertCurrentActivity("Wrong Activity", browseBooksActivity.class);
-    }
-
-    @Test
     public void testBook() {
         assertTrue(solo.waitForText("The Two Towers", 1, 2000));
     }

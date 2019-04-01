@@ -102,7 +102,7 @@ public class WriteReviewActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         // get fields for making a review object
                         RatingBar ratingBar = (RatingBar) findViewById(R.id.write_review_ratingBar);
-                        int rating = Math.round(ratingBar.getRating());
+                        float rating = ratingBar.getRating();
                         EditText review_message = (EditText) findViewById(R.id.write_review_body);
                         String body = review_message.getText().toString();
                         Review review = new Review(ownerName, borrowerName, rating, body, reviewFrom, reviewTo);
@@ -161,17 +161,17 @@ public class WriteReviewActivity extends AppCompatActivity {
         // update the user's rating
         String username = user.getUserName();
         if (username.equals(review.getOwnerName())){
-            int rating = user.getOwnerRating();
+            float rating = user.getOwnerRating();
             int numReviews = user.getNumOwnerReviews();
             rating = (rating*numReviews + review.getRating())/(numReviews+1);
             user.setOwnerRating(rating);
             user.setNumOwnerReviews(numReviews +1);
         }
         else{
-            int rating = user.getBorrowerRating();
+            float rating = user.getBorrowerRating();
             int numReviews = user.getNumBorrowerReviews();
             rating = (rating*numReviews + review.getRating())/(numReviews+1);
-            user.setBorrowerRating((int) rating);
+            user.setBorrowerRating(rating);
             user.setNumBorrowerReviews(numReviews +1);
         }
 

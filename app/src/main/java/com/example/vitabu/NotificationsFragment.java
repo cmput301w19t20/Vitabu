@@ -66,10 +66,6 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
     private TextView emptyText;
     private boolean onCreate;
 
-    private void addNotification(Notification n){
-        notifications.add(n);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View fragmentView = inflater.inflate(R.layout.fragment_notifications, container, false);
@@ -79,7 +75,6 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         FirebaseUser firebaseUser = auth.getCurrentUser();
         final String userName = firebaseUser.getDisplayName();
         notifications = new ArrayList<>();
-
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
@@ -179,6 +174,16 @@ public class NotificationsFragment extends Fragment implements NotificationsRecy
         Gson gson = new Gson();
         intent.putExtra(MainActivity.BOOK_MESSAGE, gson.toJson(book));
         startActivity(intent);
+    }
+
+    private void addNotification(Notification n){
+        // adds notifications in chronological order
+        Date date = n.getDate();
+        int i=0;
+        for (; i<notifications.size(); i++){
+            if (date.compareTo(notifications.get(i).getDate()) <= 0) break;
+        }
+        notifications.add(i, n);
     }
 
 }

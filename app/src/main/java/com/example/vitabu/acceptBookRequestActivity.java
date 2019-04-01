@@ -213,14 +213,11 @@ public class acceptBookRequestActivity extends AppCompatActivity implements Recy
     public void acceptBookRequest(int position) {
         final BorrowRecord record = mAdapter.getItem(position);
         record.setApproved(true);
-        //record.setRecordid(UUID.randomUUID().toString());
-//        recordids = new ArrayList<>();
-
 
         databaseWrapper.acceptBorrowRequest(null, null, record);
 
         createRequestersList(bookid);
-        String message = "Your request has been accepted by " + record.getOwnerName() + ".";
+        String message = "Your request has been accepted by " + record.getOwnerName() + ". Tap to dismiss.";
         Notification newNotification = new Notification("Request Accepted", message, "accept", record.getBorrowerName(), record.getRecordid());
         storeNotification(newNotification);
         goToSetMeetingActivity(record);

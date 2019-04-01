@@ -25,13 +25,13 @@ public class LocalUserTest {
     @Test
     public void localUserBorrowerRating_isCorrect() {
         user.setBorrowerRating(5);
-        assertEquals(5, user.getBorrowerRating());
+        assertEquals(5, user.getBorrowerRating(), .1);
     }
 
     @Test
     public void localUserOwnerRating_isCorrect() {
         user.setOwnerRating(8);
-        assertEquals(8, user.getOwnerRating());
+        assertEquals(8, user.getOwnerRating(),.1);
     }
 
     @Test
