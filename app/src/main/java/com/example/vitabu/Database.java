@@ -60,25 +60,9 @@ import java.util.ArrayList;
  * this class, then returned useing a getter that is to be called ONLY from within the success
  * callback.
  *
- * An example of how to convert methods to a Runnable is shown below.
- * {@code
-    public void testMethod(String arg1, int arg2){
-    Log.d("TEST", "In callback function. arg1 = " + arg1 + " arg2 = " + arg2);
-    }
-
-    ...
-
-    public void someMethod(){
-    Runnable testRunnable = new Runnable() {
-    @Override
-    public void run() {
-    testMethod(arg1, arg2);
-    }
-    };
-    Database database = Database.getInstance()
-    database.testCallback(testRunnable);
-    }
- *}
+<<<<<<< HEAD
+ * Ideally all database interactions would be migrated here eventually.
+ *
  * @author Tristan Carlson
  * @version 1.0
  */
@@ -265,31 +249,14 @@ public class Database {
      */
     public void searchBooks(final Runnable successCallback, final Runnable failCallback, final String author, final String title, final String isbn, final String kwords){
         final ArrayList<Book> bookList = new ArrayList<>();
-        String initialSearchValue = "";
-        String initialSearchField = "";
-        if (! author.equals("")){
-            initialSearchValue = author;
-            initialSearchField = "author";
-        }else if (! title.equals("")){
-            initialSearchValue = title;
-            initialSearchField = "title";
-        }
-        else if (! isbn.equals("")){
-            initialSearchValue = isbn;
-            initialSearchField = "isbn";
-        }
-        else if (! kwords.equals("")){
-            initialSearchValue = kwords;
-            initialSearchField = "description";
-        }
-        else{
-            // No search parameters were passed.  Call failcallback.
-            failCallback.run();
+        // Check for empty search parameters.
+        if (author.equals("") && title.equals("") && isbn.equals("") && kwords.equals("")){
+            searchBooksReturnValue = bookList;
+            successCallback.run();
             return;
         }
-        Log.d(logTag, initialSearchValue);
 
-        rootReference.child("books").orderByChild(initialSearchField).equalTo(initialSearchValue).addListenerForSingleValueEvent(
+        rootReference.child("books").addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -298,10 +265,11 @@ public class Database {
 
                             Book curBook = subSnapshot.getValue(Book.class);
                             Log.d(logTag, curBook.getBookid());
+                            Log.d("LOOKATME!!!!", "desc: " + curBook.getDescription());
                             if ((title.equals("") || curBook.getTitle().equals(title)) &&
                                     (author.equals("") || curBook.getAuthor().equals(author)) &&
                                     (isbn.equals("") || curBook.getISBN().equals(isbn)) &&
-                                    (kwords.equals("") || curBook.getDescription().equals("") || curBook.getDescription().contains(kwords) )&&
+                                    (kwords.equals("")  || (curBook.getDescription() != null && curBook.getDescription().contains(kwords)) )&&
                                     (author.equals("") || curBook.getAuthor().equals(author)) &&
                                     (! curBook.getStatus().equals("borrowed") && ! curBook.getStatus().equals("accepted"))
                             ) {
