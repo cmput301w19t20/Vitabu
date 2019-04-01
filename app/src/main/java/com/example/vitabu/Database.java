@@ -79,6 +79,9 @@ import java.util.ArrayList;
     database.testCallback(testRunnable);
     }
  *}
+ * Ideally all database interactions would be migrated here eventually.
+ *
+
  * @author Tristan Carlson
  * @version 1.0
  */
@@ -128,7 +131,8 @@ public class Database {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(logTag, "Successfully wrote username to database.");
-                                        successCallback.run();
+                                        if (successCallback != null)
+                                            successCallback.run();
 
                                     }
                                 })
@@ -136,7 +140,8 @@ public class Database {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         Log.d(logTag, "Failed to write Username to database", e);
-                                        failCallback.run();
+                                        if (failCallback != null)
+                                            failCallback.run();
                                     }
                                 });
                     }
@@ -145,7 +150,8 @@ public class Database {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d(logTag, "Failed to write User to database", e);
-                        failCallback.run();
+                        if (failCallback != null)
+                            failCallback.run();
                     }
                 });
     }
@@ -265,31 +271,14 @@ public class Database {
      */
     public void searchBooks(final Runnable successCallback, final Runnable failCallback, final String author, final String title, final String isbn, final String kwords){
         final ArrayList<Book> bookList = new ArrayList<>();
-        String initialSearchValue = "";
-        String initialSearchField = "";
-        if (! author.equals("")){
-            initialSearchValue = author;
-            initialSearchField = "author";
-        }else if (! title.equals("")){
-            initialSearchValue = title;
-            initialSearchField = "title";
-        }
-        else if (! isbn.equals("")){
-            initialSearchValue = isbn;
-            initialSearchField = "isbn";
-        }
-        else if (! kwords.equals("")){
-            initialSearchValue = kwords;
-            initialSearchField = "description";
-        }
-        else{
-            // No search parameters were passed.  Call failcallback.
-            failCallback.run();
+        // Check for empty search parameters.
+        if (author.equals("") && title.equals("") && isbn.equals("") && kwords.equals("")){
+            searchBooksReturnValue = bookList;
+            successCallback.run();
             return;
         }
-        Log.d(logTag, initialSearchValue);
 
-        rootReference.child("books").orderByChild(initialSearchField).equalTo(initialSearchValue).addListenerForSingleValueEvent(
+        rootReference.child("books").addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -298,10 +287,11 @@ public class Database {
 
                             Book curBook = subSnapshot.getValue(Book.class);
                             Log.d(logTag, curBook.getBookid());
+                            Log.d("LOOKATME!!!!", "desc: " + curBook.getDescription());
                             if ((title.equals("") || curBook.getTitle().equals(title)) &&
                                     (author.equals("") || curBook.getAuthor().equals(author)) &&
                                     (isbn.equals("") || curBook.getISBN().equals(isbn)) &&
-                                    (kwords.equals("") || curBook.getDescription().equals("") || curBook.getDescription().contains(kwords) )&&
+                                    (kwords.equals("")  || (curBook.getDescription() != null && curBook.getDescription().contains(kwords)) )&&
                                     (author.equals("") || curBook.getAuthor().equals(author)) &&
                                     (! curBook.getStatus().equals("borrowed") && ! curBook.getStatus().equals("accepted"))
                             ) {
@@ -561,7 +551,9 @@ public class Database {
      * @param failCallback Runnable
      * @param book Book to be returned.
      */
-    public void returnBook(final Runnable successCallback, final Runnable failCallback, final Book book){
+    public void returnBook(final Runnable successCallback, final Runnable failCallback, final Book book, final BorrowRecord record){
+        final String owner = book.getOwnerName();
+        final String borrower = book.getBorrower();
         // Check if cur user is the one attempting to return.
         if (! book.getOwnerName().equals(getCurUserName())){
             if (failCallback != null)
@@ -572,6 +564,9 @@ public class Database {
         Runnable borrowRecordsSuccess = new Runnable() {
             @Override
             public void run() {
+                // send review notification to owner.
+                // NOTE! Currently blindly writing review notifications to DB.
+                sendReviewNotifications(null, null, record);
                 ArrayList<BorrowRecord> borrowRecords = getBorrowRecordsByBookidReturnValue;
                 returnBookHelper(successCallback, failCallback, borrowRecords, book);
 
@@ -580,6 +575,70 @@ public class Database {
         this.findBorrowRecordsByBookid(borrowRecordsSuccess, failCallback, book.getBookid());
     }
 
+    public void sendReviewNotifications(final Runnable successCallback, final Runnable failCallback, final BorrowRecord record){
+        String ownerMessage = record.getBorrowerName() + " returned the book. Write a review of " + record.getBorrowerName()+ ".";
+        Notification ownerNotification = new Notification("Write Review", ownerMessage, "review", record.getOwnerName(), record.getRecordid());
+        String borrowerMessage = record.getOwnerName() + " received the book. Write a review of " + record.getOwnerName()+ ".";
+        final Notification borrowerNotification = new Notification("Write Review", borrowerMessage, "review", record.getBorrowerName(), record.getRecordid());
+        rootReference.child("notifications").child(ownerNotification.getNotificationid()).setValue(ownerNotification)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        rootReference.child("notifications").child(borrowerNotification.getNotificationid()).setValue(borrowerNotification)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        updateBorrowerCount(successCallback, failCallback, record.getBorrowerName());
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        if (failCallback != null)
+                                            failCallback.run();
+                                    }
+                                });
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if (failCallback != null)
+                            failCallback.run();
+                    }
+                });
+    }
+
+
+    public void updateBorrowerCount(final Runnable successCallback, final Runnable failCallback, final String userName){
+        rootReference.child("users").child(userName).child("booksBorrowed").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long booksBorrowed = (long) dataSnapshot.getValue();
+                booksBorrowed += 1;
+                rootReference.child("users").child(userName).child("booksBorrowed").setValue(booksBorrowed).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if (successCallback != null)
+                            successCallback.run();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if (failCallback != null)
+                            failCallback.run();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                if (failCallback != null)
+                    failCallback.run();
+            }
+        });
+    }
     public DatabaseReference getRootReference() {
         return rootReference;
     }

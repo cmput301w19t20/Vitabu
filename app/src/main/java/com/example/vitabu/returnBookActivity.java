@@ -96,7 +96,7 @@ public class returnBookActivity extends AppCompatActivity {
         Database database = Database.getInstance();
         userName = database.getCurUserName();
 
-        if(bookOwner == userName){
+        if(bookOwner.equals(userName)){
             TextView header = (TextView) findViewById(R.id.return_book_header);
             header.setText("Accept return");
             returnBookButton.setText("Accept return");
@@ -138,26 +138,26 @@ public class returnBookActivity extends AppCompatActivity {
     }
 
     private void completeBookReturnTransaction2(){
-            String message;
-            if(userName.equals(book.getOwnerName())) {
-                Database database = Database.getInstance();
-                Runnable onSuccess = new Runnable() {
-                    @Override
-                    public void run() {
-                        returnFromActivity();
-                    }
-                };
-                database.returnBook(onSuccess, null, book);
-                message = record.getBorrowerName() + " returned the book. Write a review of " + record.getBorrowerName()+ ".";
-            }
-            else{
-                message = record.getOwnerName() + " received the book. Write a review of " + record.getOwnerName()+ ".";
-                updateBorrowerCount(userName);
-            }
+//            String message;
+//            if(userName.equals(book.getOwnerName())) {
+//                Database database = Database.getInstance();
+//                Runnable onSuccess = new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        returnFromActivity();
+//                    }
+//                };
+//                database.returnBook(onSuccess, null, book);
+//                message = record.getBorrowerName() + " returned the book. Write a review of " + record.getBorrowerName()+ ".";
+//            }
+//            else{
+//                message = record.getOwnerName() + " received the book. Write a review of " + record.getOwnerName()+ ".";
+//                updateBorrowerCount(userName);
+//            }
+        Database database = Database.getInstance();
 
-            // create review notification
-            Notification newNotification = new Notification("Write Review", message, "review", userName, record.getRecordid());
-            storeNotification(newNotification);
+        database.returnBook(null, null, book, record);
+        returnFromActivity();
     }
 
     public void returnFromActivity(){
