@@ -44,13 +44,6 @@ public class AddBookTest extends ActivityTestRule<MainActivity> {
     }
 
     @Test
-    public void testActivity() {
-        solo.assertCurrentActivity("Wrong Activity", browseBooksActivity.class);
-        solo.clickOnText("Add Book");
-        assertTrue(solo.waitForText("Add Book", 2, 2000));
-    }
-
-    @Test
     public void testEmptyTitle() {
         solo.clickOnText("Add Book");
         assertTrue(solo.waitForText("Add Book", 2, 2000));
