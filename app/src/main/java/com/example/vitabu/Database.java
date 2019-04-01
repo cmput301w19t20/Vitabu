@@ -60,9 +60,28 @@ import java.util.ArrayList;
  * this class, then returned useing a getter that is to be called ONLY from within the success
  * callback.
  *
-<<<<<<< HEAD
+ * An example of how to convert methods to a Runnable is shown below.
+ * {@code
+    public void testMethod(String arg1, int arg2){
+    Log.d("TEST", "In callback function. arg1 = " + arg1 + " arg2 = " + arg2);
+    }
+
+    ...
+
+    public void someMethod(){
+    Runnable testRunnable = new Runnable() {
+    @Override
+    public void run() {
+    testMethod(arg1, arg2);
+    }
+    };
+    Database database = Database.getInstance()
+    database.testCallback(testRunnable);
+    }
+ *}
  * Ideally all database interactions would be migrated here eventually.
  *
+
  * @author Tristan Carlson
  * @version 1.0
  */
@@ -619,7 +638,6 @@ public class Database {
                     failCallback.run();
             }
         });
-
     }
     public DatabaseReference getRootReference() {
         return rootReference;

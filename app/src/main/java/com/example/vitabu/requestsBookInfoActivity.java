@@ -60,7 +60,7 @@ import com.squareup.picasso.Picasso;
  *
  * @version 1.2
  * @author Jacob Paton
- * @see browseBooksActivity, bookRequestsFragment
+ * @see browseBooksActivity
  */
 public class requestsBookInfoActivity extends AppCompatActivity {
 
