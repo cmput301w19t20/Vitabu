@@ -226,4 +226,5 @@
     <string name="requested_fragment_book_title" />
     <string name="requested_fragment_book_author" />
     <string name="requested_fragment_book_owner" />
+    <string name="book_requests_decline_text">Decline</string>
 </resources>
