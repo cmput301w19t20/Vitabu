@@ -93,6 +93,7 @@ public class Book {
     /**
      * The setter for the BookID.
      *
+     * @deprecated as the book ID is set in the constructor through the UUID library.
      * @param bookid the bookId. A string.
      */
     public void setBookid(String bookid) {

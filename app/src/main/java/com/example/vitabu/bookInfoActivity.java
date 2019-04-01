@@ -131,7 +131,7 @@ public class bookInfoActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // Do nothing.
+                image.setImageResource(R.drawable.image);
             }
         });
 

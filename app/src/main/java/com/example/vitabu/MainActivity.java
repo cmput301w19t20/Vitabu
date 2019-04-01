@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
 
+
+    //This method is run when just first opening the app. It starts up all the necessary services.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    //Attempt to sign the person in if the firebase authentication is already confirmed for this user.
     @Override
     protected void onStart(){
         super.onStart();
@@ -104,16 +108,17 @@ public class MainActivity extends AppCompatActivity {
         }
         // Check if already signed in.
         if (firebaseUser != null) {
-            //Log.i(logTag, "Already Authenticated! Signed in as: " + firebaseUser.getDisplayName());
             updateUI();
         }
     }
+
 
     @Override
     protected void onPause(){
         super.onPause();
         uiUpdated = false;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -129,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
 
     /**
@@ -160,11 +163,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    //Attempts to log in the user with the provided log in information.
     public void onPressLogin(View view) {
-//        Intent intent = new Intent(this, browseBooksActivity.class);
-//        startActivity(intent);
-        // TODO: Validate login details. If valid email/password combo, proceed, otherwise alert user to incorrect login.
         String email = ((TextView) findViewById(R.id.login_email)).getText().toString();
         String password = ((TextView) findViewById(R.id.login_password)).getText().toString();
         if (email.length() < 1 || password.length() < 1){
@@ -175,11 +175,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Starts the registration activity.
     public void onPressRegister(View view) {
         // Start register activity.
         Intent intent = new Intent(this, registerActivity.class);
         startActivity(intent);
     }
+
 
     public void updateUI(){
         if (firebaseUser == null) {
@@ -194,8 +196,6 @@ public class MainActivity extends AppCompatActivity {
 
         uiUpdated = true;
 
-
-        // TODO Update ui here with newly signed in users info.
         String userName = firebaseUser.getDisplayName();
         myRef.child("users").child(userName).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -214,12 +214,12 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+
     public void startBrowseBooksActivity(){
         Intent intent = new Intent(this, browseBooksActivity.class);
         intent.putExtra(MainActivity.LOCALUSER_MESSAGE, localUser.toJson());
         startActivity(intent);
         firebaseUser = null;
-
     }
 
 }

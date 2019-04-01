@@ -57,8 +57,7 @@ import java.util.ArrayList;
  * @author Jacob Paton
  * @version 1.2
  * @see AddBookFragment
- * @see bookRequestsFragment
- * @see bookStatusFragment
+ * @see RequestedBooksFragment
  * @see BrowseBooksFragment
  * @see OwnedBooksFragment
  * @see NotificationsFragment
@@ -147,7 +146,6 @@ public class browseBooksActivity extends AppCompatActivity {
 
     //This function sends the onActivityResult(...) call to the fragment where that
     //other activity was called so that it can be processed and dealt with correctly.
-
     /**
      * This function sends the onActivityResult(...) call to the fragment from which that activity
      * was called so that the activity result can be processed and dealt with correctly.

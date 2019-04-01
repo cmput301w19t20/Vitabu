@@ -22,10 +22,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /*
  * This file contains the BrowseBooksBookRecyclerView adapter that implements the functionality behind
- * the recyclerView.
+ * the recyclerView. It also stores the images for each individual element in the recycler view.
  *
  * Author: Jacob Paton
- * Version: 1.0
+ * Version: 1.2
  * Outstanding Issues: ---
  */
 
@@ -50,6 +50,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 // Used https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example
+// Used https://www.youtube.com/watch?v=MfCiiTEwt3g&list=PLrnPJCHvNZuBf5KH4XXOthtgo6E4Epjl8&index=2
 
 public class BrowseBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<BrowseBooksBookRecyclerViewAdapter.ViewHolder> {
 
@@ -99,6 +100,7 @@ public class BrowseBooksBookRecyclerViewAdapter extends RecyclerView.Adapter<Bro
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    //The default image if there is nothing that wwas uploaded.
                    holder.imageView.setImageResource(R.drawable.image);
                 }
             });

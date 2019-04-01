@@ -76,7 +76,6 @@ public class LocalUser extends UserAbstract {
      */
     public LocalUser(FirebaseUser user){
         super();
-        // TODO Pull All other data from database.
     }
 
     /**
@@ -205,7 +204,6 @@ public class LocalUser extends UserAbstract {
     public Date getJoinDate() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
-        // TODO Deal with possible nullptr exception.
         return new Date(firebaseUser.getMetadata().getCreationTimestamp());
     }
 
@@ -229,12 +227,6 @@ public class LocalUser extends UserAbstract {
         FirebaseUser firebaseUser = auth.getCurrentUser();
         return firebaseUser.getEmail();
     }
-
-//    public void setEmail(String email) {
-//        // TODO Uncomment this.
-//        //firebaseUser.updateEmail(email);
-//        //this.email = email;
-//    }
 
     /**
      * The getter for the number of books the user owns.
@@ -307,6 +299,7 @@ public class LocalUser extends UserAbstract {
     public void setNumBorrowerReviews(int numReviews) {
         this.numBorrowerReviews = numReviews;
     }
+
     /**
      * This converts this class to JSON and returns it.
      *

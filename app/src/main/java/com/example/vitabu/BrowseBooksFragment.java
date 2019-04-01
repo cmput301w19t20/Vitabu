@@ -63,6 +63,7 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
     FirebaseAuth auth;
     String logTag = "Browse Books Fragment";
 
+    //This method will instantiate the fragment when the fragment is first called.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         auth = FirebaseAuth.getInstance();
@@ -75,13 +76,6 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
 
         // Generate data to populate the RecyclerView with
         books = new ArrayList<>();
-//        Book book;
-//        ArrayList<Book> books = new ArrayList<>();
-//        Book book;
-//        for (int i = 0; i < 10; i++) {
-//            book = new Book("Title" + Integer.toString(i), "Author", "1234", "available", "owen", "description", "bookid");
-//            books.add(book);
-//        }
 
         // Set up the RecyclerView
         RecyclerView recyclerView = fragmentView.findViewById(R.id.browse_books_recyclerview);
@@ -95,7 +89,6 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
         // Get data from the database.
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference().child("books");
-        // myRef.orderByChild("ownerName").equalTo(userName).addValueEventListener
         myRef.addValueEventListener(
                 new ValueEventListener() {
                     @Override
@@ -113,6 +106,8 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
         return fragmentView;
     }
 
+    //This method will populate the recycler view with all the books that are available and requested,
+    //but do not belong to the user currently logged in.
     public void updateBooks(DataSnapshot snapshot){
         Book curBook;
         int curBookIndex;
@@ -135,10 +130,9 @@ public class BrowseBooksFragment extends Fragment implements BrowseBooksBookRecy
         adapter.notifyDataSetChanged();
     }
 
+    //This method will open the book info activity on a book that was specified.
     @Override
     public void onItemClick(View view, int position) {
-//        TODO: Opens book info activity
-
         Intent intent = new Intent(this.getContext(), bookInfoActivity.class);
         Log.d("fragment launch", adapter.getItem(position).getTitle());
         Gson gson = new Gson();

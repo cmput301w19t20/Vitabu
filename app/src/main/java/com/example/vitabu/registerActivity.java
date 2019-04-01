@@ -188,9 +188,8 @@ public class registerActivity extends AppCompatActivity {
             }
         };
         databaseSingleton.createUser(success, fail, email, password, userName, location);
-
-
     }
+
 
     public void signUpFail(){
         Log.d(logTag, "in Callback fail");
@@ -206,10 +205,5 @@ public class registerActivity extends AppCompatActivity {
         setResult(RESULT_OK, intent);
         finish();
     }
-
-    public void test(){
-        Log.d(logTag, "It worked!");
-    }
-
 
 }

@@ -21,12 +21,11 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 /*
- * This file is responsible for implementing searching for the books. This is not a requirement that
- * we are fulfilling in Part 4, therefore it is not implemented yet.
+ * This file is responsible for implementing searching for the books.
  *
  * Author: Jacob Paton
- * Version: 1.0
- * Outstanding Issues: It is not implemented at all yet, we should get on that.
+ * Version: 1.1
+ * Outstanding Issues: ---
  */
 
 package com.example.vitabu;
@@ -56,6 +55,10 @@ public class searchBooksActivity extends AppCompatActivity {
     private String isbn;
     private String kwords;
     private LocalUser curUser;
+
+
+    //This method is called when the activity is first called. It will enable the user to search for
+    //specific books.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +72,7 @@ public class searchBooksActivity extends AppCompatActivity {
 
     }
 
-
+    //This method will search for books based on the provided input parameters.
     public void search (View v){
         Log.d(logTag, "In search");
         // Get Info from search fields.
@@ -100,6 +103,8 @@ public class searchBooksActivity extends AppCompatActivity {
         database.searchBooks(success, fail, author, title, isbn, kwords);
     }
 
+
+    //This method will show the results of the search query.
     private void showSearchResults(){
         Log.d(logTag, "In search results.");
         for(Book book : searchResults ){
